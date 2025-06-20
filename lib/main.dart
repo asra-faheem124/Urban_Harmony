@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:laptop_harbor/splash.dart';
+// import 'package:laptop_harbor/splash.dart';
+import 'package:laptop_harbor/userPanel/Home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,8 +11,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
-      home: SplashScreen(),
+      debugShowCheckedModeBanner: false,
+      home: HomeScreen(),
     );
   }
 }
