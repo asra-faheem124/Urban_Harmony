@@ -57,16 +57,19 @@ class _HomeScreenState extends State<HomeScreen> {
               title: Text('Home'),
               onTap: () {},
             ),
+            Divider(thickness: 1, color: Colors.grey, indent: 20, endIndent: 20),
             ListTile(
               leading: Icon(Icons.phone),
               title: Text('Contact'),
               onTap: () {},
             ),
+                        Divider(thickness: 1, color: Colors.grey, indent: 20, endIndent: 20),
             ListTile(
               leading: Icon(Icons.favorite),
               title: Text('Wish List'),
               onTap: () {},
             ),
+                        Divider(thickness: 1, color: Colors.grey, indent: 20, endIndent: 20),
             ListTile(
               leading: Icon(Icons.verified_user),
               title: Text('User Account'),
@@ -88,11 +91,11 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               child: Center(
                 child: Container(
-                  margin: EdgeInsets.only(top: 20),
+                  margin: EdgeInsets.only(top: 10),
                   width: 450,
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(15.0),
+                    borderRadius: BorderRadius.circular(50.0),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black12,
