@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/controller/signupController.dart';
-import 'package:laptop_harbor/userPanel/constant.dart';
 import 'package:laptop_harbor/userPanel/login.dart';
 
 class SignUp extends StatefulWidget {
@@ -110,28 +109,52 @@ class _SignUpState extends State<SignUp> {
                                 String username = name.text.trim();
                                 String useremail = email.text.trim();
                                 String userpassword = password.text.trim();
-                                String userphoneNumber = phoneNumber.text.trim();
-                                if(username.isEmpty || useremail.isEmpty || userpassword.isEmpty || userphoneNumber.isEmpty){
-                                  Get.snackbar('Error', 'Please fill out all the fields',
-                                  snackPosition: SnackPosition.TOP,
-                                  backgroundColor: Colors.red,
-                                  colorText: Colors.white
+                                String userphoneNumber =
+                                    phoneNumber.text.trim();
+                                if (username.isEmpty ||
+                                    useremail.isEmpty ||
+                                    userpassword.isEmpty ||
+                                    userphoneNumber.isEmpty) {
+                                  Get.snackbar(
+                                    'Error',
+                                    'Please fill out all the fields',
+                                    snackPosition: SnackPosition.TOP,
+                                    backgroundColor: Colors.black,
+                                    colorText: Colors.white,
+                                    margin: EdgeInsets.all(16),
+                                    borderRadius: 8,
+                                    icon: Icon(
+                                      Icons.error,
+                                      color: Colors.white,
+                                    ),
                                   );
                                   return;
-                                }else{
-                                  UserCredential? userCredential = await signupcontroller.SignUpMethod(username, useremail, userpassword, userphoneNumber);
-                                  if(userCredential != null){
-                                    Get.snackbar('Success', 'Signup Successfully! Please verify your email address',
-                                    snackPosition: SnackPosition.TOP,
-                                    backgroundColor: Colors.green,
-                                    colorText: Colors.white
+                                } else {
+                                  UserCredential? userCredential =
+                                      await signupcontroller.SignUpMethod(
+                                        username,
+                                        useremail,
+                                        userpassword,
+                                        userphoneNumber,
+                                      );
+                                  if (userCredential != null) {
+                                    Get.snackbar(
+                                      'Success',
+                                      'Signup Successfull! Please verify your email address',
+                                      snackPosition: SnackPosition.TOP,
+                                      backgroundColor: Colors.white,
+                                        colorText: Colors.black,
+                                        margin: EdgeInsets.all(16),
+                                        borderRadius: 8,
+                                        icon: Icon(Icons.check_circle, color: Colors.black,)
+                                      
                                     );
                                     Get.to(Login());
                                   }
                                 }
                               },
                               child: Text(
-                                'SIGN UP',
+                                'SIGNUP',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontFamily: 'ProductSans-b',
