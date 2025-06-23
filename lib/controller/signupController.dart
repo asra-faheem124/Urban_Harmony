@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:laptop_harbor/model/user_model.dart';
 import 'package:flutter/material.dart';
 
-class Signupcontroller extends GetxController{
+class Signupcontroller extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   //obscure
@@ -15,29 +15,42 @@ class Signupcontroller extends GetxController{
     String name,
     String email,
     String password,
-    String phoneNumber
+    String phoneNumber,
   ) async {
-    try{
+    try {
       EasyLoading.show(status: 'Please Wait');
       //creating authentication
-      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      UserCredential userCredential = await _auth
+          .createUserWithEmailAndPassword(email: email, password: password);
       await userCredential.user!.sendEmailVerification();
 
-      Usermodel usermodel = Usermodel(id: userCredential.user!.uid, name: name, email: email, password: password, phoneNumber: phoneNumber);
+      Usermodel usermodel = Usermodel(
+        id: userCredential.user!.uid,
+        name: name,
+        email: email,
+        password: password,
+        phoneNumber: phoneNumber,
+        isAdmin: false,
+      );
 
       //inserting data
-      _firebaseFirestore.collection('User').doc(userCredential.user!.uid).set(usermodel.toMap());
+      _firebaseFirestore
+          .collection('User')
+          .doc(userCredential.user!.uid)
+          .set(usermodel.toMap());
       EasyLoading.dismiss();
       return userCredential;
-    }on FirebaseAuthException catch(e){
+    } on FirebaseAuthException catch (e) {
       EasyLoading.dismiss();
-      Get.snackbar('Error', e.message ?? 'Some error has occured...',
-      snackPosition: SnackPosition.TOP,
-      backgroundColor: Colors.black,
-      colorText: Colors.white,
-      margin: EdgeInsets.all(16),
-      borderRadius: 8,
-      icon: Icon(Icons.error, color: Colors.white,)
+      Get.snackbar(
+        'Error',
+        e.message ?? 'Some error has occured...',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.black,
+        colorText: Colors.white,
+        margin: EdgeInsets.all(16),
+        borderRadius: 8,
+        icon: Icon(Icons.error, color: Colors.white),
       );
     }
     return null;

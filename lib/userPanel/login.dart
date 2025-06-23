@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:laptop_harbor/Admin/admin_home.dart';
+import 'package:laptop_harbor/controller/getUserData.dart';
 import 'package:laptop_harbor/controller/loginController.dart';
 import 'package:laptop_harbor/userPanel/Home.dart';
 import 'package:laptop_harbor/userPanel/signup.dart';
@@ -12,6 +14,9 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Logincontroller logincontroller = Get.put(Logincontroller());
+    final Getuserdatacontroller getuserdatacontroller = Get.put(
+      Getuserdatacontroller(),
+    );
     TextEditingController email = TextEditingController();
     TextEditingController password = TextEditingController();
     return Scaffold(
@@ -103,13 +108,13 @@ class Login extends StatelessWidget {
                                     'Please fill out all the fields',
                                     snackPosition: SnackPosition.TOP,
                                     backgroundColor: Colors.black,
-                                        colorText: Colors.white,
-                                        margin: EdgeInsets.all(16),
-                                        borderRadius: 8,
-                                        icon: Icon(
-                                          Icons.error,
-                                          color: Colors.white,
-                                        ),
+                                    colorText: Colors.white,
+                                    margin: EdgeInsets.all(16),
+                                    borderRadius: 8,
+                                    icon: Icon(
+                                      Icons.error,
+                                      color: Colors.white,
+                                    ),
                                   );
                                   return;
                                 } else {
@@ -118,19 +123,41 @@ class Login extends StatelessWidget {
                                         useremail,
                                         userpassword,
                                       );
+                                  var userData = await getuserdatacontroller
+                                      .getuserdata(userCredential!.user!.uid);
                                   if (userCredential != null) {
                                     if (userCredential.user!.emailVerified) {
-                                      Get.snackbar(
-                                        'Success',
-                                        'Login Successfull! Welcome to your dashboard',
-                                        snackPosition: SnackPosition.TOP,
-                                        backgroundColor: Colors.white,
-                                        colorText: Colors.black,
-                                        margin: EdgeInsets.all(16),
-                                        borderRadius: 8,
-                                        icon: Icon(Icons.check_circle, color: Colors.black,)
-                                      );
-                                      Get.to(HomeScreen());
+                                      if (userData[0]['isAdmin'] == true) {
+                                        Get.snackbar(
+                                          'Success',
+                                          'Login Successfull! Welcome to admin dashboard',
+                                          snackPosition: SnackPosition.TOP,
+                                          backgroundColor: Colors.white,
+                                          colorText: Colors.black,
+                                          margin: EdgeInsets.all(16),
+                                          borderRadius: 8,
+                                          icon: Icon(
+                                            Icons.check_circle,
+                                            color: Colors.black,
+                                          ),
+                                        );
+                                        Get.offAll(AdminHomeScreen());
+                                      } else {
+                                        Get.snackbar(
+                                          'Success',
+                                          'Login Successfull! Welcome to your dashboard',
+                                          snackPosition: SnackPosition.TOP,
+                                          backgroundColor: Colors.white,
+                                          colorText: Colors.black,
+                                          margin: EdgeInsets.all(16),
+                                          borderRadius: 8,
+                                          icon: Icon(
+                                            Icons.check_circle,
+                                            color: Colors.black,
+                                          ),
+                                        );
+                                        Get.to(HomeScreen());
+                                      }
                                     } else {
                                       Get.snackbar(
                                         'Error',

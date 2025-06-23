@@ -55,7 +55,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 animatedTexts: [
                   TypewriterAnimatedText(
                     'LAPTOP\nHARBOUR',
-                    speed: Duration(milliseconds: 200),
+                    speed: Duration(milliseconds: 150),
                   ),
                 ],
               ),
