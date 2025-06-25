@@ -1,8 +1,13 @@
 import 'dart:async';
-
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:laptop_harbor/Admin/admin_home.dart';
+import 'package:laptop_harbor/controller/getUserData.dart';
+import 'package:laptop_harbor/userPanel/Home.dart';
 import 'package:laptop_harbor/userPanel/login.dart';
+import 'package:laptop_harbor/userPanel/welcome.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -12,19 +17,26 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  User? user = FirebaseAuth.instance.currentUser;
   @override
   void initState() {
     super.initState();
     Timer(Duration(seconds: 3), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) {
-            return Login();
-          },
-        ),
-      );
+      LoggedIn(context);
     });
+  }
+  Future<void> LoggedIn(BuildContext context) async{
+    if(user != null){
+      final Getuserdatacontroller getuserdatacontroller = Get.put(Getuserdatacontroller());
+      var userData = await getuserdatacontroller.getuserdata(user!.uid);
+      if(userData[0]['isAdmin'] == true){
+        Get.offAll(AdminHomeScreen());
+      }else{
+        Get.offAll(HomeScreen());
+      }
+    }else{
+      Get.off(WelcomeScreen());
+    }
   }
   Widget build(BuildContext context) {
     

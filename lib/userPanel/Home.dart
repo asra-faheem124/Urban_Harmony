@@ -1,5 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:laptop_harbor/userPanel/splash.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -50,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   image: AssetImage("assets/images/logo.png"),
                 ),
               ),
-              child: Text("sksk"),
+              child: Text("")
             ),
             ListTile(
               leading: Icon(Icons.home),
@@ -74,6 +77,16 @@ class _HomeScreenState extends State<HomeScreen> {
               leading: Icon(Icons.verified_user),
               title: Text('User Account'),
               onTap: () {},
+            ),
+                        Divider(thickness: 1, color: Colors.grey, indent: 20, endIndent: 20),
+            ListTile(
+              leading: Icon(Icons.logout),
+              title: Text('Logout'),
+              onTap: () {
+                FirebaseAuth _auth = FirebaseAuth.instance;
+                _auth.signOut();
+                Get.to(SplashScreen());
+              },
             ),
             // Add more list items here
           ],

@@ -6,6 +6,7 @@ import 'package:laptop_harbor/Admin/admin_home.dart';
 import 'package:laptop_harbor/controller/getUserData.dart';
 import 'package:laptop_harbor/controller/loginController.dart';
 import 'package:laptop_harbor/userPanel/Home.dart';
+import 'package:laptop_harbor/userPanel/forgotPassword.dart';
 import 'package:laptop_harbor/userPanel/signup.dart';
 
 class Login extends StatelessWidget {
@@ -95,9 +96,14 @@ class Login extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       child: TextButton(
                         onPressed: () {
-                          // Navigator.push(context, MaterialPageRoute(builder: (context){
-                          //   return ForgotPassword();
-                          // }));
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return ForgotPassword();
+                              },
+                            ),
+                          );
                         },
                         child: Text("Forgot Password?"),
                       ),
@@ -167,7 +173,7 @@ class Login extends StatelessWidget {
                                               color: Colors.black,
                                             ),
                                           );
-                                          Get.to(HomeScreen());
+                                          Get.offAll(HomeScreen());
                                         }
                                       } else {
                                         Get.snackbar(
@@ -206,7 +212,7 @@ class Login extends StatelessWidget {
                                   'LOGIN',
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontFamily: 'ProductSans-b',
+                                    fontWeight: FontWeight.w700,
                                     fontSize: 16,
                                   ),
                                 ),
