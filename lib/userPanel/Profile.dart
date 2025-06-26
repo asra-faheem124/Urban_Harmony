@@ -284,7 +284,7 @@ class _ProfileState extends State<Profile> {
                             ),
                             SizedBox(height: 4),
                             Text(
-                              "Further Secure Your Account for safety",
+                              "Further Secure Your Account",
                               style: TextStyle(color: Colors.grey),
                             ),
                           ],
