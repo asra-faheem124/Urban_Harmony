@@ -37,8 +37,8 @@ class _BottomBarState extends State<BottomBar> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: selectedIndex,
         onTap: onItemTapped,
-        selectedItemColor: const Color.fromARGB(255, 102, 99, 99),
-        unselectedItemColor: Colors.black,
+        selectedItemColor:Colors.black ,
+        unselectedItemColor: const Color.fromARGB(255, 102, 99, 99),
         type: BottomNavigationBarType.fixed,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
@@ -52,7 +52,7 @@ class _BottomBarState extends State<BottomBar> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite),
-            label: 'Favorite',
+            label: 'Wish List',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_circle_rounded),

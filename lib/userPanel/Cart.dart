@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:laptop_harbor/userPanel/Home.dart';
+import 'package:laptop_harbor/userPanel/constant.dart';
 // import 'package:grocerystore/Login.dart';
 
 class ProductItem {
@@ -131,27 +133,7 @@ class _CartState extends State<Cart> {
                 },
               ),
             ),
-            SizedBox(
-              width: 300,
-              height: 50,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
-                onPressed: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) {
-                  //       return Login();
-                  //     },
-                  //   ),
-                  // );
-                },
-                child: Text(
-                  "Go To CheckOut",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ),
+            MyButton(title: 'Go To Checkout', route: HomeScreen()),
             SizedBox(height: 20),
           ],
         ),
