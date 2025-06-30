@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:laptop_harbor/userPanel/product.dart';
 import 'package:laptop_harbor/userPanel/splash.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -202,7 +203,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     TextButton.icon(
                       style: TextButton.styleFrom(iconColor: Colors.black),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context){
+                          return ProductsScreen();
+                        }));
+                      },
                       label: Text(
                         "See more",
                         style: TextStyle(color: Colors.black),
