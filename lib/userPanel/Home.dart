@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:laptop_harbor/userPanel/logout.dart';
 import 'package:laptop_harbor/userPanel/product.dart';
 import 'package:laptop_harbor/userPanel/splash.dart';
 
@@ -107,11 +108,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 ListTile(
                   leading: Icon(Icons.logout_outlined, color: Colors.red),
                   title: Text('Logout', style: TextStyle(color: Colors.red),),
-                  //  onTap:
-                  //     () => Navigator.push(
-                  //       context,
-                  //       MaterialPageRoute(builder: (context) => Logout()),
-                  //     ),
+                   onTap:
+                      () => Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Logout()),
+                      ),
                 ),
               ],
             ),

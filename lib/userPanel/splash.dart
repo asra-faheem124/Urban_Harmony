@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:laptop_harbor/Admin/admin_home.dart';
 import 'package:laptop_harbor/controller/getUserData.dart';
 import 'package:laptop_harbor/userPanel/Home.dart';
-import 'package:laptop_harbor/userPanel/login.dart';
 import 'package:laptop_harbor/userPanel/welcome.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -46,18 +45,17 @@ class _SplashScreenState extends State<SplashScreen> {
         width: double.infinity,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/images/splash3.jpg'),
+            image: AssetImage('assets/images/splash.jpg'),
             fit: BoxFit.cover,
           ),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset("assets/images/laptop.png"),
-            SizedBox(width: 10),
+            Image.asset("assets/images/laptop.png", height: 100,),
             DefaultTextStyle(
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 32,
                 color: Colors.white,
                 fontWeight: FontWeight.w700,
                 fontFamily: "ProductSans",
