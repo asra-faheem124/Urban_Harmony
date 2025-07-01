@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:laptop_harbor/userPanel/ProductDetail.dart';
 import 'package:laptop_harbor/userPanel/product.dart';
 import 'package:laptop_harbor/userPanel/splash.dart';
+import 'package:laptop_harbor/userPanel/terms_and_conditions.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -46,6 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       endDrawer: Drawer(
+        backgroundColor: Colors.white,
         child: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,11 +98,11 @@ class _HomeScreenState extends State<HomeScreen> {
               ListTile(
                 leading: Icon(Icons.article_outlined),
                 title: Text('Terms & Conditions'),
-                // onTap:
-                //   () => Navigator.push(
-                //     context,
-                //     MaterialPageRoute(builder: (context) => TermsAndConditions()),
-                //   ),
+                onTap:
+                  () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => TermsAndConditions()),
+                  ),
               ),
               ListTile(
                 leading: Icon(Icons.logout_outlined, color: Colors.red),
@@ -346,174 +348,170 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisCount: 2,
               crossAxisSpacing: 12,
               mainAxisSpacing: 12,
-              padding: EdgeInsets.all(8),
-
+              padding: EdgeInsets.all(4),
               childAspectRatio: 0.7, // Adjust item height
               shrinkWrap: true,
               physics:
                   NeverScrollableScrollPhysics(), // Use this if nested in scroll view
               children: [
                 Card(
-                  elevation: 4,
-
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Image.asset(
-                          "assets/images/laptop3.png",
-                          fit: BoxFit.cover,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                  color: Colors.white,
+                      elevation: 4,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            Text(
-                              "Apple Mac Book Pro i9",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
+                            Image.asset(
+                              "assets/images/laptop3.png",
+                              fit: BoxFit.cover,
                             ),
-                            SizedBox(height: 4),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.orange,
-                                  size: 16,
-                                ),
-                                Text("4.5", style: TextStyle(fontSize: 14)),
-                              ],
-                            ),
-                            SizedBox(height: 4),
-                            Text(
-                              "Mac Book Pro i9, 16GB RAM, 512GB SSD",
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 13,
-                                color: Colors.grey[700],
-                              ),
-                            ),
-                            SizedBox(height: 6),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Pkr 2,29,350",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  "Apple Mac Book Pro i9",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
-                                ElevatedButton(
-                                  onPressed: () {},
-                                  style: ElevatedButton.styleFrom(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 6,
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.star,
+                                      color: Colors.orange,
+                                      size: 16,
                                     ),
+                                    Text("4.5", style: TextStyle(fontSize: 14)),
+                                  ],
+                                ),
+                                Text(
+                                  "Mac Book Pro i9, 16GB RAM, 512GB SSD",
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: Colors.grey[700],
                                   ),
-                                  child: Text(
-                                    "Details",
-                                    style: TextStyle(fontSize: 12),
-                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Pkr 2,29,350",
+                                      style: TextStyle(fontWeight: FontWeight.bold),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {},
+                                      style: ElevatedButton.styleFrom(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 12,
+                                          vertical: 6,
+                                        ),
+                                      ),
+                                      child: Text(
+                                        "Details",
+                                        style: TextStyle(fontSize: 12),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
                           ],
                         ),
-                      ],
-                    ),
-                  ),
+                      ),
                 ),
                 Card(
-                  elevation: 4,
-
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Image.asset(
-                          "assets/images/laptop1.png",
-                          fit: BoxFit.cover,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Apple Mac Book Pro i9",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            SizedBox(height: 4),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.orange,
-                                  size: 16,
+                  color: Colors.white,
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Image.asset(
+                            "assets/images/laptop1.png",
+                            fit: BoxFit.cover,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Apple Mac Book Pro i9",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
                                 ),
-                                Text("4.5", style: TextStyle(fontSize: 14)),
-                              ],
-                            ),
-                            SizedBox(height: 4),
-                            Text(
-                              "Mac Book Pro i9, 16GB RAM, 512GB SSD",
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 13,
-                                color: Colors.grey[700],
                               ),
-                            ),
-                            SizedBox(height: 6),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "PKR 2,29,350",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                              SizedBox(height: 4),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.star,
+                                    color: Colors.orange,
+                                    size: 16,
+                                  ),
+                                  Text("4.5", style: TextStyle(fontSize: 14)),
+                                ],
+                              ),
+                              SizedBox(height: 4),
+                              Text(
+                                "Mac Book Pro i9, 16GB RAM, 512GB SSD",
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.grey[700],
                                 ),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) {
-                                          return ProductDetail();
-                                        },
+                              ),
+                              SizedBox(height: 6),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "PKR 2,29,350",
+                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) {
+                                            return ProductDetail();
+                                          },
+                                        ),
+                                      );
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 12,
+                                        vertical: 6,
                                       ),
-                                    );
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 6,
+                                    ),
+                                    child: Text(
+                                      "Details",
+                                      style: TextStyle(fontSize: 12),
                                     ),
                                   ),
-                                  child: Text(
-                                    "Details",
-                                    style: TextStyle(fontSize: 12),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
               ],
             ),
           ],
