@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:laptop_harbor/userPanel/Cart.dart';
 import 'package:laptop_harbor/userPanel/ProductDetail.dart';
 import 'package:laptop_harbor/userPanel/constant.dart';
 import 'package:laptop_harbor/userPanel/login.dart';
@@ -22,6 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -91,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ListTile(
                 leading: Icon(Icons.star),
                 title: Text('Rate Us'),
-                 onTap:
+                onTap:
                     () => Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => RateUsPage()),
@@ -103,18 +105,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 leading: Icon(Icons.article_outlined),
                 title: Text('Terms & Conditions'),
                 onTap:
-                  () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => TermsAndConditions()),
-                  ),
+                    () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TermsAndConditions(),
+                      ),
+                    ),
               ),
               ListTile(
                 leading: Icon(Icons.logout_outlined, color: Colors.red),
                 title: Text('Logout', style: TextStyle(color: Colors.red)),
-                 onTap:
-                    (){_auth.signOut();
-                    Get.off(Login());
-                    }
+                onTap: () {
+                  _auth.signOut();
+                  Get.off(Login());
+                },
               ),
             ],
           ),
@@ -192,20 +196,32 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             SizedBox(height: 20),
             Padding(
-              padding: const EdgeInsets.all(26.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+              ), // less padding for small screens
               child: Container(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      "Categories",
-                      style: TextStyle(
-                        fontSize: 26,
-                        fontWeight: FontWeight.bold,
+                    // Title text with responsive font size
+                    Flexible(
+                      child: Text(
+                        "Categories",
+                        style: TextStyle(
+                          fontSize:
+                              screenWidth * 0.06, // around 24 on 400px screen
+                          fontWeight: FontWeight.bold,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
+
+                    // "See more" button
                     TextButton.icon(
-                      style: TextButton.styleFrom(iconColor: Colors.black),
+                      style: TextButton.styleFrom(
+                        iconColor: Colors.black,
+                        padding: const EdgeInsets.only(left: 8),
+                      ),
                       onPressed: () {
                         Navigator.push(
                           context,
@@ -218,9 +234,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                       label: Text(
                         "See more",
-                        style: TextStyle(color: Colors.black),
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: screenWidth * 0.04, // around 14–16
+                        ),
                       ),
-                      icon: Icon(Icons.arrow_forward),
+                      icon: Icon(
+                        Icons.arrow_forward,
+                        size: screenWidth * 0.05, // around 20
+                      ),
                     ),
                   ],
                 ),
@@ -321,120 +343,232 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             SizedBox(height: 20),
             Padding(
-              padding: const EdgeInsets.all(26.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+              ), // less padding for small screens
               child: Container(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      "Featured Laptops",
-                      style: TextStyle(
-                        fontSize: 26,
-                        fontWeight: FontWeight.bold,
+                    // Title text with responsive font size
+                    Flexible(
+                      child: Text(
+                        "Featured Laptops",
+                        style: TextStyle(
+                          fontSize:
+                              screenWidth * 0.06, // around 24 on 400px screen
+                          fontWeight: FontWeight.bold,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
+
+                    // "See more" button
                     TextButton.icon(
-                      style: TextButton.styleFrom(iconColor: Colors.black),
+                      style: TextButton.styleFrom(
+                        iconColor: Colors.black,
+                        padding: const EdgeInsets.only(left: 8),
+                      ),
                       onPressed: () {},
                       label: Text(
                         "See more",
-                        style: TextStyle(color: Colors.black),
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: screenWidth * 0.04, // around 14–16
+                        ),
                       ),
-                      icon: Icon(Icons.arrow_forward),
+                      icon: Icon(
+                        Icons.arrow_forward,
+                        size: screenWidth * 0.05, // around 20
+                      ),
                     ),
                   ],
                 ),
               ),
             ),
 
-//            GridView.count(
-//   crossAxisCount: 2,
-//   crossAxisSpacing: 12,
-//   mainAxisSpacing: 12,
-//   padding: EdgeInsets.all(4),
-//   childAspectRatio: 0.7, // You can fine-tune this if needed
-//   shrinkWrap: true,
-//   physics: NeverScrollableScrollPhysics(), // If nested in scroll view
-//   children: List.generate(2, (index) {
-//     return Card(
-//       color: Colors.white,
-//       elevation: 4,
-//       shape: RoundedRectangleBorder(
-//         borderRadius: BorderRadius.circular(12),
-//       ),
-//       child: Padding(
-//         padding: const EdgeInsets.all(8.0),
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             // Fixed image height
-//             SizedBox(
-//               height: 100,
-//               child: Image.asset(
-//                 index == 0
-//                     ? "assets/images/laptop3.png"
-//                     : "assets/images/laptop1.png",
-//                 fit: BoxFit.contain,
-//               ),
-//             ),
-//             SizedBox(height: 8),
-//             Text(
-//               "Apple Mac Book Pro i9",
-//               style: TextStyle(
-//                 fontSize: 16,
-//                 fontWeight: FontWeight.w600,
-//               ),
-//             ),
-//             SizedBox(height: 4),
-//             Row(
-//               children: [
-//                 Icon(Icons.star, color: Colors.orange, size: 16),
-//                 SizedBox(width: 4),
-//                 Text("4.5", style: TextStyle(fontSize: 14)),
-//               ],
-//             ),
-//             SizedBox(height: 4),
-//             Text(
-//               "Mac Book Pro i9, 16GB RAM, 512GB SSD",
-//               maxLines: 2,
-//               overflow: TextOverflow.ellipsis,
-//               style: TextStyle(fontSize: 13, color: Colors.grey[700]),
-//             ),
-//             Spacer(),
-//             Row(
-//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//               children: [
-//                 Text(
-//                   "PKR 2,29,350",
-//                   style: TextStyle(fontWeight: FontWeight.bold),
-//                 ),
-//                 ElevatedButton(
-//                   onPressed: () {
-//                     Navigator.push(
-//                       context,
-//                       MaterialPageRoute(builder: (context) {
-//                         return ProductDetail();
-//                       }),
-//                     );
-//                   },
-//                   style: ElevatedButton.styleFrom(
-//                     padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-//                   ),
-//                   child: Text("Details", style: TextStyle(fontSize: 12)),
-//                 ),
-//               ],
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }),
-// ),
+            GridView.count(
+              crossAxisCount: 2,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
+              padding: EdgeInsets.all(8),
 
+              childAspectRatio: 0.7, // Adjust item height
+              shrinkWrap: true,
+              physics:
+                  NeverScrollableScrollPhysics(), // Use this if nested in scroll view
+              children: [
+                Card(
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                        child: Image.asset(
+                          "assets/images/laptop1.png",
+                          // fit: BoxFit.cover,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Apple MacBook Pro Core i9 9th Generation",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            SizedBox(height: 4),
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.star,
+                                  color: Colors.orange,
+                                  size: 16,
+                                ),
+                                Text("4.5", style: TextStyle(fontSize: 14)),
+                              ],
+                            ),
+                            SizedBox(height: 4),
+                            Text(
+                              "16GB RAM, 1TB SSD, Touch Bar, macOS",
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: Colors.grey[700],
+                              ),
+                            ),
+                            SizedBox(height: 6),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "PKR 2,29,300",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) {
+                                          return ProductDetail();
+                                        },
+                                      ),
+                                    );
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 6,
+                                    ),
+                                  ),
+                                  child: Text(
+                                    "Book",
+                                    style: TextStyle(fontSize: 12),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                Card(
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(child: Image.asset("assets/images/laptop2.png")),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Apple MacBook Pro Core i9 9th Generation",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            SizedBox(height: 4),
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.star,
+                                  color: Colors.orange,
+                                  size: 16,
+                                ),
+                                Text("4.5", style: TextStyle(fontSize: 14)),
+                              ],
+                            ),
+                            SizedBox(height: 4),
+                            Text(
+                              "Scenic mountain views and winter adventure.",
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: Colors.grey[700],
+                              ),
+                            ),
+                            SizedBox(height: 6),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "PKR 2,290,300",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) {
+                                          return ProductDetail();
+                                        },
+                                      ),
+                                    );
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 6,
+                                    ),
+                                  ),
+                                  child: Text(
+                                    "Book",
+                                    style: TextStyle(fontSize: 12),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),
     );
   }
 }
-
