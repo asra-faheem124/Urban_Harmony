@@ -70,25 +70,20 @@ class SignUp extends StatelessWidget {
                           },
                         ),
                         SizedBox(height: 30),
-                        TextFormField(
-                          controller: email,
-                          decoration: InputDecoration(
-                            hintText: 'Email Address',
-                            hintStyle: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
-                            ),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter an email';
-                            }
-                            if (!value.contains('@')) {
-                              return 'Please enter a valid email';
-                            }
-                            return null;
-                          },
-                        ),
+                       TextFormField(
+                controller: email,
+                decoration: InputDecoration(
+                  hintText: 'Email Address',
+                  hintStyle: TextStyle(fontSize: 16, color: Colors.black),
+                ),
+                validator: (value) {
+                  if (value!.isEmpty) return "Please enter your email";
+                  if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                    return "Enter a valid email";
+                  }
+                  return null;
+                },
+              ),
                         SizedBox(height: 30),
                         Container(
                           child: Obx(

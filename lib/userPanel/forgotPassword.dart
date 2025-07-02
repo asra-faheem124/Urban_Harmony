@@ -36,22 +36,21 @@ class ForgotPassword extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child:   TextFormField(
-                        controller: email,
-                        decoration: InputDecoration(
-                          hintText: 'Email Address',
-                          hintStyle: TextStyle(fontSize: 16, color: Colors.black),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter an email';
-                          }
-                          if (!value.contains('@')) {
-                            return 'Please enter a valid email';
-                          }
-                          return null;
-                        },
-                      ),
+                  child:  TextFormField(
+                controller: email,
+                decoration: InputDecoration(
+                  hintText: 'Email Address',
+                  prefixIcon: Icon(Icons.email),
+                  hintStyle: TextStyle(fontSize: 16, color: Colors.black),
+                ),
+                validator: (value) {
+                  if (value!.isEmpty) return "Please enter your email";
+                  if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                    return "Enter a valid email";
+                  }
+                  return null;
+                },
+              ),
                 ),
               
                 SizedBox(height: 30,),
