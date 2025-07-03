@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:laptop_harbor/userPanel/Checkout/Review.dart';
 import 'Shipping.dart';
 import 'Payment.dart';
 
@@ -26,7 +27,19 @@ class _StepperUIState extends State<StepperUI> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Checkout Steps')),
+      appBar: AppBar(
+        title: const Text('Checkout Steps'),
+        centerTitle: true,
+        actions: [
+           Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: IconButton(
+              icon: const Icon(Icons.shopping_cart, color: Colors.black),
+              onPressed: () {},
+            ),
+          ),
+        ],
+      ),
       body: Column(
         children: [
           const SizedBox(height: 20),
@@ -84,7 +97,7 @@ class _StepperUIState extends State<StepperUI> {
                     currentIndex = 2;
                   });
                 },),
-                Center(child: Text("Review Page")), // Placeholder
+              Review() // Placeholder
               ],
             ),
           ),

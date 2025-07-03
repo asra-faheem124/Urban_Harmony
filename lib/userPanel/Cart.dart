@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:laptop_harbor/userPanel/Checkout/Bar.dart';
 import 'package:laptop_harbor/userPanel/Home.dart';
 import 'package:laptop_harbor/userPanel/constant.dart';
 // import 'package:grocerystore/Login.dart';
@@ -133,7 +134,7 @@ class _CartState extends State<Cart> {
                 },
               ),
             ),
-            MyButton(title: 'Go To Checkout', route: HomeScreen()),
+            MyButton(title: 'Go To Checkout', route: StepperUI()),
             SizedBox(height: 20),
           ],
         ),
