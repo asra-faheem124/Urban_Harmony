@@ -54,55 +54,6 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       endDrawer: DrawerWidget(),
-      // endDrawer: Drawer(
-      //   backgroundColor: Colors.white,
-      //   child: SafeArea(
-      //     child: Column(
-      //       crossAxisAlignment: CrossAxisAlignment.start,
-      //       children: [
-      //         Padding(
-      //           padding: const EdgeInsets.all(12.0),
-      //           child: Image.asset('assets/images/logo2.png', height: 40),
-      //         ),
-      //         SizedBox(height: 10),
-      //         ListTile(
-      //           leading: Icon(Icons.person_2_outlined),
-      //           title: Text('Profile'),
-      //         ),
-      //         ListTile(
-      //           leading: Icon(Icons.list),
-      //           title: Text('Orders'),
-      //         ),
-      //         ListTile(
-      //           leading: Icon(Icons.location_on_outlined),
-      //           title: Text('Address'),
-      //         ),
-      //         ListTile(
-      //           leading: Icon(Icons.star),
-      //           title: Text('Rate Us'),
-      //           onTap:
-      //               () => Get.to(RateUsPage())
-      //         ),
-      //         Divider(height: 2),
-      //         SizedBox(height: 10),
-      //         ListTile(
-      //           leading: Icon(Icons.article_outlined),
-      //           title: Text('Terms & Conditions'),
-      //           onTap:
-      //               () => Get.to(TermsAndConditions())
-      //         ),
-      //         ListTile(
-      //           leading: Icon(Icons.logout_outlined, color: Colors.red),
-      //           title: Text('Logout', style: TextStyle(color: Colors.red)),
-      //           onTap: () {
-      //             _auth.signOut();
-      //             Get.off(Login());
-      //           },
-      //         ),
-      //       ],
-      //     ),
-      //   ),
-      // ),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -192,35 +143,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           fontWeight: FontWeight.bold,
                         ),
                         overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-
-                    // "See more" button
-                    TextButton.icon(
-                      style: TextButton.styleFrom(
-                        iconColor: Colors.black,
-                        padding: const EdgeInsets.only(left: 8),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return ProductsScreen();
-                            },
-                          ),
-                        );
-                      },
-                      label: Text(
-                        "See more",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: screenWidth * 0.04, // around 14–16
-                        ),
-                      ),
-                      icon: Icon(
-                        Icons.arrow_forward,
-                        size: screenWidth * 0.05, // around 20
                       ),
                     ),
                   ],
@@ -349,7 +271,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         iconColor: Colors.black,
                         padding: const EdgeInsets.only(left: 8),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.to(ProductsScreen());
+                      },
                       label: Text(
                         "See more",
                         style: TextStyle(
@@ -451,7 +375,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
                                   child: Text(
-                                    "Book",
+                                    "Details",
                                     style: TextStyle(fontSize: 12),
                                   ),
                                 ),
@@ -532,7 +456,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
                                   child: Text(
-                                    "Book",
+                                    "Details",
                                     style: TextStyle(fontSize: 12),
                                   ),
                                 ),

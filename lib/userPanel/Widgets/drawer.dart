@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/controller/getUserData.dart';
+import 'package:laptop_harbor/userPanel/Profile.dart';
+import 'package:laptop_harbor/userPanel/contact_feedback.dart';
 import 'package:laptop_harbor/userPanel/login.dart';
 import 'package:laptop_harbor/userPanel/rate_us.dart';
 import 'package:laptop_harbor/userPanel/terms_and_conditions.dart';
@@ -82,6 +83,7 @@ class DrawerWidget extends StatelessWidget {
                     ListTile(
                       leading: Icon(Icons.dashboard),
                       title: Text('Profile'),
+                      onTap: () => Get.to(Profile()),
                     ),
                     ListTile(
                       leading: Icon(Icons.people_outline_outlined),
@@ -96,9 +98,10 @@ class DrawerWidget extends StatelessWidget {
                       title: Text('Manage Products'),
                     ),
                   ] else ...[
-                    ListTile(
-                      leading: Icon(Icons.person_2_outlined),
+                     ListTile(
+                      leading: Icon(Icons.person),
                       title: Text('Profile'),
+                      onTap: () => Get.to(Profile()),
                     ),
                     ListTile(
                       leading: Icon(Icons.list),
@@ -113,8 +116,11 @@ class DrawerWidget extends StatelessWidget {
                       title: Text('Rate Us'),
                       onTap: () => Get.to(RateUsPage()),
                     ),
-                    Divider(height: 2),
-                    SizedBox(height: 10),
+                     ListTile(
+                      leading: Icon(Icons.contact_support_outlined),
+                      title: Text('Contact & Feedback'),
+                      onTap: () => Get.to(ContactFeedbackPage()),
+                    ),
                     ListTile(
                       leading: Icon(Icons.article_outlined),
                       title: Text('Terms & Conditions'),

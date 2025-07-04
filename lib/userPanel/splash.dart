@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/Admin/admin_home.dart';
 import 'package:laptop_harbor/controller/getUserData.dart';
+import 'package:laptop_harbor/userPanel/BottomBar.dart';
 import 'package:laptop_harbor/userPanel/Home.dart';
 import 'package:laptop_harbor/userPanel/welcome.dart';
 
@@ -31,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
       if(userData[0]['isAdmin'] == true){
         Get.offAll(AdminHomeScreen());
       }else{
-        Get.offAll(HomeScreen());
+        Get.offAll(BottomBar());
       }
     }else{
       Get.off(WelcomeScreen());

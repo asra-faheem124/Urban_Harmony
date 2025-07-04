@@ -325,7 +325,6 @@ class _ProfileState extends State<Profile> {
                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
                       color: Colors.white,
-                      // borderRadius: BorderRadius.circular(12),
                       boxShadow: const [
                         BoxShadow(
                           color: Colors.black12,

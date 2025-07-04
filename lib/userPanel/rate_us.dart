@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
+import 'package:laptop_harbor/userPanel/BottomBar.dart';
 
 class RateUsPage extends StatefulWidget {
   const RateUsPage({super.key});
@@ -15,15 +17,22 @@ class _RateUsPageState extends State<RateUsPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _reviewController = TextEditingController();
 
-  void _submit() {
-    if (_formKey.currentState!.validate() && _rating > 0) {
-      String email = _emailController.text;
-      String review = _reviewController.text;
+  void _submit() async {
+  if (_formKey.currentState!.validate() && _rating > 0) {
+    String email = _emailController.text.trim();
+    String review = _reviewController.text.trim();
 
-      // You can now send this data to Firebase, API, etc.
+    try {
+      await FirebaseFirestore.instance.collection('ratings').add({
+        'email': email,
+        'review': review,
+        'rating': _rating,
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+
       Get.snackbar(
         '✅ Success',
-        'Thanks for your feedback!\nRating: $_rating\nEmail: $email\nReview: $review',
+        'Thanks for your feedback!',
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.black,
         colorText: Colors.white,
@@ -42,17 +51,17 @@ class _RateUsPageState extends State<RateUsPage> {
         forwardAnimationCurve: Curves.easeOutBack,
         snackStyle: SnackStyle.FLOATING,
       );
-
-      // Clear fields after submit
+Get.offAll(BottomBar());
+      // Clear fields
       _emailController.clear();
       _reviewController.clear();
       setState(() {
         _rating = 0;
       });
-    } else if (_rating == 0) {
+    } catch (e) {
       Get.snackbar(
         '❌ Error',
-        'Please fill out all the fields',
+        'Failed to submit your review. Try again later.',
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.black,
         colorText: Colors.white,
@@ -72,11 +81,35 @@ class _RateUsPageState extends State<RateUsPage> {
         snackStyle: SnackStyle.FLOATING,
       );
     }
+  } else if (_rating == 0) {
+    Get.snackbar(
+      '❌ Error',
+      'Please provide a star rating',
+      snackPosition: SnackPosition.BOTTOM,
+      backgroundColor: Colors.black,
+      colorText: Colors.white,
+      margin: const EdgeInsets.all(16),
+      borderRadius: 20,
+      icon: const Icon(
+        Icons.error_outline,
+        color: Colors.redAccent,
+        size: 28,
+      ),
+      shouldIconPulse: false,
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+      barBlur: 10,
+      duration: const Duration(seconds: 4),
+      isDismissible: true,
+      forwardAnimationCurve: Curves.easeOutBack,
+      snackStyle: SnackStyle.FLOATING,
+    );
   }
+}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(backgroundColor: Colors.white),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
