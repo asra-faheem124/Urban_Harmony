@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:laptop_harbor/userPanel/Widgets/drawer.dart';
 import 'package:laptop_harbor/userPanel/login.dart';
 
 class AdminHomeScreen extends StatefulWidget {
@@ -19,6 +20,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
       ),
+      drawer: DrawerWidget(),
       body: Column(
         children: [
           Text('Admin Page'),

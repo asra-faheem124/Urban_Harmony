@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:laptop_harbor/userPanel/BottomBar.dart';
 import 'package:laptop_harbor/userPanel/Home.dart';
 
 class Confirmation extends StatelessWidget {
@@ -45,7 +46,7 @@ class Confirmation extends StatelessWidget {
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
                 onPressed: () {
                 
-                  Get.offAll(HomeScreen());
+                  Get.offAll(BottomBar());
                 },
                 child: Text(
                   "Continue Shopping",

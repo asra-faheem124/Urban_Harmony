@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:laptop_harbor/userPanel/EditProfile.dart';
+import 'package:laptop_harbor/userPanel/about-app.dart';
+import 'package:laptop_harbor/userPanel/help_and_support.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -12,6 +15,7 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       // backgroundColor: const Color.fromARGB(255, 226, 226, 226),
       body: SingleChildScrollView(
         child: Column(
@@ -22,20 +26,20 @@ class _ProfileState extends State<Profile> {
               padding: EdgeInsets.only(left: 30),
               child: Text(
                 "My Profile",
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold,),
               ),
             ),
             Center(
               child: Container(
                 decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 43, 39, 39),
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white,
                   boxShadow: [
-                    BoxShadow(
-                      color: Colors.blueGrey,
-                      blurRadius: 10,
-                      spreadRadius: 2,
-                      offset: Offset(0, 4),
-                    ),
+                       BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 6,
+                          offset: Offset(0, 3),
+                        ),
                   ],
                 ),
                 margin: const EdgeInsets.symmetric(vertical: 20),
@@ -60,7 +64,7 @@ class _ProfileState extends State<Profile> {
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.white,
+                                  color: Colors.black,
                                   height: 1.7,
                                 ),
                               ),
@@ -68,26 +72,13 @@ class _ProfileState extends State<Profile> {
                                 text: "abc@gmail.com",
                                 style: TextStyle(
                                   fontSize: 14,
-                                  color: Colors.grey[400],
+                                 color: Colors.black
                                 ),
                               ),
                             ],
                           ),
                         ),
                       ],
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return EditProfile();
-                            },
-                          ),
-                        );
-                      },
-                      icon: const Icon(Icons.edit, color: Colors.white),
                     ),
                   ],
                 ),
@@ -107,6 +98,7 @@ class _ProfileState extends State<Profile> {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
                       color: Colors.white,
                       // borderRadius: BorderRadius.circular(12),
                       boxShadow: const [
@@ -148,7 +140,9 @@ class _ProfileState extends State<Profile> {
                         ),
                         Spacer(),
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.to(EditProfile());
+                          },
                           icon: Icon(
                             Icons.arrow_forward_ios,
                             color: Colors.grey,
@@ -329,6 +323,7 @@ class _ProfileState extends State<Profile> {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
                       color: Colors.white,
                       // borderRadius: BorderRadius.circular(12),
                       boxShadow: const [
@@ -358,7 +353,9 @@ class _ProfileState extends State<Profile> {
                         SizedBox(height: 4),
                         Spacer(),
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.to(HelpSupportPage());
+                          },
                           icon: Icon(
                             Icons.arrow_forward_ios,
                             color: Colors.grey,
@@ -399,7 +396,9 @@ class _ProfileState extends State<Profile> {
 
                         Spacer(),
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.to(AboutAppPage());
+                          },
                           icon: Icon(
                             Icons.arrow_forward_ios,
                             color: Colors.grey,

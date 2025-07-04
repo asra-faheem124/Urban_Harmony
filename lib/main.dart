@@ -1,11 +1,14 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:laptop_harbor/Admin/admin_home.dart';
 import 'package:laptop_harbor/userPanel/Checkout/Bar.dart';
 import 'package:laptop_harbor/userPanel/EditProfile.dart';
 import 'package:laptop_harbor/userPanel/Home.dart';
 import 'package:laptop_harbor/userPanel/Profile.dart';
+import 'package:laptop_harbor/userPanel/about-app.dart';
 import 'package:laptop_harbor/userPanel/create_new_password.dart';
+import 'package:laptop_harbor/userPanel/help_and_support.dart';
 import 'package:laptop_harbor/userPanel/login.dart';
 import 'package:laptop_harbor/userPanel/rate_us.dart';
 import 'package:laptop_harbor/userPanel/splash.dart';
@@ -27,7 +30,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       theme: ThemeData(fontFamily: 'ProductSans'),
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+      home: AdminHomeScreen(),
     );
   }
 }

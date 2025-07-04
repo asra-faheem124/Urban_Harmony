@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:laptop_harbor/userPanel/BottomBar.dart';
 import 'package:laptop_harbor/userPanel/Home.dart';
 import 'package:laptop_harbor/userPanel/constant.dart';
 import 'package:laptop_harbor/userPanel/create_new_password.dart';
@@ -116,7 +117,7 @@ class _EditProfileState extends State<EditProfile> {
                           ),
                         ),
                           SizedBox(height: 20,),
-                          MyButton(title: 'Save Changes', route: HomeScreen())
+                          MyButton(title: 'Save Changes', route: BottomBar())
                 ],
               ),
             ),
