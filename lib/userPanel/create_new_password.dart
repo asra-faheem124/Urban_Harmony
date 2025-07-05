@@ -14,9 +14,11 @@ class ChangePassword extends StatefulWidget {
 
 class _ChangePasswordState extends State<ChangePassword> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController currentPasswordController = TextEditingController();
+  final TextEditingController currentPasswordController =
+      TextEditingController();
   final TextEditingController newPasswordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
   final RxBool obscureCurrent = true.obs;
   final RxBool obscureNew = true.obs;
   final RxBool obscureConfirm = true.obs;
@@ -27,18 +29,25 @@ class _ChangePasswordState extends State<ChangePassword> {
   Future<void> changePassword() async {
     try {
       final user = _auth.currentUser!;
+      final String currentPass = currentPasswordController.text.trim();
+      final String newPass = newPasswordController.text.trim();
+
+      // Step 1: Re-authenticate
       final cred = EmailAuthProvider.credential(
         email: user.email!,
-        password: currentPasswordController.text.trim(),
+        password: currentPass,
       );
-
       await user.reauthenticateWithCredential(cred);
-      await user.updatePassword(newPasswordController.text.trim());
+
+      // Step 2: Update password in FirebaseAuth
+      await user.updatePassword(newPass);
 
       await _firestore.collection('User').doc(user.uid).update({
-        'passwordChangedAt': Timestamp.now(),
+        'password': newPass,
+        'passwordChangedAt': FieldValue.serverTimestamp(),
       });
 
+      // Step 4: Notify success
       Get.snackbar(
         '✅ Success',
         'Password changed successfully',
@@ -58,13 +67,14 @@ class _ChangePasswordState extends State<ChangePassword> {
         forwardAnimationCurve: Curves.easeOutBack,
         snackStyle: SnackStyle.FLOATING,
       );
-Get.offAll(HomeScreen());
+
+      Get.offAll(() => const HomeScreen());
     } on FirebaseAuthException catch (e) {
-      String errorMsg = 'An error occurred';
+      String errorMsg = 'Something went wrong. Try again later.';
       if (e.code == 'wrong-password') {
         errorMsg = 'Current password is incorrect';
       } else if (e.code == 'weak-password') {
-        errorMsg = 'Password is too weak';
+        errorMsg = 'Password must be at least 6 characters';
       }
 
       Get.snackbar(
@@ -86,6 +96,14 @@ Get.offAll(HomeScreen());
         forwardAnimationCurve: Curves.easeOutBack,
         snackStyle: SnackStyle.FLOATING,
       );
+    } catch (e) {
+      Get.snackbar(
+        '❌ Error',
+        'Unexpected error occurred: ${e.toString()}',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.black,
+        colorText: Colors.white,
+      );
     }
   }
 
@@ -93,16 +111,13 @@ Get.offAll(HomeScreen());
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-      ),
+      appBar: AppBar(backgroundColor: Colors.white),
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
           child: Center(
             child: Column(
               children: [
-              
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
@@ -111,79 +126,108 @@ Get.offAll(HomeScreen());
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                      'Update Password?',
-                      style: TextStyle(
-                        fontSize: 28,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w700,
-                      
-                    ),
+                          'Update Password?',
+                          style: TextStyle(
+                            fontSize: 28,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                         const SizedBox(height: 20),
-                        Obx(() => TextFormField(
-                              controller: currentPasswordController,
-                              obscureText: obscureCurrent.value,
-                              decoration: InputDecoration(
-                                hintText: 'Current Password',
-                                hintStyle: const TextStyle(fontSize: 16, color: Colors.black),
-                                suffixIcon: IconButton(
-                                  icon: Icon(
-                                    obscureCurrent.value ? Icons.visibility_off : Icons.visibility,
-                                  ),
-                                  onPressed: () => obscureCurrent.value = !obscureCurrent.value,
-                                ),
+                        Obx(
+                          () => TextFormField(
+                            controller: currentPasswordController,
+                            obscureText: obscureCurrent.value,
+                            decoration: InputDecoration(
+                              hintText: 'Current Password',
+                              hintStyle: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
                               ),
-                              validator: (value) =>
-                                  value!.isEmpty ? 'Enter current password' : null,
-                            )),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  obscureCurrent.value
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                ),
+                                onPressed:
+                                    () =>
+                                        obscureCurrent.value =
+                                            !obscureCurrent.value,
+                              ),
+                            ),
+                            validator:
+                                (value) =>
+                                    value!.isEmpty
+                                        ? 'Enter current password'
+                                        : null,
+                          ),
+                        ),
                         const SizedBox(height: 20),
-                        Obx(() => TextFormField(
-                              controller: newPasswordController,
-                              obscureText: obscureNew.value,
-                              decoration: InputDecoration(
-                                hintText: 'New Password',
-                                hintStyle: const TextStyle(fontSize: 16, color: Colors.black),
-                                suffixIcon: GestureDetector(
-                                  onTap: () => obscureNew.value = !obscureNew.value,
-                                  child: obscureNew.value
-                                      ? Icon(Icons.visibility_off)
-                                      : const Icon(Icons.visibility),
-                                ),
+                        Obx(
+                          () => TextFormField(
+                            controller: newPasswordController,
+                            obscureText: obscureNew.value,
+                            decoration: InputDecoration(
+                              hintText: 'New Password',
+                              hintStyle: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
                               ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Enter new password';
-                                }
-                                if (value.length < 6) {
-                                  return 'Password must be at least 6 characters';
-                                }
-                                return null;
-                              },
-                            )),
+                              suffixIcon: GestureDetector(
+                                onTap:
+                                    () => obscureNew.value = !obscureNew.value,
+                                child:
+                                    obscureNew.value
+                                        ? Icon(Icons.visibility_off)
+                                        : const Icon(Icons.visibility),
+                              ),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Enter new password';
+                              }
+                              if (value.length < 6) {
+                                return 'Password must be at least 6 characters';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
                         const SizedBox(height: 20),
-                        Obx(() => TextFormField(
-                              controller: confirmPasswordController,
-                              obscureText: obscureConfirm.value,
-                              decoration: InputDecoration(
-                                hintText: 'Confirm New Password',
-                                hintStyle: const TextStyle(fontSize: 16, color: Colors.black),
-                                suffixIcon: IconButton(
-                                  icon: Icon(
-                                    obscureConfirm.value ? Icons.visibility_off : Icons.visibility,
-                                  ),
-                                  onPressed: () => obscureConfirm.value = !obscureConfirm.value,
-                                ),
+                        Obx(
+                          () => TextFormField(
+                            controller: confirmPasswordController,
+                            obscureText: obscureConfirm.value,
+                            decoration: InputDecoration(
+                              hintText: 'Confirm New Password',
+                              hintStyle: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
                               ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Confirm your password';
-                                }
-                                if (value != newPasswordController.text) {
-                                  return 'Passwords do not match';
-                                }
-                                return null;
-                              },
-                            )),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  obscureConfirm.value
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                ),
+                                onPressed:
+                                    () =>
+                                        obscureConfirm.value =
+                                            !obscureConfirm.value,
+                              ),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Confirm your password';
+                              }
+                              if (value != newPasswordController.text) {
+                                return 'Passwords do not match';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
                         const SizedBox(height: 40),
                         Center(
                           child: Container(
@@ -204,9 +248,9 @@ Get.offAll(HomeScreen());
                               child: const Text(
                                 'UPDATE',
                                 style: TextStyle(
-                                   color: Colors.white,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 16,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 16,
                                 ),
                               ),
                             ),
@@ -215,7 +259,7 @@ Get.offAll(HomeScreen());
                       ],
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),
