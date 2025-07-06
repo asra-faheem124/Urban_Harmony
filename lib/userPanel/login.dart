@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:laptop_harbor/Admin/admin_home.dart';
 import 'package:laptop_harbor/controller/getUserData.dart';
 import 'package:laptop_harbor/controller/loginController.dart';
+import 'package:laptop_harbor/userPanel/BottomBar.dart';
 import 'package:laptop_harbor/userPanel/Home.dart';
 import 'package:laptop_harbor/userPanel/forgotPassword.dart';
 import 'package:laptop_harbor/userPanel/signup.dart';
@@ -209,7 +210,7 @@ class Login extends StatelessWidget {
                                                 Curves.easeOutBack,
                                             snackStyle: SnackStyle.FLOATING,
                                           );
-                                              Get.offAll(HomeScreen());
+                                              Get.offAll(BottomBar());
                                             }
                                           } else {
                                              Get.snackbar(

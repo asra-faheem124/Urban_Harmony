@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:laptop_harbor/userPanel/EditProfile.dart';
 import 'package:laptop_harbor/userPanel/about-app.dart';
 import 'package:laptop_harbor/userPanel/help_and_support.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -12,78 +14,107 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  // Get current user's UID
+  final String uid = FirebaseAuth.instance.currentUser!.uid;
+
+  // Function to fetch user data from Firestore
+  Future<Map<String, dynamic>?> getUserData() async {
+    final doc =
+        await FirebaseFirestore.instance.collection('User').doc(uid).get();
+    if (doc.exists) {
+      return doc.data();
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      // backgroundColor: const Color.fromARGB(255, 226, 226, 226),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 40),
-            const Padding(
-              padding: EdgeInsets.only(left: 30),
-              child: Text(
-                "My Profile",
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold,),
-              ),
-            ),
-            Center(
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.white,
-                  boxShadow: [
-                       BoxShadow(
+      body: FutureBuilder<Map<String, dynamic>?>(
+        future: getUserData(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (!snapshot.hasData || snapshot.data == null) {
+            return const Center(child: Text("User data not found"));
+          }
+
+          final user = snapshot.data!;
+
+          return SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 40),
+
+                // My Profile Heading
+                const Padding(
+                  padding: EdgeInsets.only(left: 30),
+                  child: Text(
+                    "My Profile",
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  ),
+                ), // Text: My Profile
+
+                // Profile Card
+                Center(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
                           color: Colors.black12,
                           blurRadius: 6,
                           offset: Offset(0, 3),
                         ),
-                  ],
-                ),
-                margin: const EdgeInsets.symmetric(vertical: 20),
-                padding: const EdgeInsets.all(16),
-                width: MediaQuery.of(context).size.width * 0.9,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Image.asset(
-                          "assets/images/user.png",
-                          height: 80,
-                          width: 80,
-                        ),
-                        const SizedBox(width: 12),
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: "Your Name\n",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                  height: 1.7,
-                                ),
-                              ),
-                              TextSpan(
-                                text: "abc@gmail.com",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                 color: Colors.black
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
                       ],
                     ),
-                  ],
-                ),
-              ),
-            ),
+                    margin: const EdgeInsets.symmetric(vertical: 20),
+                    padding: const EdgeInsets.all(16),
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // User Image + Info
+                        Row(
+                          children: [
+                            Image.asset(
+                              "assets/images/user.png",
+                              height: 80,
+                              width: 80,
+                            ),
+                            const SizedBox(width: 12),
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: "${user['name']}\n",
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                      height: 1.7,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: user['email'],
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ), 
+                          ],
+                        ), 
+                      ],
+                    ), 
+                  ),
+                ), 
 
             // Spacer between profile and list
             const SizedBox(height: 10),
@@ -411,7 +442,9 @@ class _ProfileState extends State<Profile> {
             ),
           ],
         ),
-      ),
-    );
+          );
+        },
+      )
+  );
   }
 }

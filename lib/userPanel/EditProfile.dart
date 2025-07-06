@@ -1,9 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/userPanel/BottomBar.dart';
 import 'package:laptop_harbor/userPanel/create_new_password.dart';
 
-class EditProfile extends StatelessWidget {
+class EditProfile extends StatefulWidget {
+  @override
+  State<EditProfile> createState() => _EditProfileState();
+}
+
+class _EditProfileState extends State<EditProfile> {
   final _formKey = GlobalKey<FormState>();
 
   // TextEditingControllers
@@ -11,7 +18,26 @@ class EditProfile extends StatelessWidget {
   final TextEditingController email = TextEditingController();
   final TextEditingController phone = TextEditingController();
 
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
   @override
+  void initState() {
+    super.initState();
+    loadUserData(); // Load Firestore data into text fields
+  }
+
+  void loadUserData() async {
+    final uid = auth.currentUser!.uid;
+    DocumentSnapshot userDoc =
+        await firestore.collection('User').doc(uid).get();
+    final data = userDoc.data() as Map<String, dynamic>;
+
+    name.text = data['name'] ?? '';
+    email.text = data['email'] ?? '';
+    phone.text = data['phoneNumber'] ?? '';
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -48,7 +74,10 @@ class EditProfile extends StatelessWidget {
                           controller: name,
                           decoration: const InputDecoration(
                             hintText: 'Enter your name',
-                            hintStyle: TextStyle(fontSize: 16, color: Colors.black),
+                            hintStyle: TextStyle(
+                              fontSize: 16,
+                              color: Colors.black,
+                            ),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -65,13 +94,18 @@ class EditProfile extends StatelessWidget {
                           controller: email,
                           decoration: const InputDecoration(
                             hintText: 'Email Address',
-                            hintStyle: TextStyle(fontSize: 16, color: Colors.black),
+                            hintStyle: TextStyle(
+                              fontSize: 16,
+                              color: Colors.black,
+                            ),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter an email';
                             }
-                            if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                            if (!RegExp(
+                              r'^[^@]+@[^@]+\.[^@]+',
+                            ).hasMatch(value)) {
                               return 'Enter a valid email';
                             }
                             return null;
@@ -82,7 +116,10 @@ class EditProfile extends StatelessWidget {
                           controller: phone,
                           decoration: const InputDecoration(
                             hintText: 'Phone Number',
-                            hintStyle: TextStyle(fontSize: 16, color: Colors.black),
+                            hintStyle: TextStyle(
+                              fontSize: 16,
+                              color: Colors.black,
+                            ),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -121,9 +158,19 @@ class EditProfile extends StatelessWidget {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.black,
                               ),
-                              onPressed: () {
+                              onPressed: () async {
                                 if (_formKey.currentState!.validate()) {
-                                  // Success Snackbar
+                                  final uid = auth.currentUser!.uid;
+
+                                  await firestore
+                                      .collection('User')
+                                      .doc(uid)
+                                      .update({
+                                        'name': name.text.trim(),
+                                        'email': email.text.trim(),
+                                        'phoneNumber': phone.text.trim(),
+                                      });
+
                                   Get.snackbar(
                                     '✅ Success',
                                     'Profile updated successfully!',
@@ -138,16 +185,19 @@ class EditProfile extends StatelessWidget {
                                       size: 28,
                                     ),
                                     shouldIconPulse: false,
-                                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 20,
+                                      vertical: 18,
+                                    ),
                                     barBlur: 10,
                                     duration: const Duration(seconds: 4),
                                     isDismissible: true,
                                     forwardAnimationCurve: Curves.easeOutBack,
                                     snackStyle: SnackStyle.FLOATING,
                                   );
+
                                   Get.offAll(() => const BottomBar());
                                 } else {
-                                  // Error Snackbar
                                   Get.snackbar(
                                     '❌ Error',
                                     'Please fill out all the fields correctly.',
@@ -162,7 +212,10 @@ class EditProfile extends StatelessWidget {
                                       size: 28,
                                     ),
                                     shouldIconPulse: false,
-                                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 20,
+                                      vertical: 18,
+                                    ),
                                     barBlur: 10,
                                     duration: const Duration(seconds: 4),
                                     isDismissible: true,
