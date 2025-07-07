@@ -5,6 +5,7 @@ import 'package:laptop_harbor/userPanel/about-app.dart';
 import 'package:laptop_harbor/userPanel/help_and_support.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:laptop_harbor/userPanel/logout.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -16,6 +17,8 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   // Get current user's UID
   final String uid = FirebaseAuth.instance.currentUser!.uid;
+      final currentUser = FirebaseAuth.instance.currentUser;
+
 
   // Function to fetch user data from Firestore
   Future<Map<String, dynamic>?> getUserData() async {
@@ -121,7 +124,7 @@ class _ProfileState extends State<Profile> {
 
             // Custom list items
             SizedBox(
-              height: 400,
+              height: 200,
               child: ListView(
                 padding: const EdgeInsets.all(16),
                 shrinkWrap: false,
@@ -201,109 +204,6 @@ class _ProfileState extends State<Profile> {
                           radius: 24, // size of the circle
                           backgroundColor:
                               Colors.black, // background circle color
-                          child: Icon(
-                            Icons.account_circle,
-                            color: Colors.white,
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text(
-                              "Saved Benificary",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(height: 4),
-                            Text(
-                              "Managed your saved account",
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                          ],
-                        ),
-                        Spacer(),
-                        IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.arrow_forward_ios,
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      // borderRadius: BorderRadius.circular(12),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 6,
-                          offset: Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 24, // size of the circle
-                          backgroundColor:
-                              Colors.black, // background circle color
-                          child: Icon(Icons.verified_user, color: Colors.white),
-                        ),
-                        const SizedBox(width: 16),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text(
-                              "Two factor authentication",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(height: 4),
-                            Text(
-                              "High-performance for work",
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                          ],
-                        ),
-                        Spacer(),
-                        IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.arrow_forward_ios,
-                            color: Colors.grey,
-                          ),
-                        ), // pushes the next widget to the end
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      // borderRadius: BorderRadius.circular(12),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 6,
-                          offset: Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 24, // size of the circle
-                          backgroundColor:
-                              Colors.black, // background circle color
                           child: Icon(Icons.logout, color: Colors.white),
                         ),
                         const SizedBox(width: 16),
@@ -326,7 +226,9 @@ class _ProfileState extends State<Profile> {
                         ),
                         Spacer(),
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.to(LogoutScreen());
+                          },
                           icon: Icon(
                             Icons.arrow_forward_ios,
                             color: Colors.grey,
@@ -338,6 +240,7 @@ class _ProfileState extends State<Profile> {
                 ],
               ),
             ),
+            SizedBox(height: 30,),
             Container(
               margin: EdgeInsets.only(left: 25),
               child: Text(

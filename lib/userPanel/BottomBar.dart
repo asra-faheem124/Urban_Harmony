@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:laptop_harbor/userPanel/Cart.dart';
 import 'package:laptop_harbor/userPanel/Home.dart';
 import 'package:laptop_harbor/userPanel/Profile.dart';
+import 'package:laptop_harbor/userPanel/product.dart';
 
 class BottomBar extends StatefulWidget {
   const BottomBar({super.key});
@@ -13,16 +16,43 @@ class BottomBar extends StatefulWidget {
 class _BottomBarState extends State<BottomBar> {
   int selectedIndex = 0;
 
-  final List<Widget> pages = [
-   
-    HomeScreen(),
-    Center(child: Text("Explore")),
-    Cart(),
-  
+  final User? user = FirebaseAuth.instance.currentUser;
 
+  final List<Widget> loggedInPages = [
+    HomeScreen(),
+    ProductsScreen(),
+    Cart(),
     Center(child: Text("Favorites")),
-    Profile()
+    Profile(),
   ];
+
+  final List<Widget> guestPages = [
+    HomeScreen(),
+    ProductsScreen(),
+    _notLoggedInWidget(),
+    _notLoggedInWidget(),
+    _notLoggedInWidget(),
+  ];
+
+  static Widget _notLoggedInWidget() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CircleAvatar(
+            backgroundColor: Colors.black,
+            radius: 50,
+            child: Icon(Icons.person_add_disabled_outlined, color: Colors.white, size: 40,),
+          ),
+          SizedBox(height: 15,),
+          Text(
+        "You are not logged in",
+        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      ),
+        ],
+      )
+    );
+  }
 
   void onItemTapped(int index) {
     setState(() {
@@ -32,12 +62,14 @@ class _BottomBarState extends State<BottomBar> {
 
   @override
   Widget build(BuildContext context) {
+    final pages = user != null ? loggedInPages : guestPages;
+
     return Scaffold(
       body: pages[selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: selectedIndex,
         onTap: onItemTapped,
-        selectedItemColor:Colors.black ,
+        selectedItemColor: Colors.black,
         unselectedItemColor: const Color.fromARGB(255, 102, 99, 99),
         type: BottomNavigationBarType.fixed,
         items: const [
