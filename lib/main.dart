@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/userPanel/EditProfile.dart';
 import 'package:laptop_harbor/userPanel/splash.dart';
+import 'package:laptop_harbor/userPanel/welcome.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       theme: ThemeData(fontFamily: 'ProductSans'),
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+      home: WelcomeScreen(),
     );
   }
 }
