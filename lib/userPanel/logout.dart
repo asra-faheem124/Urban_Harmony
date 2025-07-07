@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/userPanel/BottomBar.dart';
 import 'package:laptop_harbor/userPanel/constant.dart';
+import 'package:laptop_harbor/userPanel/login.dart';
 
 class LogoutScreen extends StatelessWidget {
   const LogoutScreen({super.key});
@@ -51,7 +52,7 @@ class LogoutScreen extends StatelessWidget {
                       onPressed: () {
                         FirebaseAuth _auth = FirebaseAuth.instance;
                         _auth.signOut();
-                        Get.offAll(BottomBar());
+                        Get.offAll(Login());
                       },
                       child: Text(
                         'Logout',

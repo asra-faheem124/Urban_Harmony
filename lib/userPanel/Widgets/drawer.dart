@@ -2,6 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:laptop_harbor/Admin/admin_feedback.dart';
+import 'package:laptop_harbor/Admin/admin_home.dart';
+import 'package:laptop_harbor/Admin/admin_ratings.dart';
+import 'package:laptop_harbor/Admin/admin_users.dart';
 import 'package:laptop_harbor/controller/getUserData.dart';
 import 'package:laptop_harbor/userPanel/Profile.dart';
 import 'package:laptop_harbor/userPanel/contact_feedback.dart';
@@ -81,22 +85,35 @@ class DrawerWidget extends StatelessWidget {
                   SizedBox(height: 10),
                   if (isAdmin) ...[
                     ListTile(
-                      leading: Icon(Icons.dashboard),
-                      title: Text('Profile'),
-                      onTap: () => Get.to(Profile()),
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.people_outline_outlined),
-                      title: Text('Manage Users'),
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.category_outlined),
-                      title: Text('Categories'),
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.shopping_bag),
-                      title: Text('Manage Products'),
-                    ),
+            leading: Icon(Icons.dashboard),
+            title: Text('Dashboard'),
+            onTap: () => Get.offAll(AdminHomeScreen()),
+          ),
+          ListTile(
+            leading: Icon(Icons.person),
+            title: Text('Users'),
+            onTap: () {Get.to(AdminUsersPage());}, // Link to admin users page
+          ),
+          ListTile(
+            leading: Icon(Icons.laptop),
+            title: Text('Products'),
+            onTap: () {},
+          ),
+          ListTile(
+            leading: Icon(Icons.receipt_long),
+            title: Text('Orders'),
+            onTap: () {},
+          ),
+          ListTile(
+            leading: Icon(Icons.rate_review),
+            title: Text('Ratings'),
+            onTap: () {Get.to(AdminRatingsPage());},
+          ),
+          ListTile(
+            leading: Icon(Icons.feedback),
+            title: Text('Feedback'),
+            onTap: () {Get.to(AdminFeedbackPage());},
+          ),
                   ] else ...[
                      ListTile(
                       leading: Icon(Icons.person),

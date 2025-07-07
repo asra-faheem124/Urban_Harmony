@@ -3,15 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:laptop_harbor/userPanel/Cart.dart';
 import 'package:laptop_harbor/userPanel/ProductDetail.dart';
 import 'package:laptop_harbor/userPanel/Widgets/drawer.dart';
-import 'package:laptop_harbor/userPanel/constant.dart';
-import 'package:laptop_harbor/userPanel/login.dart';
 import 'package:laptop_harbor/userPanel/product.dart';
-import 'package:laptop_harbor/userPanel/rate_us.dart';
-import 'package:laptop_harbor/userPanel/splash.dart';
-import 'package:laptop_harbor/userPanel/terms_and_conditions.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -37,10 +31,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         actions: [
-          IconButton(
-            icon: Icon(Icons.notifications, color: Colors.black),
-            onPressed: () {},
-          ),
           Builder(
             builder:
                 (context) => IconButton(
