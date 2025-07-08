@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.example.laptop_harbor"
-    compileSdk = 34 // You can replace 34 with your actual compile SDK version
+    compileSdk = 35 // You can replace 34 with your actual compile SDK version
     ndkVersion = "27.0.12077973"
 
     defaultConfig {

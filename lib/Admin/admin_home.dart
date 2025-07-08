@@ -51,6 +51,14 @@ class AdminHomeScreen extends StatelessWidget {
         padding: EdgeInsets.all(16),
         child: Column(
           children: [
+            Text(
+                    'Admin Dashboard',
+                    style: TextStyle(
+                      fontSize: 26,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
             FutureBuilder(
               future: Future.wait([
                 getCount('User'),

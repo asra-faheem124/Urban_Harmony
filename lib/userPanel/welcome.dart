@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:laptop_harbor/userPanel/BottomBar.dart';
 import 'package:laptop_harbor/userPanel/Home.dart';
 import 'package:laptop_harbor/userPanel/constant.dart';
@@ -17,8 +18,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-       color: Colors.white,
-        child: Center(
+decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.white, const Color.fromARGB(255, 136, 136, 136)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),        child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -40,7 +46,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               ),
               SizedBox(height: 20),
               SizedBox(
-                width: 400,
+                width: 370,
                 child: Text(
                   "Find your ideal machine from top brands, compare features with ease, and shop smart—all in one seamless experience.",
                   style: TextStyle(fontSize: 15),
@@ -48,7 +54,32 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 ),
               ),
               SizedBox(height: 20),
-              MyButton(title: "Explore", route: BottomBar()),
+             Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            height: 50,
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(50)),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+              onPressed: () {
+                Get.offAll(BottomBar());
+              },
+              child: Text(
+                'Explore',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          ),
+         
+        ],
+      ),
+    ),
             ],
           ),
         ),

@@ -53,8 +53,6 @@ class _ProfileState extends State<Profile> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 40),
-
                 // My Profile Heading
                 const Padding(
                   padding: EdgeInsets.only(left: 30),
@@ -87,11 +85,20 @@ class _ProfileState extends State<Profile> {
                         // User Image + Info
                         Row(
                           children: [
-                            Image.asset(
-                              "assets/images/user.png",
-                              height: 80,
-                              width: 80,
-                            ),
+                            CircleAvatar(
+  radius: 40,
+  backgroundColor: Colors.black,
+  child: Text(
+    user['name'] != null && user['name'].toString().isNotEmpty
+        ? user['name'][0].toUpperCase()
+        : '?',
+    style: const TextStyle(
+      fontSize: 30,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+    ),
+  ),
+),
                             const SizedBox(width: 12),
                             RichText(
                               text: TextSpan(

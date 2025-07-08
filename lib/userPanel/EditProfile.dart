@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/userPanel/BottomBar.dart';
+import 'package:laptop_harbor/userPanel/Profile.dart';
 import 'package:laptop_harbor/userPanel/create_new_password.dart';
 
 class EditProfile extends StatefulWidget {

@@ -20,6 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Padding(
@@ -425,7 +426,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  "PKR 2,290,300",
+                                  "PKR 2,29,300",
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 ElevatedButton(
