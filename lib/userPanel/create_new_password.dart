@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/userPanel/Home.dart';
+import 'package:laptop_harbor/userPanel/Widgets/button.dart';
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({super.key});
@@ -230,31 +230,11 @@ class _ChangePasswordState extends State<ChangePassword> {
                         ),
                         const SizedBox(height: 40),
                         Center(
-                          child: Container(
-                            width: 170,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.black,
-                              ),
-                              onPressed: () {
-                                if (_formKey.currentState!.validate()) {
+                          child: MyButton(title: 'Update', onPressed: (){
+                            if (_formKey.currentState!.validate()) {
                                   changePassword();
                                 }
-                              },
-                              child: const Text(
-                                'UPDATE',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ),
-                          ),
+                          })
                         ),
                       ],
                     ),

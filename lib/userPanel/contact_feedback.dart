@@ -1,14 +1,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/userPanel/Home.dart';
+import 'package:laptop_harbor/userPanel/Widgets/button.dart';
 
-class ContactFeedbackPage extends StatelessWidget {
+class ContactFeedbackPage extends StatefulWidget {
+
+  ContactFeedbackPage({super.key});
+
+  @override
+  State<ContactFeedbackPage> createState() => _ContactFeedbackPageState();
+}
+
+class _ContactFeedbackPageState extends State<ContactFeedbackPage> {
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController nameController = TextEditingController();
+
   final TextEditingController emailController = TextEditingController();
+
   final TextEditingController messageController = TextEditingController();
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   final List<String> subjects = [
     'General Inquiry',
@@ -21,9 +35,15 @@ class ContactFeedbackPage extends StatelessWidget {
 
   final RxString selectedSubject = 'General Inquiry'.obs;
 
-  ContactFeedbackPage({super.key});
-
   @override
+    void initState() {
+  super.initState();
+  final User? user = _auth.currentUser;
+  if (user != null) {
+    emailController.text = user.email ?? '';
+  }
+}
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -81,6 +101,7 @@ class ContactFeedbackPage extends StatelessWidget {
                         // Email field
                         TextFormField(
                           controller: emailController,
+                          readOnly: true,
                           decoration: const InputDecoration(
                             hintText: 'Email Address',
                             hintStyle: TextStyle(
@@ -152,96 +173,75 @@ class ContactFeedbackPage extends StatelessWidget {
             
                         // Submit button
                         Center(
-                          child: Container(
-                            width: 150,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.black,
-                              ),
-                              onPressed: () async {
-                                if (_formKey.currentState!.validate()) {
-                                  await FirebaseFirestore.instance
-                                      .collection('contactMessages')
-                                      .add({
-                                        'name': nameController.text.trim(),
-                                        'email': emailController.text.trim(),
-                                        'subject': selectedSubject.value,
-                                        'message': messageController.text.trim(),
-                                        'timestamp': FieldValue.serverTimestamp(),
-                                      });
-                                  // Success snackbar
-                                  Get.snackbar(
-                                    '✅ Success',
-                                    'Message sent successfully!',
-                                    snackPosition: SnackPosition.BOTTOM,
-                                    backgroundColor: Colors.black,
-                                    colorText: Colors.white,
-                                    margin: const EdgeInsets.all(16),
-                                    borderRadius: 20,
-                                    icon: const Icon(
-                                      Icons.check_circle_outline,
-                                      color: Colors.white,
-                                      size: 28,
-                                    ),
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 20,
-                                      vertical: 18,
-                                    ),
-                                    barBlur: 10,
-                                    duration: const Duration(seconds: 4),
-                                    isDismissible: true,
-                                    forwardAnimationCurve: Curves.easeOutBack,
-                                    snackStyle: SnackStyle.FLOATING,
-                                  );
-                                  Get.offAll(HomeScreen());
-                                  // Clear fields
-                                  nameController.clear();
-                                  emailController.clear();
-                                  messageController.clear();
-                                  selectedSubject.value = subjects[0];
-                                } else {
-                                  // Error snackbar
-                                  Get.snackbar(
-                                    '❌ Error',
-                                    'Please fill out all the fields correctly.',
-                                    snackPosition: SnackPosition.BOTTOM,
-                                    backgroundColor: Colors.black,
-                                    colorText: Colors.white,
-                                    margin: const EdgeInsets.all(16),
-                                    borderRadius: 20,
-                                    icon: const Icon(
-                                      Icons.error_outline,
-                                      color: Colors.redAccent,
-                                      size: 28,
-                                    ),
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 20,
-                                      vertical: 18,
-                                    ),
-                                    barBlur: 10,
-                                    duration: const Duration(seconds: 4),
-                                    isDismissible: true,
-                                    forwardAnimationCurve: Curves.easeOutBack,
-                                    snackStyle: SnackStyle.FLOATING,
-                                  );
-                                }
-                              },
-                              child: const Text(
-                                'Submit',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 30),
+                          child: MyButton(title: 'Submit', onPressed: () async {
+                             if (_formKey.currentState!.validate()) {
+                                    await FirebaseFirestore.instance
+                                        .collection('contactMessages')
+                                        .add({
+                                          'name': nameController.text.trim(),
+                                          'email': emailController.text.trim(),
+                                          'subject': selectedSubject.value,
+                                          'message': messageController.text.trim(),
+                                          'timestamp': FieldValue.serverTimestamp(),
+                                        });
+                                    // Success snackbar
+                                    Get.snackbar(
+                                      '✅ Success',
+                                      'Message sent successfully!',
+                                      snackPosition: SnackPosition.BOTTOM,
+                                      backgroundColor: Colors.black,
+                                      colorText: Colors.white,
+                                      margin: const EdgeInsets.all(16),
+                                      borderRadius: 20,
+                                      icon: const Icon(
+                                        Icons.check_circle_outline,
+                                        color: Colors.white,
+                                        size: 28,
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 20,
+                                        vertical: 18,
+                                      ),
+                                      barBlur: 10,
+                                      duration: const Duration(seconds: 4),
+                                      isDismissible: true,
+                                      forwardAnimationCurve: Curves.easeOutBack,
+                                      snackStyle: SnackStyle.FLOATING,
+                                    );
+                                    Get.offAll(HomeScreen());
+                                    // Clear fields
+                                    nameController.clear();
+                                    emailController.clear();
+                                    messageController.clear();
+                                    selectedSubject.value = subjects[0];
+                                  } else {
+                                    // Error snackbar
+                                    Get.snackbar(
+                                      '❌ Error',
+                                      'Please fill out all the fields correctly.',
+                                      snackPosition: SnackPosition.BOTTOM,
+                                      backgroundColor: Colors.black,
+                                      colorText: Colors.white,
+                                      margin: const EdgeInsets.all(16),
+                                      borderRadius: 20,
+                                      icon: const Icon(
+                                        Icons.error_outline,
+                                        color: Colors.redAccent,
+                                        size: 28,
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 20,
+                                        vertical: 18,
+                                      ),
+                                      barBlur: 10,
+                                      duration: const Duration(seconds: 4),
+                                      isDismissible: true,
+                                      forwardAnimationCurve: Curves.easeOutBack,
+                                      snackStyle: SnackStyle.FLOATING,
+                                    );
+                                  }
+                          }),
+                        )
                       ],
                     ),
                   ),

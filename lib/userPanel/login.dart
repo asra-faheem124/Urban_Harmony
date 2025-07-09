@@ -6,7 +6,7 @@ import 'package:laptop_harbor/Admin/admin_home.dart';
 import 'package:laptop_harbor/controller/getUserData.dart';
 import 'package:laptop_harbor/controller/loginController.dart';
 import 'package:laptop_harbor/userPanel/BottomBar.dart';
-import 'package:laptop_harbor/userPanel/Home.dart';
+import 'package:laptop_harbor/userPanel/Widgets/button.dart';
 import 'package:laptop_harbor/userPanel/forgotPassword.dart';
 import 'package:laptop_harbor/userPanel/signup.dart';
 
@@ -124,18 +124,8 @@ class Login extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Container(
-                                  width: 130,
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(50),
-                                  ),
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.black,
-                                    ),
-                                    onPressed: () async {
-                                      if (_formKey.currentState != null &&
+                                MyButton(title: 'LOGIN', onPressed: () async {
+                                   if (_formKey.currentState != null &&
                                           _formKey.currentState!.validate()) {
                                         String useremail = email.text.trim();
                                         String userpassword = password.text.trim();
@@ -267,18 +257,7 @@ class Login extends StatelessWidget {
                                           snackStyle: SnackStyle.FLOATING,
                                         );
                                       }
-                                    },
-              
-                                    child: Text(
-                                      'LOGIN',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                                }),
                                 SizedBox(height: 30),
                                 Text(
                                   'or signin with',

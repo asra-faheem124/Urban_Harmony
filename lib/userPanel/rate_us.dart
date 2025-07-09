@@ -4,6 +4,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/userPanel/BottomBar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:laptop_harbor/userPanel/Widgets/button.dart';
 
 class RateUsPage extends StatefulWidget {
   const RateUsPage({super.key});
@@ -192,27 +193,7 @@ Get.offAll(BottomBar());
               const SizedBox(height: 25),
 
               // Submit Button
-              Container(
-                width: 130,
-                height: 50,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                child: ElevatedButton(
-                  onPressed: _submit,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                  ),
-                  child: const Text(
-                    "Submit",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16,
-                    ),
-                  ),
-                ),
-              ),
+             MyButton(title: 'Submit', onPressed: _submit)
             ],
           ),
         ),

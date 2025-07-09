@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/userPanel/Checkout/Bar.dart';
-import 'package:laptop_harbor/userPanel/Home.dart';
-import 'package:laptop_harbor/userPanel/constant.dart';
-// import 'package:grocerystore/Login.dart';
+import 'package:laptop_harbor/userPanel/Widgets/button.dart';
 
 class ProductItem {
   final String image;

@@ -7,7 +7,6 @@ import 'package:laptop_harbor/Admin/admin_home.dart';
 import 'package:laptop_harbor/Admin/admin_ratings.dart';
 import 'package:laptop_harbor/Admin/admin_users.dart';
 import 'package:laptop_harbor/controller/getUserData.dart';
-import 'package:laptop_harbor/userPanel/Profile.dart';
 import 'package:laptop_harbor/userPanel/contact_feedback.dart';
 import 'package:laptop_harbor/userPanel/login.dart';
 import 'package:laptop_harbor/userPanel/logout.dart';
@@ -37,8 +36,8 @@ class DrawerWidget extends StatelessWidget {
               ),
               SizedBox(height: 10),
               ListTile(
-                leading: Icon(Icons.login),
-                title: Text('Login'),
+                leading: Icon(Icons.app_registration_rounded),
+                title: Text('Signup'),
                 onTap: () => Get.to(Login()),
               ),
               ListTile(
@@ -116,11 +115,6 @@ class DrawerWidget extends StatelessWidget {
             onTap: () {Get.to(AdminFeedbackPage());},
           ),
                   ] else ...[
-                     ListTile(
-                      leading: Icon(Icons.person),
-                      title: Text('Profile'),
-                      onTap: () => Get.to(Profile()),
-                    ),
                     ListTile(
                       leading: Icon(Icons.list),
                       title: Text('Orders'),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/controller/signupController.dart';
+import 'package:laptop_harbor/userPanel/Widgets/button.dart';
 import 'package:laptop_harbor/userPanel/login.dart';
 
 class SignUp extends StatelessWidget {
@@ -144,18 +145,8 @@ class SignUp extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Container(
-                                  width: 130,
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(50),
-                                  ),
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.black,
-                                    ),
-                                    onPressed: () async {
-                                      if (_formKey.currentState!.validate()) {
+                               MyButton(title: 'SIGNUP', onPressed: ()async{
+                                if (_formKey.currentState!.validate()) {
                                         String username = name.text.trim();
                                         String useremail = email.text.trim();
                                         String userpassword =
@@ -226,17 +217,7 @@ class SignUp extends StatelessWidget {
                                           snackStyle: SnackStyle.FLOATING,
                                         );
                                       }
-                                    },
-                                    child: Text(
-                                      'SIGNUP',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'ProductSans-b',
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                               }),
                                 SizedBox(height: 30),
                                 Text(
                                   'or signup with',

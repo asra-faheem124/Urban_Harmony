@@ -87,7 +87,7 @@ class _ProfileState extends State<Profile> {
                           children: [
                             CircleAvatar(
   radius: 40,
-  backgroundColor: Colors.black,
+  backgroundColor: Colors.grey[300],
   child: Text(
     user['name'] != null && user['name'].toString().isNotEmpty
         ? user['name'][0].toUpperCase()
@@ -95,7 +95,7 @@ class _ProfileState extends State<Profile> {
     style: const TextStyle(
       fontSize: 30,
       fontWeight: FontWeight.bold,
-      color: Colors.white,
+      color: Colors.black,
     ),
   ),
 ),

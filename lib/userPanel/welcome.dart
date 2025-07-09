@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/userPanel/BottomBar.dart';
-import 'package:laptop_harbor/userPanel/Home.dart';
-import 'package:laptop_harbor/userPanel/constant.dart';
-import 'package:laptop_harbor/userPanel/login.dart';
+import 'package:laptop_harbor/userPanel/Widgets/button.dart';
 import 'package:lottie/lottie.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -18,13 +16,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-decoration: BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [Colors.white, const Color.fromARGB(255, 136, 136, 136)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
-        ),        child: Center(
+        ),
+        child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -35,8 +34,8 @@ decoration: BoxDecoration(
               ),
               Lottie.asset(
                 'assets/videos/lottieAnimation.json', // Path to your animation file
-                width: 200, // Customize size
-                height: 200, // Customize size
+                width: 300, // Customize size
+                height: 300, // Customize size
                 fit: BoxFit.fill, // Animation fit style
               ),
               Text(
@@ -44,7 +43,7 @@ decoration: BoxDecoration(
                 "Your Trusted Dock for the \n Perfect Laptop",
                 style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 10),
               SizedBox(
                 width: 370,
                 child: Text(
@@ -53,33 +52,18 @@ decoration: BoxDecoration(
                   textAlign: TextAlign.center,
                 ),
               ),
-              SizedBox(height: 20),
-             Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            height: 50,
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(50)),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
-              onPressed: () {
-                Get.offAll(BottomBar());
-              },
-              child: Text(
-                'Explore',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 16,
+              SizedBox(height: 10),
+              Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    MyButton(
+                      title: 'Explore',
+                      onPressed: () => Get.offAll(BottomBar()),
+                    ),
+                  ],
                 ),
               ),
-            ),
-          ),
-         
-        ],
-      ),
-    ),
             ],
           ),
         ),

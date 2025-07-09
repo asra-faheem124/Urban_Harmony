@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/userPanel/BottomBar.dart';
-import 'package:laptop_harbor/userPanel/Profile.dart';
+import 'package:laptop_harbor/userPanel/Widgets/button.dart';
 import 'package:laptop_harbor/userPanel/create_new_password.dart';
 
 class EditProfile extends StatefulWidget {
@@ -149,18 +149,8 @@ class _EditProfileState extends State<EditProfile> {
                         ),
                         const SizedBox(height: 30),
                         Center(
-                          child: Container(
-                            width: 170,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.black,
-                              ),
-                              onPressed: () async {
-                                if (_formKey.currentState!.validate()) {
+                          child: MyButton(title: 'Save Changes', onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
                                   final uid = auth.currentUser!.uid;
 
                                   await firestore
@@ -224,17 +214,7 @@ class _EditProfileState extends State<EditProfile> {
                                     snackStyle: SnackStyle.FLOATING,
                                   );
                                 }
-                              },
-                              child: const Text(
-                                'Save Changes',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ),
-                          ),
+                          })
                         ),
                       ],
                     ),

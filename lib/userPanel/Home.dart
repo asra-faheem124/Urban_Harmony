@@ -1,10 +1,13 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/userPanel/ProductDetail.dart';
+import 'package:laptop_harbor/userPanel/Profile.dart';
 import 'package:laptop_harbor/userPanel/Widgets/drawer.dart';
+import 'package:laptop_harbor/userPanel/login.dart';
 import 'package:laptop_harbor/userPanel/product.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -17,33 +20,74 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   FirebaseAuth _auth = FirebaseAuth.instance;
   @override
+  Future<DocumentSnapshot> _getUserData() async {
+  final uid = FirebaseAuth.instance.currentUser?.uid;
+  if (uid != null) {
+    return FirebaseFirestore.instance.collection('User').doc(uid).get();
+  }
+  throw Exception("User not logged in");
+}
+
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SizedBox(
-            height: 50,
-            width: 100,
-            child: Image.asset('assets/images/logo2.png'),
-          ),
-        ),
-        actions: [
-          Builder(
-            builder:
-                (context) => IconButton(
-                  icon: Icon(Icons.menu, color: Colors.black),
-                  onPressed: () {
-                    // Open the right-side drawer
-                    Scaffold.of(context).openEndDrawer();
-                  },
+  backgroundColor: Colors.white,
+  title: Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: SizedBox(
+      height: 50,
+      width: 100,
+      child: Image.asset('assets/images/logo2.png'),
+    ),
+  ),
+  actions: [
+    FutureBuilder<DocumentSnapshot>(
+      future: _getUserData(), // call function to fetch user data
+      builder: (context, snapshot) {
+        final user = FirebaseAuth.instance.currentUser;
+        
+        // If user is logged in and data is available
+        if (user != null && snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+          final userData = snapshot.data!.data() as Map<String, dynamic>;
+          final name = userData['name'] ?? '';
+          final firstLetter = name.isNotEmpty ? name[0].toUpperCase() : '?';
+
+          return Padding(
+            padding: const EdgeInsets.only(right: 12),
+            child: GestureDetector(
+              onTap: () => Get.to(Profile()),
+              child: CircleAvatar(
+                backgroundColor: Colors.grey[300],
+                child: Text(
+                  firstLetter,
+                  style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
                 ),
-          ),
-        ],
+              ),
+            ),
+          );
+        }
+
+        // If not logged in
+        return IconButton(
+          icon: Icon(Icons.login, color: Colors.black),
+          onPressed: () {
+           Get.to(Login());
+          },
+        );
+      },
+    ),
+    Builder(
+      builder: (context) => IconButton(
+        icon: Icon(Icons.menu, color: Colors.black),
+        onPressed: () {
+          Scaffold.of(context).openEndDrawer();
+        },
       ),
+    ),
+  ],
+),
       endDrawer: DrawerWidget(),
       body: SingleChildScrollView(
         child: Column(

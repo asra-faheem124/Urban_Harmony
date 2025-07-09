@@ -1,13 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:laptop_harbor/Admin/admin_home.dart';
-import 'package:laptop_harbor/userPanel/BottomBar.dart';
-import 'package:laptop_harbor/userPanel/EditProfile.dart';
-import 'package:laptop_harbor/userPanel/Profile.dart';
-import 'package:laptop_harbor/userPanel/logout.dart';
 import 'package:laptop_harbor/userPanel/splash.dart';
-import 'package:laptop_harbor/userPanel/welcome.dart';
 import 'firebase_options.dart';
 
 void main() async {

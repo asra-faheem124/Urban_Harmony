@@ -2,7 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/userPanel/Cart.dart';
-import 'package:laptop_harbor/userPanel/constant.dart';
+import 'package:laptop_harbor/userPanel/Widgets/button.dart';
 
 class ProductDetail extends StatefulWidget {
   const ProductDetail({super.key});

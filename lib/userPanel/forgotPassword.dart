@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/controller/forgotPasswordController.dart';
 import 'package:laptop_harbor/controller/loginController.dart';
+import 'package:laptop_harbor/userPanel/Widgets/button.dart';
 
 class ForgotPassword extends StatelessWidget {
     final _formKey = GlobalKey<FormState>();
@@ -55,18 +56,8 @@ class ForgotPassword extends StatelessWidget {
               
                 SizedBox(height: 30,),
               Center(
-                child: Container(
-                                  width: 170,
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(50),
-                                  ),
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.black,
-                                    ),
-                                    onPressed: () async{
-                                      if (_formKey.currentState != null &&
+                child: MyButton(title: 'Reset Password', onPressed: () async {
+                   if (_formKey.currentState != null &&
                                       _formKey.currentState!.validate()) {
                                     String useremail = email.text.trim();
                                     await forgotpasswordcontroller.ForgotPassword(useremail);
@@ -85,17 +76,7 @@ class ForgotPassword extends StatelessWidget {
                                           ),
                                         );
                                     }
-                                    },
-                                    child: Text(
-                                      'Reset Password',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                })
               ),
               ],
             ),

@@ -2,8 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/userPanel/BottomBar.dart';
-import 'package:laptop_harbor/userPanel/constant.dart';
-import 'package:laptop_harbor/userPanel/login.dart';
+import 'package:laptop_harbor/userPanel/Widgets/button.dart';
 import 'package:lottie/lottie.dart';
 
 class LogoutScreen extends StatelessWidget {
@@ -20,8 +19,8 @@ class LogoutScreen extends StatelessWidget {
         children: [
           Lottie.asset(
             'assets/videos/lottieAnimation2.json', // Path to your animation file
-            width: 200, // Customize size
-            height: 200, // Customize size
+            width: 300, // Customize size
+            height: 300, // Customize size
             fit: BoxFit.fill, // Animation fit style
           ),
           Text(
