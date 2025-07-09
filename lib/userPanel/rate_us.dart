@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/userPanel/BottomBar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class RateUsPage extends StatefulWidget {
   const RateUsPage({super.key});
@@ -16,6 +17,8 @@ class _RateUsPageState extends State<RateUsPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _reviewController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
 
   void _submit() async {
   if (_formKey.currentState!.validate() && _rating > 0) {
@@ -107,6 +110,13 @@ Get.offAll(BottomBar());
 }
 
   @override
+  void initState() {
+  super.initState();
+  final User? user = _auth.currentUser;
+  if (user != null) {
+    _emailController.text = user.email ?? '';
+  }
+}
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -149,19 +159,17 @@ Get.offAll(BottomBar());
 
               TextFormField(
                 controller: _emailController,
+                readOnly: true,
                 decoration: InputDecoration(
                   hintText: 'Email Address',
                   prefixIcon: Icon(Icons.email),
                   hintStyle: TextStyle(fontSize: 16, color: Colors.black),
                   border: OutlineInputBorder(),
                 ),
-                validator: (value) {
-                  if (value!.isEmpty) return "Please enter your email";
-                  if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                    return "Enter a valid email";
-                  }
-                  return null;
-                },
+                 validator: (value) {
+    if (value!.isEmpty) return "Email is required";
+    return null;
+  },
               ),
 
               const SizedBox(height: 20),

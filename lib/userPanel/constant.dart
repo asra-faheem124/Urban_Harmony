@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 
 class MyButton extends StatelessWidget {
   final title;
-  final route;
-  const MyButton({super.key, required this.title, required this.route});
+  final VoidCallback onPressed;
+
+  const MyButton({
+    super.key,
+    required this.title,
+    required this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,11 +21,8 @@ class MyButton extends StatelessWidget {
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(50)),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context){
-                return route;
-                }));
-              },
+              onPressed: onPressed,
+
               child: Text(
                 title,
                 style: TextStyle(
@@ -31,16 +33,14 @@ class MyButton extends StatelessWidget {
               ),
             ),
           ),
-         
         ],
       ),
     );
   }
 }
 
-const headingStyle= TextStyle(
-                            fontSize: 28,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          );
-
+const headingStyle = TextStyle(
+  fontSize: 28,
+  color: Colors.black,
+  fontWeight: FontWeight.w500,
+);

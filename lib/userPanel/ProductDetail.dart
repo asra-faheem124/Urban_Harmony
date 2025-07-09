@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:laptop_harbor/userPanel/Cart.dart';
 import 'package:laptop_harbor/userPanel/constant.dart';
 
@@ -187,7 +188,7 @@ class _ProductDetailState extends State<ProductDetail> {
                   ),
                 ),
                 SizedBox(height: 15,),
-                MyButton(title: "Add to Cart", route: Cart()),
+                MyButton(title: "Add to Cart", onPressed: () => Get.to(Cart()),),
                 SizedBox(height: 15,),
               ],
             ),

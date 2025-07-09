@@ -10,6 +10,7 @@ import 'package:laptop_harbor/controller/getUserData.dart';
 import 'package:laptop_harbor/userPanel/Profile.dart';
 import 'package:laptop_harbor/userPanel/contact_feedback.dart';
 import 'package:laptop_harbor/userPanel/login.dart';
+import 'package:laptop_harbor/userPanel/logout.dart';
 import 'package:laptop_harbor/userPanel/rate_us.dart';
 import 'package:laptop_harbor/userPanel/terms_and_conditions.dart';
 
@@ -149,8 +150,7 @@ class DrawerWidget extends StatelessWidget {
                     leading: Icon(Icons.logout_outlined, color: Colors.red),
                     title: Text('Logout', style: TextStyle(color: Colors.red)),
                     onTap: () {
-                      _auth.signOut();
-                      Get.off(Login());
+                     Get.to(LogoutScreen());
                     },
                   ),
                 ],
