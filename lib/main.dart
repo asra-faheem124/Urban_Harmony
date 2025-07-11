@@ -1,6 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:laptop_harbor/Admin/add_category.dart';
+import 'package:laptop_harbor/Admin/add_product.dart';
+import 'package:laptop_harbor/userPanel/BottomBar.dart';
+import 'package:laptop_harbor/userPanel/Home.dart';
 import 'package:laptop_harbor/userPanel/splash.dart';
 import 'firebase_options.dart';
 
@@ -20,7 +24,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       theme: ThemeData(fontFamily: 'ProductSans'),
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+      home: AddProduct(),
     );
   }
 }

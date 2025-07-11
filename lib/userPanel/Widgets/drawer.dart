@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:laptop_harbor/Admin/add_category.dart';
+import 'package:laptop_harbor/Admin/add_product.dart';
 import 'package:laptop_harbor/Admin/admin_feedback.dart';
 import 'package:laptop_harbor/Admin/admin_home.dart';
 import 'package:laptop_harbor/Admin/admin_ratings.dart';
@@ -92,12 +94,17 @@ class DrawerWidget extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.person),
             title: Text('Users'),
-            onTap: () {Get.to(AdminUsersPage());}, // Link to admin users page
+            onTap: () {Get.to(AdminUsersPage());}, 
+          ),
+           ListTile(
+            leading: Icon(Icons.category_rounded),
+            title: Text('Catgories'),
+            onTap: () {Get.to(AddCategoryPage());}, 
           ),
           ListTile(
             leading: Icon(Icons.laptop),
             title: Text('Products'),
-            onTap: () {},
+            onTap: () {Get.to(AddProduct());},
           ),
           ListTile(
             leading: Icon(Icons.receipt_long),
