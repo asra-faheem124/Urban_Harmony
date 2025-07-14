@@ -2,8 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:laptop_harbor/Admin/add_category.dart';
-import 'package:laptop_harbor/Admin/add_product.dart';
+import 'package:laptop_harbor/Admin/admin_category.dart';
 import 'package:laptop_harbor/Admin/admin_feedback.dart';
 import 'package:laptop_harbor/Admin/admin_home.dart';
 import 'package:laptop_harbor/Admin/admin_products.dart';
@@ -39,8 +38,8 @@ class DrawerWidget extends StatelessWidget {
               ),
               SizedBox(height: 10),
               ListTile(
-                leading: Icon(Icons.app_registration_rounded),
-                title: Text('Signup'),
+                leading: Icon(Icons.login_rounded),
+                title: Text('Login'),
                 onTap: () => Get.to(Login()),
               ),
               ListTile(
@@ -100,7 +99,7 @@ class DrawerWidget extends StatelessWidget {
            ListTile(
             leading: Icon(Icons.category_rounded),
             title: Text('Catgories'),
-            onTap: () {Get.to(AddCategoryPage());}, 
+            onTap: () {Get.to(AdminCategoryPage());}, 
           ),
           ListTile(
             leading: Icon(Icons.laptop),

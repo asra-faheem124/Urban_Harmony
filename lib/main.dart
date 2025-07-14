@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       theme: ThemeData(fontFamily: 'ProductSans'),
       debugShowCheckedModeBanner: false,
-      home: AdminHomeScreen(),
+      home: AddCategoryPage(),
     );
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -10,12 +12,17 @@ class Categorycontroller extends GetxController {
   var CategoryMap = <String, String>{}.obs;
 
   // Add Category
-  Future<void> AddCategory(String name) async {
+  Future<void> AddCategory({
+    required String categoryName,
+    required Uint8List categoryImage,
+  }) async {
     try {
+      final image = base64Encode(categoryImage);
       DocumentReference docRef = firestore.collection('category').doc();
       CategoryModel newCategory = CategoryModel(
         categoryId: docRef.id,
-        categoryName: name,
+        categoryName: categoryName,
+        categoryImage: image
       );
 
       await docRef.set(newCategory.toMap());
