@@ -6,6 +6,7 @@ import 'package:laptop_harbor/Admin/add_category.dart';
 import 'package:laptop_harbor/Admin/add_product.dart';
 import 'package:laptop_harbor/Admin/admin_feedback.dart';
 import 'package:laptop_harbor/Admin/admin_home.dart';
+import 'package:laptop_harbor/Admin/admin_products.dart';
 import 'package:laptop_harbor/Admin/admin_ratings.dart';
 import 'package:laptop_harbor/Admin/admin_users.dart';
 import 'package:laptop_harbor/controller/getUserData.dart';
@@ -104,7 +105,7 @@ class DrawerWidget extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.laptop),
             title: Text('Products'),
-            onTap: () {Get.to(AddProduct());},
+            onTap: () {Get.to(AdminProductsPage());},
           ),
           ListTile(
             leading: Icon(Icons.receipt_long),

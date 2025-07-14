@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/Admin/add_category.dart';
 import 'package:laptop_harbor/Admin/add_product.dart';
+import 'package:laptop_harbor/Admin/admin_home.dart';
 import 'package:laptop_harbor/userPanel/BottomBar.dart';
 import 'package:laptop_harbor/userPanel/Home.dart';
 import 'package:laptop_harbor/userPanel/splash.dart';
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       theme: ThemeData(fontFamily: 'ProductSans'),
       debugShowCheckedModeBanner: false,
-      home: AddProduct(),
+      home: AdminHomeScreen(),
     );
   }
 }

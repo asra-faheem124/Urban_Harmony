@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:laptop_harbor/controller/categoryController.dart';
+import 'package:laptop_harbor/controller/productController.dart';
 import 'package:laptop_harbor/userPanel/Widgets/button.dart';
 
 class AddProduct extends StatefulWidget {
@@ -16,6 +17,7 @@ class AddProduct extends StatefulWidget {
 class _AddProductState extends State<AddProduct> {
   final _formKey = GlobalKey<FormState>();
   Categorycontroller categorycontroller = Get.put(Categorycontroller());
+  Productcontroller productcontroller = Get.put(Productcontroller());
   final TextEditingController productName = TextEditingController();
   final TextEditingController productDesc = TextEditingController();
   final TextEditingController productPrice = TextEditingController();
@@ -134,7 +136,11 @@ class _AddProductState extends State<AddProduct> {
                           child: Container(
                             height: 50,
                             decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey),
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: Colors.grey
+                                )
+                              ),
                               image:
                                   image != null
                                       ? DecorationImage(
@@ -184,9 +190,9 @@ class _AddProductState extends State<AddProduct> {
                         Center(
                           child: MyButton(
                             title: 'Add',
-                            onPressed: () {
-                              // final cName = categoryName.text.trim();
-                              // categorycontroller.AddCategory(cName);
+                            onPressed: () async {
+                              final imageFile = await image!.readAsBytes();
+                              productcontroller.AddProduct(productName: productName.text.trim(), productDesc: productDesc.text.trim(), productPrice: productPrice.text.trim(), productImage: imageFile, productCategory: selectedCategory!);
                             },
                           ),
                         ),

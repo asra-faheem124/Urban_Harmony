@@ -1,27 +1,31 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:laptop_harbor/model/category_model.dart';
+import 'package:laptop_harbor/model/product_model.dart';
 
-class Categorycontroller extends GetxController {
+class Productcontroller extends GetxController {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  var CategoryList = <CategoryModel>[].obs;
-  var CategoryMap = <String, String>{}.obs;
+    var ProductList = <ProductModel>[].obs;
 
-  // Add Category
-  Future<void> AddCategory(String name) async {
-    try {
-      DocumentReference docRef = firestore.collection('category').doc();
-      CategoryModel newCategory = CategoryModel(
-        categoryId: docRef.id,
-        categoryName: name,
-      );
+  Future<void> AddProduct({
+    required String productName,
+    required String productDesc,
+    required String productPrice,
+    required Uint8List productImage,
+    required String productCategory,
+  } ) async {
+    try{
+      final image = base64Encode(productImage);
+      DocumentReference docRef = firestore.collection('products').doc();
+      ProductModel newProduct = ProductModel(productId: docRef.id, productName: productName, productDesc: productDesc, productPrice: productPrice, productImage: image, categoryId: productCategory);
 
-      await docRef.set(newCategory.toMap());
-      Get.snackbar(
+      await docRef.set(newProduct.toMap());
+        Get.snackbar(
         '✅ Success',
-        'Category added successfully!',
+        'Product added successfully!',
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.black,
         colorText: Colors.white,
@@ -40,7 +44,7 @@ class Categorycontroller extends GetxController {
         forwardAnimationCurve: Curves.easeOutBack,
         snackStyle: SnackStyle.FLOATING,
       );
-    } catch (e) {
+    } catch(e){
       Get.snackbar(
         '❌ Error',
         'Something went wrong $e',
@@ -65,17 +69,15 @@ class Categorycontroller extends GetxController {
     }
   }
 
-  // Fetch Category
-  Future<void> FetchCategory() async {
+// Fetch Product
+  Future<void> FetchProduct() async {
     try {
-      QuerySnapshot snapshot = await firestore.collection('category').get();
-      var catList =
+      QuerySnapshot snapshot = await firestore.collection('products').get();
+      var proList =
           snapshot.docs.map((doc) {
-            var data = doc.data() as Map<String, dynamic>;
-            CategoryMap[data['categoryId']] = data['categoryName'];
-            return CategoryModel.fromMap(doc.data() as Map<String, dynamic>);
+            return ProductModel.fromMap(doc.data() as Map<String, dynamic>);
           }).toList();
-      CategoryList.value = catList;
+      ProductList.value = proList;
     } catch (e) {
       Get.snackbar(
         '❌ Error',
@@ -101,3 +103,4 @@ class Categorycontroller extends GetxController {
     }
   }
 }
+
