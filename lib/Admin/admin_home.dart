@@ -37,7 +37,10 @@ class AdminHomeScreen extends StatelessWidget {
           Builder(
             builder:
                 (context) => IconButton(
-                  icon: Icon(Icons.menu, color: Colors.black),
+                  icon: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(Icons.menu, color: Colors.black),
+                  ),
                   onPressed: () {
                     // Open the right-side drawer
                     Scaffold.of(context).openEndDrawer();
@@ -47,39 +50,45 @@ class AdminHomeScreen extends StatelessWidget {
         ],
       ),
       endDrawer: DrawerWidget(),
-      body: Padding(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Text(
-                    'Admin Dashboard',
-                    style: TextStyle(
-                      fontSize: 26,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w700,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(16),
+          child: Column(
+            children: [
+              Text(
+                      'Admin Dashboard',
+                      style: TextStyle(
+                        fontSize: 26,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                  ),
-            FutureBuilder(
-              future: Future.wait([
-                getCount('User'),
-                getCount('ratings'),
-                getCount('contactMessages'),
-                getRevenue(),
-              ]),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) return CircularProgressIndicator();
-
-                final data = snapshot.data!;
-                return Column(
-                   children: [
-    buildStatCard('Total Users', data[0].toString(), Icons.person, Colors.teal),
-    buildStatCard('Total Ratings', data[1].toString(), Icons.star, Colors.amber),
-    buildStatCard('Feedback Messages', data[2].toString(), Icons.message, Colors.deepPurple),
-  ],
-                );
-              },
-            ),
+              FutureBuilder(
+                future: Future.wait([
+                  getCount('User'),
+                  getCount('category'),
+                  getCount('products'),
+                  getCount('ratings'),
+                  getCount('contactMessages'),
+                  getRevenue(),
+                ]),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) return CircularProgressIndicator();
+        
+                  final data = snapshot.data!;
+                  return Column(
+                     children: [
+            buildStatCard('Total Users', data[0].toString(), Icons.person, Colors.teal),
+            buildStatCard('Total Categories', data[1].toString(), Icons.category_rounded, Colors.lightBlue),
+            buildStatCard('Total Products', data[2].toString(), Icons.laptop_chromebook_rounded, Colors.black),
+            buildStatCard('Total Ratings', data[3].toString(), Icons.star, Colors.amber),
+            buildStatCard('Feedback Messages', data[4].toString(), Icons.message, Colors.deepPurple),
           ],
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

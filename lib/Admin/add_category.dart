@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -20,10 +19,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
 
   @override
   Categorycontroller categorycontroller = Get.put(Categorycontroller());
-
   final TextEditingController categoryName = TextEditingController();
-
-  String? selectedCategory;
 
   ImagePicker imagePicker = ImagePicker();
 
@@ -32,8 +28,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(backgroundColor: Colors.white,
-      ),
+      appBar: AppBar(backgroundColor: Colors.white),
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
@@ -42,10 +37,10 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
               children: [
                 const Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Admin_Heading(title: 'Add Category')
+                  child: Admin_Heading(title: 'Add Category'),
                 ),
                 const SizedBox(height: 10),
-            
+
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
@@ -82,13 +77,10 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                             setState(() {});
                           },
                           child: Container(
-                            height: 50,
+                            height: 150,
+                            width: double.infinity,
                             decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: Colors.grey
-                                )
-                              ),
+                              border: Border.all(color: Colors.grey),
                               image:
                                   image != null
                                       ? DecorationImage(
@@ -98,77 +90,88 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                                       : null,
                             ),
                             alignment: Alignment.center,
-                            child: image == null ? Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text('Tap to upload an image')
-                              ],
-                            ) : Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(image!.name)
-                              ],
-                            )
+                            child:
+                                image == null
+                                    ? Text(
+                                      'Tap to upload an image',
+                                      style: TextStyle(color: Colors.grey),
+                                    )
+                                    : Text(image!.name),
                           ),
                         ),
-                        SizedBox(height: 30,)
-,                      
+                        if (image == null)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: Text(
+                              'Image is required',
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          ),
+                        SizedBox(height: 30),
                         // Submit button
                         Center(
-                          child: MyButton(title: 'Add', onPressed: () {
-                             if (_formKey.currentState!.validate()) {
-                              final cName = categoryName.text.trim();
-                            categorycontroller.AddCategory(cName);
-                            Get.snackbar(
-                                      '✅ Success',
-                                      'Category added successfully!',
-                                      snackPosition: SnackPosition.BOTTOM,
-                                      backgroundColor: Colors.black,
-                                      colorText: Colors.white,
-                                      margin: const EdgeInsets.all(16),
-                                      borderRadius: 20,
-                                      icon: const Icon(
-                                        Icons.check_circle_outline,
-                                        color: Colors.white,
-                                        size: 28,
-                                      ),
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 20,
-                                        vertical: 18,
-                                      ),
-                                      barBlur: 10,
-                                      duration: const Duration(seconds: 4),
-                                      isDismissible: true,
-                                      forwardAnimationCurve: Curves.easeOutBack,
-                                      snackStyle: SnackStyle.FLOATING,
-                                    );
-                                    Get.to(AdminCategoryPage());
-                          }else{
-                             Get.snackbar(
-                                      '❌ Error',
-                                      'Please fill out the field correctly.',
-                                      snackPosition: SnackPosition.BOTTOM,
-                                      backgroundColor: Colors.black,
-                                      colorText: Colors.white,
-                                      margin: const EdgeInsets.all(16),
-                                      borderRadius: 20,
-                                      icon: const Icon(
-                                        Icons.error_outline,
-                                        color: Colors.redAccent,
-                                        size: 28,
-                                      ),
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 20,
-                                        vertical: 18,
-                                      ),
-                                      barBlur: 10,
-                                      duration: const Duration(seconds: 4),
-                                      isDismissible: true,
-                                      forwardAnimationCurve: Curves.easeOutBack,
-                                      snackStyle: SnackStyle.FLOATING,
-                                    );
-                          }}),
-                        )
+                          child: MyButton(
+                            title: 'Add',
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate() &&
+                                  image != null) {
+                                final imageFile = await image!.readAsBytes();
+                                categorycontroller.AddCategory(
+                                  categoryName: categoryName.text.trim(),
+                                  categoryImage: imageFile,
+                                );
+                                Get.snackbar(
+                                  '✅ Success',
+                                  'Category added successfully!',
+                                  snackPosition: SnackPosition.BOTTOM,
+                                  backgroundColor: Colors.black,
+                                  colorText: Colors.white,
+                                  margin: const EdgeInsets.all(16),
+                                  borderRadius: 20,
+                                  icon: const Icon(
+                                    Icons.check_circle_outline,
+                                    color: Colors.white,
+                                    size: 28,
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 20,
+                                    vertical: 18,
+                                  ),
+                                  barBlur: 10,
+                                  duration: const Duration(seconds: 4),
+                                  isDismissible: true,
+                                  forwardAnimationCurve: Curves.easeOutBack,
+                                  snackStyle: SnackStyle.FLOATING,
+                                );
+                                Get.to(AdminCategoryPage());
+                              } else {
+                                Get.snackbar(
+                                  '❌ Error',
+                                  'Please fill out the field correctly.',
+                                  snackPosition: SnackPosition.BOTTOM,
+                                  backgroundColor: Colors.black,
+                                  colorText: Colors.white,
+                                  margin: const EdgeInsets.all(16),
+                                  borderRadius: 20,
+                                  icon: const Icon(
+                                    Icons.error_outline,
+                                    color: Colors.redAccent,
+                                    size: 28,
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 20,
+                                    vertical: 18,
+                                  ),
+                                  barBlur: 10,
+                                  duration: const Duration(seconds: 4),
+                                  isDismissible: true,
+                                  forwardAnimationCurve: Curves.easeOutBack,
+                                  snackStyle: SnackStyle.FLOATING,
+                                );
+                              }
+                            },
+                          ),
+                        ),
                       ],
                     ),
                   ),

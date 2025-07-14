@@ -18,6 +18,7 @@ class Admin_Heading extends StatelessWidget {
                       fontSize: 28,
                       color: Colors.black,
                       fontWeight: FontWeight.w700,
+                      
                     ),
                   );
   }
