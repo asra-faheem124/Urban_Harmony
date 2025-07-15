@@ -2,14 +2,11 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:laptop_harbor/userPanel/ProductDetail.dart';
 import 'package:laptop_harbor/userPanel/Profile.dart';
-import 'package:laptop_harbor/userPanel/Widgets/categories.dart';
 import 'package:laptop_harbor/userPanel/Widgets/drawer.dart';
 import 'package:laptop_harbor/userPanel/Widgets/products.dart';
-import 'package:laptop_harbor/userPanel/login.dart';
+import 'package:laptop_harbor/userPanel/Widgets/top_rated_laptops.dart';
 import 'package:laptop_harbor/userPanel/product.dart';
 import 'package:laptop_harbor/userPanel/signup.dart';
 
@@ -162,32 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   }).toList(),
             ),
-            SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-              ), 
-              child: Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                      child: Text(
-                        "Categories",
-                        style: TextStyle(
-                          fontSize:
-                              screenWidth * 0.05,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 10,),
-         DynamicCategories(),
+
             SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(
@@ -235,7 +207,34 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-          DynamicProducts()
+          DynamicProducts(),
+          SizedBox(height: 20,),
+           Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+              ), // less padding for small screens
+              child: Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Title text with responsive font size
+                    Flexible(
+                      child: Text(
+                        "Top Rated Laptops",
+                        style: TextStyle(
+                          fontSize:
+                              screenWidth * 0.05, // around 24 on 400px screen
+                          fontWeight: FontWeight.bold,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: 20,),
+            TopRatedLaptopsGrid()
           ],
         ),
       ),
