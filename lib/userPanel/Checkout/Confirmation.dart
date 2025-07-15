@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:laptop_harbor/TrackOrder.dart';
 import 'package:laptop_harbor/userPanel/BottomBar.dart';
 import 'package:laptop_harbor/userPanel/Home.dart';
 
@@ -50,6 +51,27 @@ class Confirmation extends StatelessWidget {
                 },
                 child: Text(
                   "Continue Shopping",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            ),
+             Container(
+              height: 50,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(50),
+              ),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+                onPressed: () {
+                
+                  Get.to(TrackOrderPage());
+                },
+                child: Text(
+                  "Track Order?",
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w700,

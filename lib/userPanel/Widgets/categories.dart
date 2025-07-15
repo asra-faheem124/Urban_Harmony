@@ -26,29 +26,26 @@ class DynamicCategories extends StatelessWidget {
             children:
                 categoryDocs.map((doc) {
                   final data = doc.data() as Map<String, dynamic>;
-                  return Padding(
-                    padding: EdgeInsetsGeometry.symmetric(horizontal: 8.0),
-                    child: Column(
-                      children: [
-                        CircleAvatar(
-                          radius: 30,
-                          backgroundColor: const Color.fromARGB(
-                          255,
-                          202,
-                          201,
-                          201,
+                  return Column(
+                    children: [
+                      CircleAvatar(
+                        radius: 30,
+                        backgroundColor: const Color.fromARGB(
+                        255,
+                        202,
+                        201,
+                        201,
+                      ),
+                        backgroundImage: MemoryImage(
+                          base64Decode(data['categoryImage']),
                         ),
-                          backgroundImage: MemoryImage(
-                            base64Decode(data['categoryImage']),
-                          ),
-                        ),
-                        SizedBox(height: 5),
-                        Text(
-                          data['categoryName'],
-                          style: TextStyle(fontSize: 12),
-                        ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(height: 5),
+                      Text(
+                        data['categoryName'],
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    ],
                   );
                 }).toList(),
           ),
