@@ -1,11 +1,15 @@
-import 'package:carousel_slider/carousel_slider.dart';
+import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/userPanel/Cart.dart';
-import 'package:laptop_harbor/userPanel/Widgets/button.dart';
+import 'package:laptop_harbor/userPanel/rate_us.dart';
 
 class ProductDetail extends StatefulWidget {
-  const ProductDetail({super.key});
+  final Map<String, dynamic> productData;
+
+  const ProductDetail({super.key, required this.productData});
 
   @override
   State<ProductDetail> createState() => _ProductDetailState();
@@ -13,185 +17,234 @@ class ProductDetail extends StatefulWidget {
 
 class _ProductDetailState extends State<ProductDetail> {
   bool isFav = false;
+  double averageRating = 0.0;
+  int totalReviews = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchRatings();
+  }
+
+  Future<void> fetchRatings() async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection('ratings')
+        .where('productId', isEqualTo: widget.productData['productId'])
+        .get();
+
+    if (snapshot.docs.isNotEmpty) {
+      double sum = 0;
+      for (var doc in snapshot.docs) {
+        sum += doc['rating'];
+      }
+      setState(() {
+        averageRating = sum / snapshot.docs.length;
+        totalReviews = snapshot.docs.length;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final product = widget.productData;
+    final imageBytes = base64Decode(product['productImage']);
+
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        // backgroundColor: Colors.white,
-        elevation: 0,
+        backgroundColor: Colors.white,
         iconTheme: const IconThemeData(color: Colors.black),
         actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: IconButton(
-              icon: const Icon(Icons.shopping_cart, color: Colors.black),
-              onPressed: () {},
-            ),
+          IconButton(
+            icon: const Icon(Icons.shopping_cart, color: Colors.black),
+            onPressed: () => Get.to(() => const Cart()),
           ),
         ],
       ),
       body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CarouselSlider(
-              options: CarouselOptions(
-                height: 300.0,
-                autoPlay: true,
-                enlargeCenterPage: true,
-                aspectRatio: 16 / 9,
-                autoPlayInterval: Duration(seconds: 3),
-                viewportFraction: 0.9,
-              ),
-              items:
-                  [
-                    'assets/images/laptop1.png',
-                    'assets/images/laptop4.png',
-                  ].map((imagePath) {
-                    return Builder(
-                      builder: (BuildContext context) {
-                        return ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.asset(imagePath, fit: BoxFit.cover),
-                        );
-                      },
-                    );
-                  }).toList(),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: SizedBox(
-                child: Text(
-                  "Apple MacBook Pro Core i9 9th Generation – 16GB RAM, 512GB SSD, 15.4 Retina Display",
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: const Color.fromARGB(255, 63, 62, 62),
-                  ),
+            // Product Image
+            Container(
+              width: double.infinity,
+              height: 230,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                image: DecorationImage(
+                  image: MemoryImage(imageBytes),
+                  fit: BoxFit.contain,
                 ),
               ),
             ),
-            SizedBox(height: 20),
 
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: SizedBox(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "PKR 2,29,350",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        setState(() {
-                          isFav = !isFav;
-                        });
-                      },
-                      icon: Icon(
-                        isFav ? Icons.favorite : Icons.favorite_border,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            const SizedBox(height: 20),
+
+            // Product Name
+            Text(
+              product['productName'] ?? '',
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
-            Divider(height: 10),
-            Text("More Info", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
-            SizedBox(height: 10,),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+
+            const SizedBox(height: 10),
+
+            // Price & Favorite
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Padding(
-                   padding: const EdgeInsets.only(left:16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Icon(Icons.laptop, size: 20, color: Colors.grey[700]),
-                      SizedBox(width: 10),
-                      Text(
-                        "Model: ",
-                        style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20),
-                      ),
-                      Text("MacBook Pro 2023"),
-                    ],
+                Text(
+                  'PKR ${product['productPrice']}',
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      isFav = !isFav;
+                    });
+                  },
+                  icon: Icon(
+                    isFav ? Icons.favorite : Icons.favorite_border,
+                    color: isFav ? Colors.red : Colors.grey,
                   ),
                 ),
-                SizedBox(height: 10),
-
-                Padding(
-                  padding: const EdgeInsets.only(left:16.0),
-                  child: Row(
-                    
-                    children: [
-                      Icon(Icons.memory, size: 20, color: Colors.grey[700]),
-                      SizedBox(width: 10),
-                      Text(
-                        "RAM: ",
-                        style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
-                      ),
-                      Text("16GB DDR5"),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 10),
-
-                Padding(
-                 padding: const EdgeInsets.only(left:16.0),
-                  child: Row(
-                   
-                    children: [
-                      Icon(Icons.sd_storage, size: 20, color: Colors.grey[700]),
-                      SizedBox(width: 10),
-                      Text(
-                        "Storage: ",
-                        style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
-                      ),
-                      Text("512GB SSD"),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 10),
-
-                Padding(
-                 padding: const EdgeInsets.only(left:16.0),
-                  child: Row(
-                    
-                    children: [
-                      Icon(Icons.battery_full, size: 20, color: Colors.grey[700]),
-                      SizedBox(width: 10),
-                      Text(
-                        "Battery Life: ",
-                        style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
-                      ),
-                      Text("Up to 20 hours"),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 10),
-
-                Padding(
-                  padding: const EdgeInsets.only(left:16.0),
-                  child: Row(
-                   
-                    children: [
-                      Icon(Icons.security, size: 20, color: Colors.grey[700]),
-                      SizedBox(width: 10),
-                      Text(
-                        "Warranty: ",
-                        style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
-                      ),
-                      Text("1-Year Apple Warranty"),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 15,),
-                MyButton(title: "Add to Cart", onPressed: () => Get.to(Cart()),),
-                SizedBox(height: 15,),
               ],
             ),
+
+            // Ratings
+            if (totalReviews > 0)
+              Row(
+                children: [
+                  RatingBarIndicator(
+                    rating: averageRating,
+                    itemBuilder: (context, _) =>
+                        const Icon(Icons.star, color: Colors.amber),
+                    itemCount: 5,
+                    itemSize: 22.0,
+                    direction: Axis.horizontal,
+                  ),
+                  const SizedBox(width: 8),
+                  Text("($totalReviews Reviews)", style: const TextStyle(fontSize: 14)),
+                ],
+              ),
+
+            const SizedBox(height: 20),
+
+            // Description
+            const Text(
+              "Description",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              product['productDesc'] ?? '',
+              style: const TextStyle(fontSize: 16, color: Colors.black87),
+            ),
+
+            const SizedBox(height: 30),
+
+            // Icon Buttons (Add to Cart & Rate)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Column(
+                  children: [
+                    IconButton(
+                      onPressed: () => Get.to(() => const Cart()),
+                      icon: const Icon(Icons.add_shopping_cart_rounded,
+                          color: Colors.blue, size: 30),
+                    ),
+                    const Text("Add to Cart", style: TextStyle(fontSize: 14)),
+                  ],
+                ),
+                Column(
+                  children: [
+                    IconButton(
+                      onPressed: () => Get.to(() => RateUsPage(
+                          productId: product['productId'])),
+                      icon: const Icon(Icons.rate_review,
+                          color: Colors.orange, size: 30),
+                    ),
+                    const Text("Rate Product", style: TextStyle(fontSize: 14)),
+                  ],
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 20),
+                        const Divider(thickness: 1),
+            const SizedBox(height: 10),
+            const Text(
+              "Customer Reviews",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+
+            StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('ratings')
+                  .where('productId', isEqualTo: widget.productData['productId'])
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                final reviews = snapshot.data!.docs;
+
+                if (reviews.isEmpty) {
+                  return const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 12),
+                    child: Text("No reviews yet."),
+                  );
+                }
+
+                return ListView.separated(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: reviews.length,
+                  separatorBuilder: (context, index) => const Divider(),
+                  itemBuilder: (context, index) {
+                    final data = reviews[index].data() as Map<String, dynamic>;
+                    final DateTime? timestamp = data['timestamp'] != null
+                        ? (data['timestamp'] as Timestamp).toDate()
+                        : null;
+
+                    return ListTile(
+                      leading: CircleAvatar(
+                        backgroundColor: Colors.blue.shade100,
+                        child: const Icon(Icons.person, color: Colors.blue),
+                      ),
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(data['email'] ?? 'User', style: const TextStyle(fontWeight: FontWeight.w600)),
+                          if (timestamp != null)
+                            Text(
+                              "${timestamp.day}/${timestamp.month}/${timestamp.year}",
+                              style: const TextStyle(fontSize: 12, color: Colors.grey),
+                            ),
+                        ],
+                      ),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          RatingBarIndicator(
+                            rating: (data['rating'] ?? 0).toDouble(),
+                            itemBuilder: (context, _) => const Icon(Icons.star, color: Colors.amber),
+                            itemCount: 5,
+                            itemSize: 16,
+                          ),
+                          const SizedBox(height: 4),
+                          Text(data['review'] ?? ''),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+
           ],
         ),
       ),

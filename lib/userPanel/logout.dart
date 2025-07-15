@@ -33,7 +33,7 @@ class LogoutScreen extends StatelessWidget {
             style: TextStyle(fontSize: 20),
           ),
           SizedBox(height: 10),
-          MyButton(title: "Logout", onPressed: () {
+          MyButton(title: "Logout",height: 50, onPressed: () {
             FirebaseAuth _auth = FirebaseAuth.instance;
             _auth.signOut();
              Get.snackbar(

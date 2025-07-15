@@ -230,7 +230,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                         ),
                         const SizedBox(height: 40),
                         Center(
-                          child: MyButton(title: 'Update', onPressed: (){
+                          child: MyButton(title: 'Update', height: 50, onPressed: (){
                             if (_formKey.currentState!.validate()) {
                                   changePassword();
                                 }

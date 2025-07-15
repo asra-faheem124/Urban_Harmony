@@ -149,7 +149,7 @@ class _EditProfileState extends State<EditProfile> {
                         ),
                         const SizedBox(height: 30),
                         Center(
-                          child: MyButton(title: 'Save Changes', onPressed: () async {
+                          child: MyButton(title: 'Save Changes',height: 50, onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                   final uid = auth.currentUser!.uid;
 

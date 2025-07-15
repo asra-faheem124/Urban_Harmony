@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 
 class MyButton extends StatelessWidget {
   final title;
+  final height;
   final VoidCallback onPressed;
 
   const MyButton({
     super.key,
     required this.title,
+    required this.height,
     required this.onPressed,
   });
 
@@ -17,7 +19,7 @@ class MyButton extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            height: 50,
+            height: height,
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(50)),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(backgroundColor: Colors.black),

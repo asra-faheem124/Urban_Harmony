@@ -31,7 +31,7 @@ class AdminProductsPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                           Admin_Heading(title: 'Products'),
-            MyButton(title: 'Add Product', onPressed: () => Get.to(AddProduct())),
+            MyButton(title: 'Add Product', height: 40, onPressed: () => Get.to(AddProduct())),
               ],
             ),
           ),

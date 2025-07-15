@@ -6,9 +6,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/userPanel/ProductDetail.dart';
 import 'package:laptop_harbor/userPanel/Profile.dart';
+import 'package:laptop_harbor/userPanel/Widgets/categories.dart';
 import 'package:laptop_harbor/userPanel/Widgets/drawer.dart';
+import 'package:laptop_harbor/userPanel/Widgets/products.dart';
 import 'package:laptop_harbor/userPanel/login.dart';
 import 'package:laptop_harbor/userPanel/product.dart';
+import 'package:laptop_harbor/userPanel/signup.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -71,9 +74,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
         // If not logged in
         return IconButton(
-          icon: Icon(Icons.login, color: Colors.black),
+          icon: Icon(Icons.app_registration_rounded, color: Colors.black),
           onPressed: () {
-           Get.to(Login());
+           Get.to(SignUp());
           },
         );
       },
@@ -163,18 +166,17 @@ class _HomeScreenState extends State<HomeScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 16,
-              ), // less padding for small screens
+              ), 
               child: Container(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // Title text with responsive font size
                     Flexible(
                       child: Text(
                         "Categories",
                         style: TextStyle(
                           fontSize:
-                              screenWidth * 0.06, // around 24 on 400px screen
+                              screenWidth * 0.05,
                           fontWeight: FontWeight.bold,
                         ),
                         overflow: TextOverflow.ellipsis,
@@ -185,99 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             SizedBox(height: 10,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Column(
-                  children: [
-                    GestureDetector(
-                      child: CircleAvatar(
-                        radius: 30,
-                        backgroundColor: const Color.fromARGB(
-                          255,
-                          202,
-                          201,
-                          201,
-                        ),
-                        child: FaIcon(
-                          FontAwesomeIcons.apple,
-                          color: Colors.black,
-                          size: 40,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 5),
-                    Text('Apple', style: TextStyle(fontSize: 16)),
-                  ],
-                ),
-                Column(
-                  children: [
-                    GestureDetector(
-                      child: CircleAvatar(
-                        radius: 30,
-                        backgroundColor: const Color.fromARGB(
-                          255,
-                          202,
-                          201,
-                          201,
-                        ),
-                        child: Image.asset(
-                          'assets/images/dell.png',
-                          height: 40,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 5),
-                    Text('Dell', style: TextStyle(fontSize: 16)),
-                  ],
-                ),
-                Column(
-                  children: [
-                    GestureDetector(
-                      child: CircleAvatar(
-                        radius: 30,
-                        backgroundColor: const Color.fromARGB(
-                          255,
-                          202,
-                          201,
-                          201,
-                        ),
-                        child: Image.asset(
-                          'assets/images/hp.png',
-                          height: 40,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 5),
-                    Text('Hp', style: TextStyle(fontSize: 16)),
-                  ],
-                ),
-                Column(
-                  children: [
-                    GestureDetector(
-                      child: CircleAvatar(
-                        radius: 30,
-                        backgroundColor: const Color.fromARGB(
-                          255,
-                          202,
-                          201,
-                          201,
-                        ),
-                        child: Image.asset(
-                          'assets/images/lenovo.png',
-                          height: 50,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 5),
-                    Text('Lenovo', style: TextStyle(fontSize: 16)),
-                  ],
-                ),
-              ],
-            ),
+         DynamicCategories(),
             SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(
@@ -293,7 +203,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         "Featured Laptops",
                         style: TextStyle(
                           fontSize:
-                              screenWidth * 0.06, // around 24 on 400px screen
+                              screenWidth * 0.05, // around 24 on 400px screen
                           fontWeight: FontWeight.bold,
                         ),
                         overflow: TextOverflow.ellipsis,
@@ -313,198 +223,19 @@ class _HomeScreenState extends State<HomeScreen> {
                         "See more",
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: screenWidth * 0.04, // around 14–16
+                          fontSize: screenWidth * 0.03, 
                         ),
                       ),
                       icon: Icon(
                         Icons.arrow_forward,
-                        size: screenWidth * 0.05, // around 20
+                        size: screenWidth * 0.05, 
                       ),
                     ),
                   ],
                 ),
               ),
             ),
-
-            GridView.count(
-              crossAxisCount: 2,
-              crossAxisSpacing: 12,
-              mainAxisSpacing: 12,
-              padding: EdgeInsets.all(8),
-
-              childAspectRatio: 0.7, // Adjust item height
-              shrinkWrap: true,
-              physics:
-                  NeverScrollableScrollPhysics(), // Use this if nested in scroll view
-              children: [
-                Card(
-                  elevation: 4,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Expanded(
-                        child: Image.asset(
-                          "assets/images/laptop1.png",
-                          // fit: BoxFit.cover,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Apple MacBook Pro Core i9 9th Generation",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            SizedBox(height: 4),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.orange,
-                                  size: 16,
-                                ),
-                                Text("4.5", style: TextStyle(fontSize: 14)),
-                              ],
-                            ),
-                            SizedBox(height: 4),
-                            Text(
-                              "16GB RAM, 1TB SSD, Touch Bar, macOS",
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 13,
-                                color: Colors.grey[700],
-                              ),
-                            ),
-                            SizedBox(height: 6),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "PKR 2,29,300",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) {
-                                          return ProductDetail();
-                                        },
-                                      ),
-                                    );
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 6,
-                                    ),
-                                  ),
-                                  child: Text(
-                                    "Details",
-                                    style: TextStyle(fontSize: 12),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                Card(
-                  elevation: 4,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Expanded(child: Image.asset("assets/images/laptop2.png")),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Apple MacBook Pro Core i9 9th Generation",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            SizedBox(height: 4),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.orange,
-                                  size: 16,
-                                ),
-                                Text("4.5", style: TextStyle(fontSize: 14)),
-                              ],
-                            ),
-                            SizedBox(height: 4),
-                            Text(
-                              "Scenic mountain views and winter adventure.",
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 13,
-                                color: Colors.grey[700],
-                              ),
-                            ),
-                            SizedBox(height: 6),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "PKR 2,29,300",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) {
-                                          return ProductDetail();
-                                        },
-                                      ),
-                                    );
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 6,
-                                    ),
-                                  ),
-                                  child: Text(
-                                    "Details",
-                                    style: TextStyle(fontSize: 12),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+          DynamicProducts()
           ],
         ),
       ),

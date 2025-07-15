@@ -145,7 +145,7 @@ class SignUp extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                               MyButton(title: 'SIGNUP', onPressed: ()async{
+                               MyButton(title: 'SIGNUP',height: 50, onPressed: ()async{
                                 if (_formKey.currentState!.validate()) {
                                         String username = name.text.trim();
                                         String useremail = email.text.trim();

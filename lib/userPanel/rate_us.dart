@@ -7,7 +7,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:laptop_harbor/userPanel/Widgets/button.dart';
 
 class RateUsPage extends StatefulWidget {
-  const RateUsPage({super.key});
+  final String productId;
+  RateUsPage({required this.productId});
 
   @override
   State<RateUsPage> createState() => _RateUsPageState();
@@ -20,23 +21,23 @@ class _RateUsPageState extends State<RateUsPage> {
   final TextEditingController _reviewController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-
   void _submit() async {
-  if (_formKey.currentState!.validate() && _rating > 0) {
-    String email = _emailController.text.trim();
-    String review = _reviewController.text.trim();
+    if (_formKey.currentState!.validate() && _rating > 0) {
+      String email = _emailController.text.trim();
+      String review = _reviewController.text.trim();
 
-    try {
-      await FirebaseFirestore.instance.collection('ratings').add({
-        'email': email,
-        'review': review,
-        'rating': _rating,
-        'timestamp': FieldValue.serverTimestamp(),
-      });
+      try {
+        await FirebaseFirestore.instance.collection('ratings').add({
+          'productId': widget.productId,
+          'email': email,
+          'review': review,
+          'rating': _rating,
+          'timestamp': FieldValue.serverTimestamp(),
+        });
 
-      Get.snackbar(
+        Get.snackbar(
         '✅ Success',
-        'Thanks for your feedback!',
+        'Thanks for your feedback',
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.black,
         colorText: Colors.white,
@@ -55,17 +56,18 @@ class _RateUsPageState extends State<RateUsPage> {
         forwardAnimationCurve: Curves.easeOutBack,
         snackStyle: SnackStyle.FLOATING,
       );
-Get.offAll(BottomBar());
-      // Clear fields
-      _emailController.clear();
-      _reviewController.clear();
-      setState(() {
-        _rating = 0;
-      });
-    } catch (e) {
-      Get.snackbar(
+
+        Get.offAll(() => BottomBar());
+
+        // Clear fields
+        _reviewController.clear();
+        setState(() {
+          _rating = 0;
+        });
+      } catch (e) {
+        Get.snackbar(
         '❌ Error',
-        'Failed to submit your review. Try again later.',
+        'Failed to submit your review. Try again!',
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.black,
         colorText: Colors.white,
@@ -84,71 +86,60 @@ Get.offAll(BottomBar());
         forwardAnimationCurve: Curves.easeOutBack,
         snackStyle: SnackStyle.FLOATING,
       );
+      }
+    } else if (_rating == 0) {
+      Get.snackbar(
+        '❌ Error',
+        'Please provide a star rating',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.black,
+        colorText: Colors.white,
+        icon: const Icon(Icons.error_outline, color: Colors.redAccent, size: 28),
+      );
     }
-  } else if (_rating == 0) {
-    Get.snackbar(
-      '❌ Error',
-      'Please provide a star rating',
-      snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: Colors.black,
-      colorText: Colors.white,
-      margin: const EdgeInsets.all(16),
-      borderRadius: 20,
-      icon: const Icon(
-        Icons.error_outline,
-        color: Colors.redAccent,
-        size: 28,
-      ),
-      shouldIconPulse: false,
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-      barBlur: 10,
-      duration: const Duration(seconds: 4),
-      isDismissible: true,
-      forwardAnimationCurve: Curves.easeOutBack,
-      snackStyle: SnackStyle.FLOATING,
-    );
   }
-}
 
   @override
   void initState() {
-  super.initState();
-  final User? user = _auth.currentUser;
-  if (user != null) {
-    _emailController.text = user.email ?? '';
+    super.initState();
+    final User? user = _auth.currentUser;
+    if (user != null) {
+      _emailController.text = user.email ?? '';
+    }
   }
-}
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(backgroundColor: Colors.white),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: const Text("Rate Us", style: TextStyle(color: Colors.black)),
+        iconTheme: const IconThemeData(color: Colors.black),
+        elevation: 0,
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
             children: [
-              Text(
-                'Rate Us',
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
-              ),
-              SizedBox(height: 20),
               const Text(
                 "We'd love your feedback!",
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20),
 
-              // Rating Bar
               RatingBar.builder(
                 initialRating: 0,
                 minRating: 1,
+                allowHalfRating: true,
                 direction: Axis.horizontal,
                 itemCount: 5,
                 itemSize: 40,
                 itemPadding: const EdgeInsets.symmetric(horizontal: 4),
-                itemBuilder:
-                    (context, _) => const Icon(Icons.star, color: Colors.amber),
+                itemBuilder: (context, _) =>
+                    const Icon(Icons.star, color: Colors.amber),
                 onRatingUpdate: (rating) {
                   setState(() {
                     _rating = rating;
@@ -161,21 +152,17 @@ Get.offAll(BottomBar());
               TextFormField(
                 controller: _emailController,
                 readOnly: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Email Address',
                   prefixIcon: Icon(Icons.email),
-                  hintStyle: TextStyle(fontSize: 16, color: Colors.black),
                   border: OutlineInputBorder(),
                 ),
-                 validator: (value) {
-    if (value!.isEmpty) return "Email is required";
-    return null;
-  },
+                validator: (value) =>
+                    value!.isEmpty ? "Email is required" : null,
               ),
 
               const SizedBox(height: 20),
 
-              // Review Field
               TextFormField(
                 controller: _reviewController,
                 decoration: const InputDecoration(
@@ -184,16 +171,13 @@ Get.offAll(BottomBar());
                   border: OutlineInputBorder(),
                 ),
                 maxLines: 4,
-                validator: (value) {
-                  if (value!.isEmpty) return "Please write a review";
-                  return null;
-                },
+                validator: (value) =>
+                    value!.isEmpty ? "Please write a review" : null,
               ),
 
               const SizedBox(height: 25),
 
-              // Submit Button
-             MyButton(title: 'Submit', onPressed: _submit)
+              MyButton(title: 'Submit', height: 50, onPressed: _submit),
             ],
           ),
         ),

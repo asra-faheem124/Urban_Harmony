@@ -133,7 +133,7 @@ class _CartState extends State<Cart> {
                 },
               ),
             ),
-            MyButton(title: 'Go To Checkout', onPressed: () {
+            MyButton(title: 'Go To Checkout', height: 50, onPressed: () {
               Get.to(StepperUI());
             },),
             SizedBox(height: 20),

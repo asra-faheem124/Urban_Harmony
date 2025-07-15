@@ -59,6 +59,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   children: [
                     MyButton(
                       title: 'Explore',
+                      height: 50,
                       onPressed: () => Get.offAll(BottomBar()),
                     ),
                   ],

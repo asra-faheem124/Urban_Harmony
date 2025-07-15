@@ -56,6 +56,7 @@ class AdminHomeScreen extends StatelessWidget {
           child: Column(
             children: [
               Text(
+                textAlign: TextAlign.start,
                       'Admin Dashboard',
                       style: TextStyle(
                         fontSize: 26,

@@ -27,7 +27,7 @@ class AdminCategoryPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                           Admin_Heading(title: 'Categories'),
-            MyButton(title: 'Add Category', onPressed: () => Get.to(AddCategoryPage())),
+            MyButton(title: 'Add Category', height: 40, onPressed: () => Get.to(AddCategoryPage())),
               ],
             ),
           ),

@@ -12,7 +12,6 @@ import 'package:laptop_harbor/controller/getUserData.dart';
 import 'package:laptop_harbor/userPanel/contact_feedback.dart';
 import 'package:laptop_harbor/userPanel/login.dart';
 import 'package:laptop_harbor/userPanel/logout.dart';
-import 'package:laptop_harbor/userPanel/rate_us.dart';
 import 'package:laptop_harbor/userPanel/terms_and_conditions.dart';
 
 class DrawerWidget extends StatelessWidget {
@@ -129,11 +128,6 @@ class DrawerWidget extends StatelessWidget {
                     ListTile(
                       leading: Icon(Icons.location_on_outlined),
                       title: Text('Address'),
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.star),
-                      title: Text('Rate Us'),
-                      onTap: () => Get.to(RateUsPage()),
                     ),
                      ListTile(
                       leading: Icon(Icons.contact_support_outlined),

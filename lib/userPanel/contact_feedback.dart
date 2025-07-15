@@ -173,7 +173,7 @@ class _ContactFeedbackPageState extends State<ContactFeedbackPage> {
             
                         // Submit button
                         Center(
-                          child: MyButton(title: 'Submit', onPressed: () async {
+                          child: MyButton(title: 'Submit',height: 50, onPressed: () async {
                              if (_formKey.currentState!.validate()) {
                                     await FirebaseFirestore.instance
                                         .collection('contactMessages')

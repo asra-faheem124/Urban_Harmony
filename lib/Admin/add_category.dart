@@ -112,6 +112,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                         Center(
                           child: MyButton(
                             title: 'Add',
+                            height: 50,
                             onPressed: () async {
                               if (_formKey.currentState!.validate() &&
                                   image != null) {
