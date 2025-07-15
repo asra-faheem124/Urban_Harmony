@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:laptop_harbor/userPanel/Cart.dart';
 import 'package:laptop_harbor/userPanel/Home.dart';
 import 'package:laptop_harbor/userPanel/Profile.dart';
+import 'package:laptop_harbor/userPanel/WishList.dart';
 import 'package:laptop_harbor/userPanel/product.dart';
 
 class BottomBar extends StatefulWidget {
@@ -21,7 +22,7 @@ class _BottomBarState extends State<BottomBar> {
     HomeScreen(),
     ProductsScreen(),
     Cart(),
-    Center(child: Text("Favorites")),
+    WishList(),
     Profile(),
   ];
 

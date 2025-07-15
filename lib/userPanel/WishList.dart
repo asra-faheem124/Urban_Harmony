@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:laptop_harbor/userPanel/Checkout/Bar.dart';
-import 'package:laptop_harbor/userPanel/Widgets/button.dart';
 
 class ProductItem {
   final String image;
@@ -19,15 +16,9 @@ class ProductItem {
   });
 }
 
-class Cart extends StatefulWidget {
-  const Cart({super.key});
-
-  @override
-  State<Cart> createState() => _CartState();
-}
-
-List<ProductItem> prodList = [
- ProductItem(
+class WishList extends StatelessWidget {
+  List<ProductItem> prodList = [
+    ProductItem(
       image: "assets/images/Dell G15 Gaming.png",
       name: "Apple MacBook",
       description: "i9 9th Gen",
@@ -45,21 +36,20 @@ List<ProductItem> prodList = [
       description: "i9 9th Gen",
       price: "PKR 150",
     ),
-  // ProductItem(
-  //   image: "assets/images/cart4.png",
-  //   name: "Coca Cola Can",
-  //   description: "325ml Price",
-  //   price: "PKR 150",
-  // ),
-  // ProductItem(
-  //   image: "assets/images/cart5.png",
-  //   name: "Pepsi Can",
-  //   description: "325ml Price",
-  //   price: "PKR 150",
-  // ),
-];
+    // ProductItem(
+    //   image: "assets/images/cart4.png",
+    //   name: "Coca Cola Can",
+    //   description: "325ml Price",
+    //   price: "PKR 150",
+    // ),
+    // ProductItem(
+    //   image: "assets/images/cart5.png",
+    //   name: "Pepsi Can",
+    //   description: "325ml Price",
+    //   price: "PKR 150",
+    // ),
+  ];
 
-class _CartState extends State<Cart> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,7 +60,7 @@ class _CartState extends State<Cart> {
             const SizedBox(height: 40),
             const Center(
               child: Text(
-                "My Cart",
+                "Wish List",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ),
@@ -96,50 +86,33 @@ class _CartState extends State<Cart> {
                       children: [
                         Text(item.description),
                         const SizedBox(height: 8),
-                        Row(
-                          children: [
-                            IconButton(
-                              onPressed: () {},
-                              icon: const Icon(Icons.remove),
-                            ),
-                            Text(
-                              '${item.quantity}',
-                              style: const TextStyle(fontSize: 16),
-                            ),
-                            SizedBox(width: 4),
-                            ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.black,
-                                shape: const CircleBorder(),
-                              ),
-                              child: Text(
-                                "+",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          ],
+                        Text(
+                          item.price,
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ],
                     ),
-                    trailing: Text(
-                      item.price,
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.favorite),
+                        SizedBox(width: 10,),
+                        Icon(Icons.delete)
+                      ],
                     ),
                   );
                 },
               ),
             ),
-            MyButton(title: 'Go To Checkout', height: 50, onPressed: () {
-              Get.to(StepperUI());
-            },),
+
             SizedBox(height: 20),
           ],
         ),
       ),
     );
+    ;
   }
 }
