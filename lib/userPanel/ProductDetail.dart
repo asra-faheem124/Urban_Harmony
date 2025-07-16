@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
+import 'package:laptop_harbor/controller/cartController.dart';
+import 'package:laptop_harbor/model/product_model.dart';
 import 'package:laptop_harbor/userPanel/Cart.dart';
 import 'package:laptop_harbor/userPanel/rate_us.dart';
 
@@ -16,6 +18,7 @@ class ProductDetail extends StatefulWidget {
 }
 
 class _ProductDetailState extends State<ProductDetail> {
+  Cartcontroller cartcontroller = Get.put(Cartcontroller());
   bool isFav = false;
   double averageRating = 0.0;
   int totalReviews = 0;
@@ -27,10 +30,11 @@ class _ProductDetailState extends State<ProductDetail> {
   }
 
   Future<void> fetchRatings() async {
-    final snapshot = await FirebaseFirestore.instance
-        .collection('ratings')
-        .where('productId', isEqualTo: widget.productData['productId'])
-        .get();
+    final snapshot =
+        await FirebaseFirestore.instance
+            .collection('ratings')
+            .where('productId', isEqualTo: widget.productData['productId'])
+            .get();
 
     if (snapshot.docs.isNotEmpty) {
       double sum = 0;
@@ -95,7 +99,10 @@ class _ProductDetailState extends State<ProductDetail> {
               children: [
                 Text(
                   'PKR ${product['productPrice']}',
-                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 IconButton(
                   onPressed: () {
@@ -117,14 +124,18 @@ class _ProductDetailState extends State<ProductDetail> {
                 children: [
                   RatingBarIndicator(
                     rating: averageRating,
-                    itemBuilder: (context, _) =>
-                        const Icon(Icons.star, color: Colors.amber),
+                    itemBuilder:
+                        (context, _) =>
+                            const Icon(Icons.star, color: Colors.amber),
                     itemCount: 5,
                     itemSize: 22.0,
                     direction: Axis.horizontal,
                   ),
                   const SizedBox(width: 8),
-                  Text("($totalReviews Reviews)", style: const TextStyle(fontSize: 14)),
+                  Text(
+                    "($totalReviews Reviews)",
+                    style: const TextStyle(fontSize: 14),
+                  ),
                 ],
               ),
 
@@ -150,9 +161,16 @@ class _ProductDetailState extends State<ProductDetail> {
                 Column(
                   children: [
                     IconButton(
-                      onPressed: () => Get.to(() => const Cart()),
-                      icon: const Icon(Icons.add_shopping_cart_rounded,
-                          color: Colors.blue, size: 30),
+                      onPressed: () {
+                        final productModel = ProductModel.fromMap(product);
+                        cartcontroller.AddToCart(productModel);
+                        Get.to(Cart());
+                      },
+                      icon: const Icon(
+                        Icons.add_shopping_cart_rounded,
+                        color: Colors.blue,
+                        size: 30,
+                      ),
                     ),
                     const Text("Add to Cart", style: TextStyle(fontSize: 14)),
                   ],
@@ -160,10 +178,15 @@ class _ProductDetailState extends State<ProductDetail> {
                 Column(
                   children: [
                     IconButton(
-                      onPressed: () => Get.to(() => RateUsPage(
-                          productId: product['productId'])),
-                      icon: const Icon(Icons.rate_review,
-                          color: Colors.orange, size: 30),
+                      onPressed:
+                          () => Get.to(
+                            () => RateUsPage(productId: product['productId']),
+                          ),
+                      icon: const Icon(
+                        Icons.rate_review,
+                        color: Colors.orange,
+                        size: 30,
+                      ),
                     ),
                     const Text("Rate Product", style: TextStyle(fontSize: 14)),
                   ],
@@ -172,7 +195,7 @@ class _ProductDetailState extends State<ProductDetail> {
             ),
 
             const SizedBox(height: 20),
-                        const Divider(thickness: 1),
+            const Divider(thickness: 1),
             const SizedBox(height: 10),
             const Text(
               "Customer Reviews",
@@ -181,10 +204,14 @@ class _ProductDetailState extends State<ProductDetail> {
             const SizedBox(height: 10),
 
             StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection('ratings')
-                  .where('productId', isEqualTo: widget.productData['productId'])
-                  .snapshots(),
+              stream:
+                  FirebaseFirestore.instance
+                      .collection('ratings')
+                      .where(
+                        'productId',
+                        isEqualTo: widget.productData['productId'],
+                      )
+                      .snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());
@@ -206,9 +233,10 @@ class _ProductDetailState extends State<ProductDetail> {
                   separatorBuilder: (context, index) => const Divider(),
                   itemBuilder: (context, index) {
                     final data = reviews[index].data() as Map<String, dynamic>;
-                    final DateTime? timestamp = data['timestamp'] != null
-                        ? (data['timestamp'] as Timestamp).toDate()
-                        : null;
+                    final DateTime? timestamp =
+                        data['timestamp'] != null
+                            ? (data['timestamp'] as Timestamp).toDate()
+                            : null;
 
                     return ListTile(
                       leading: CircleAvatar(
@@ -218,11 +246,17 @@ class _ProductDetailState extends State<ProductDetail> {
                       title: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(data['email'] ?? 'User', style: const TextStyle(fontWeight: FontWeight.w600)),
+                          Text(
+                            data['email'] ?? 'User',
+                            style: const TextStyle(fontWeight: FontWeight.w600),
+                          ),
                           if (timestamp != null)
                             Text(
                               "${timestamp.day}/${timestamp.month}/${timestamp.year}",
-                              style: const TextStyle(fontSize: 12, color: Colors.grey),
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey,
+                              ),
                             ),
                         ],
                       ),
@@ -231,7 +265,9 @@ class _ProductDetailState extends State<ProductDetail> {
                         children: [
                           RatingBarIndicator(
                             rating: (data['rating'] ?? 0).toDouble(),
-                            itemBuilder: (context, _) => const Icon(Icons.star, color: Colors.amber),
+                            itemBuilder:
+                                (context, _) =>
+                                    const Icon(Icons.star, color: Colors.amber),
                             itemCount: 5,
                             itemSize: 16,
                           ),
@@ -244,7 +280,6 @@ class _ProductDetailState extends State<ProductDetail> {
                 );
               },
             ),
-
           ],
         ),
       ),
