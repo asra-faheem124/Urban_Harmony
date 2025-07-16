@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
@@ -18,7 +19,7 @@ class ProductDetail extends StatefulWidget {
 }
 
 class _ProductDetailState extends State<ProductDetail> {
-  Cartcontroller cartcontroller = Get.put(Cartcontroller());
+  final Cartcontroller cartcontroller = Get.put(Cartcontroller());
   bool isFav = false;
   double averageRating = 0.0;
   int totalReviews = 0;
@@ -30,11 +31,10 @@ class _ProductDetailState extends State<ProductDetail> {
   }
 
   Future<void> fetchRatings() async {
-    final snapshot =
-        await FirebaseFirestore.instance
-            .collection('ratings')
-            .where('productId', isEqualTo: widget.productData['productId'])
-            .get();
+    final snapshot = await FirebaseFirestore.instance
+        .collection('ratings')
+        .where('productId', isEqualTo: widget.productData['productId'])
+        .get();
 
     if (snapshot.docs.isNotEmpty) {
       double sum = 0;
@@ -52,6 +52,7 @@ class _ProductDetailState extends State<ProductDetail> {
   Widget build(BuildContext context) {
     final product = widget.productData;
     final imageBytes = base64Decode(product['productImage']);
+    final isLoggedIn = FirebaseAuth.instance.currentUser != null;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -61,7 +62,7 @@ class _ProductDetailState extends State<ProductDetail> {
         actions: [
           IconButton(
             icon: const Icon(Icons.shopping_cart, color: Colors.black),
-            onPressed: () => Get.to(() => const Cart()),
+            onPressed: () => Get.to(() => Cart()),
           ),
         ],
       ),
@@ -124,9 +125,8 @@ class _ProductDetailState extends State<ProductDetail> {
                 children: [
                   RatingBarIndicator(
                     rating: averageRating,
-                    itemBuilder:
-                        (context, _) =>
-                            const Icon(Icons.star, color: Colors.amber),
+                    itemBuilder: (context, _) =>
+                        const Icon(Icons.star, color: Colors.amber),
                     itemCount: 5,
                     itemSize: 22.0,
                     direction: Axis.horizontal,
@@ -154,7 +154,7 @@ class _ProductDetailState extends State<ProductDetail> {
 
             const SizedBox(height: 30),
 
-            // Icon Buttons (Add to Cart & Rate)
+            // Icon Buttons (Add to Cart & Rate Product)
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -162,9 +162,36 @@ class _ProductDetailState extends State<ProductDetail> {
                   children: [
                     IconButton(
                       onPressed: () {
+                        if (!isLoggedIn) {
+                           Get.snackbar(
+                                      '❌ Login Required',
+                                      'Please login to add items to cart',
+                                      snackPosition: SnackPosition.BOTTOM,
+                                      backgroundColor: Colors.black,
+                                      colorText: Colors.white,
+                                      margin: const EdgeInsets.all(16),
+                                      borderRadius: 20,
+                                      icon: const Icon(
+                                        Icons.error_outline,
+                                        color: Colors.redAccent,
+                                        size: 28,
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 20,
+                                        vertical: 18,
+                                      ),
+                                      barBlur: 10,
+                                      duration: const Duration(seconds: 4),
+                                      isDismissible: true,
+                                      forwardAnimationCurve: Curves.easeOutBack,
+                                      snackStyle: SnackStyle.FLOATING,
+                                    );
+                          return;
+                        }
+
                         final productModel = ProductModel.fromMap(product);
                         cartcontroller.AddToCart(productModel);
-                        Get.to(Cart());
+                        Get.to(() => Cart());
                       },
                       icon: const Icon(
                         Icons.add_shopping_cart_rounded,
@@ -178,10 +205,17 @@ class _ProductDetailState extends State<ProductDetail> {
                 Column(
                   children: [
                     IconButton(
-                      onPressed:
-                          () => Get.to(
-                            () => RateUsPage(productId: product['productId']),
-                          ),
+                      onPressed: () {
+                        if (!isLoggedIn) {
+                          Get.snackbar("Login Required", "Please login to rate this product",
+                              backgroundColor: Colors.red.shade100,
+                              colorText: Colors.black);
+                          return;
+                        }
+
+                        Get.to(() =>
+                            RateUsPage(productId: product['productId']));
+                      },
                       icon: const Icon(
                         Icons.rate_review,
                         color: Colors.orange,
@@ -203,15 +237,12 @@ class _ProductDetailState extends State<ProductDetail> {
             ),
             const SizedBox(height: 10),
 
+            // Review List
             StreamBuilder<QuerySnapshot>(
-              stream:
-                  FirebaseFirestore.instance
-                      .collection('ratings')
-                      .where(
-                        'productId',
-                        isEqualTo: widget.productData['productId'],
-                      )
-                      .snapshots(),
+              stream: FirebaseFirestore.instance
+                  .collection('ratings')
+                  .where('productId', isEqualTo: widget.productData['productId'])
+                  .snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());
@@ -265,9 +296,8 @@ class _ProductDetailState extends State<ProductDetail> {
                         children: [
                           RatingBarIndicator(
                             rating: (data['rating'] ?? 0).toDouble(),
-                            itemBuilder:
-                                (context, _) =>
-                                    const Icon(Icons.star, color: Colors.amber),
+                            itemBuilder: (context, _) =>
+                                const Icon(Icons.star, color: Colors.amber),
                             itemCount: 5,
                             itemSize: 16,
                           ),

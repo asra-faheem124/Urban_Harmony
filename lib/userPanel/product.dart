@@ -89,6 +89,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
     }
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Laptops'),
         backgroundColor: Colors.white,

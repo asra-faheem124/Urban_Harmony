@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:laptop_harbor/TrackOrder.dart';
+import 'package:laptop_harbor/userPanel/TrackOrder.dart';
 import 'package:laptop_harbor/userPanel/BottomBar.dart';
 import 'package:laptop_harbor/userPanel/Home.dart';
 import 'package:laptop_harbor/userPanel/Widgets/button.dart';
 
 class Confirmation extends StatelessWidget {
-  const Confirmation({super.key});
+   final String orderId;
+  const Confirmation({super.key, required this.orderId});
 
   @override
   Widget build(BuildContext context) {
@@ -40,8 +41,12 @@ class Confirmation extends StatelessWidget {
             ),
             SizedBox(height: 20),
             MyButton(title: 'Continue Shopping', height: 50, onPressed: () => Get.offAll(BottomBar())),
-            SizedBox(height: 10,),
-            MyButton(title: 'Track Order', height: 50, onPressed: () => Get.to(TrackOrderPage()))
+            SizedBox(height: 20,),
+               MyButton(
+      title: 'Track Order',
+      height: 50,
+      onPressed: () => Get.to(() => TrackOrderPage(orderId: orderId)),
+    ),
           ],
         ),
       ),

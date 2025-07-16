@@ -1,6 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:laptop_harbor/userPanel/BottomBar.dart';
+import 'package:laptop_harbor/userPanel/Checkout/Bar.dart';
+import 'package:laptop_harbor/userPanel/Checkout/Shipping.dart';
 import 'package:laptop_harbor/userPanel/splash.dart';
 import 'firebase_options.dart';
 

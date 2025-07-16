@@ -1,212 +1,124 @@
+import 'dart:convert';
+import 'dart:typed_data';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:laptop_harbor/controller/cartController.dart';
+import 'package:laptop_harbor/controller/checkoutController.dart';
 import 'package:laptop_harbor/userPanel/Checkout/Confirmation.dart';
-
-class ProductItem {
-  final String image;
-  final String name;
-  final String description;
-  final String price;
-  int quantity;
-
-  ProductItem({
-    required this.image,
-    required this.name,
-    required this.description,
-    required this.price,
-    this.quantity = 1,
-  }); // ProductItem constructor
-} // ProductItem class
+import 'package:laptop_harbor/userPanel/TrackOrder.dart';
+import 'package:laptop_harbor/userPanel/Widgets/SnackBar.dart';
+import 'package:laptop_harbor/userPanel/Widgets/button.dart';
 
 class Review extends StatefulWidget {
-  const Review({super.key}); // Review constructor
+  const Review({super.key});
 
   @override
-  State<Review> createState() => _ReviewState(); // createState override
-} // Review class
+  State<Review> createState() => _ReviewState();
+}
 
 class _ReviewState extends State<Review> {
-  // Product list to be reviewed
-  List<ProductItem> prodList = [
-    ProductItem(
-      image: "assets/images/laptop1.png",
-      name: "Apple MacBook",
-      description: "i9 9th Gen",
-      price: "PKR 150",
-    ), // Product 1
-    ProductItem(
-      image: "assets/images/laptop3.png",
-      name: "MacBook Pro 14",
-      description: "i9 9th Gen",
-      price: "PKR 300",
-    ), // Product 2
-    // Product 3
-  ]; // prodList
+  final cartController = Get.put(Cartcontroller());
+  final checkoutController = Get.put(CheckoutController());
+  double deliveryCharge = 200.0;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height, // Use full screen height
-      child: Column(
+    final cartItems = cartController.cartItems;
+
+    return Scaffold(
+      body: Column(
         children: [
-          // Scrollable content
+          const SizedBox(height: 16),
+          const Text(
+            "Review Your Order",
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 10),
+
           Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Review Your Order",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 20),
-                  ...prodList.map((item) {
-                    return Column(
-                      children: [
-                        ListTile(
-                          leading: Image.asset(
-                            item.image,
-                            width: 100,
-                            height: 100,
+            child:
+                cartItems.isEmpty
+                    ? const Center(child: Text("Your cart is empty."))
+                    : ListView.separated(
+                      padding: const EdgeInsets.all(16),
+                      separatorBuilder: (_, __) => const Divider(),
+                      itemCount: cartItems.length,
+                      itemBuilder: (context, index) {
+                        final entry = cartItems.entries.elementAt(index);
+                        final product = entry.key;
+                        final quantity = entry.value;
+
+                        Uint8List imageBytes = base64Decode(
+                          product.productImage,
+                        );
+                        int unitPrice = int.tryParse(product.productPrice) ?? 0;
+                        int totalPrice = unitPrice * quantity;
+
+                        return ListTile(
+                          leading: Image.memory(
+                            imageBytes,
+                            width: 60,
+                            height: 60,
                           ),
                           title: Text(
-                            item.name,
+                            product.productName,
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(item.description),
-                              const SizedBox(height: 8),
-                              Row(
-                                children: [
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(Icons.remove),
-                                  ),
-                                  Text(
-                                    '${item.quantity}',
-                                    style: const TextStyle(fontSize: 16),
-                                  ),
-                                  const SizedBox(width: 4),
-                                  ElevatedButton(
-                                    onPressed: () {},
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.black,
-                                      shape: const CircleBorder(),
-                                    ),
-                                    child: const Text(
-                                      "+",
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                          subtitle: Text("x$quantity"),
                           trailing: Text(
-                            item.price,
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            "PKR $totalPrice",
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
-                        ),
-                        const Divider(thickness: 1),
-                      ],
-                    );
-                  }).toList(),
-                ],
-              ),
-            ),
+                        );
+                      },
+                    ),
           ),
 
-          // Bottom fixed summary
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(20),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 10,
-                  spreadRadius: 2,
-                  offset: const Offset(0, -2),
-                ),
-              ],
-              border: Border(
-                top: BorderSide(color: Colors.grey.shade300, width: 1),
-              ),
-            ),
+          // Bottom section
+          Padding(
+            padding: const EdgeInsets.all(16),
             child: Column(
-              mainAxisSize: MainAxisSize.min,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Text(
-                      "Total amount",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      "PKR 2,29.350",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                  children: [
+                    Text("Subtotal", style: TextStyle(fontSize: 16)),
+                    Text("PKR ${cartController.totalPrice.toStringAsFixed(0)}"),
                   ],
                 ),
-                const SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
+                  children: [
+                    Text("Delivery Charges", style: TextStyle(fontSize: 16)),
+                    Text("PKR ${deliveryCharge.toStringAsFixed(0)}"),
+                  ],
+                ),
+                Divider(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
                     Text(
-                      "Shipping Fee",
+                      "Total",
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
-                      "PKR 300",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      "PKR ${(cartController.totalPrice + deliveryCharge).toStringAsFixed(0)}",
                     ),
                   ],
                 ),
+
                 const SizedBox(height: 16),
-                Container(
+                MyButton(
+                  title: 'Confirm Order',
                   height: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
-                    ),
-                    onPressed: () {
-                      Get.offAll(Confirmation());
-                    },
-                    child: Text(
-                      "Confirm",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
+                  onPressed: () async {
+                    await placeOrder();
+                  },
                 ),
               ],
             ),
@@ -214,5 +126,121 @@ class _ReviewState extends State<Review> {
         ],
       ),
     );
+  }
+
+  /// ✅ PLACE ORDER FUNCTION INSIDE STATE
+  Future<void> placeOrder() async {
+    final firestore = FirebaseFirestore.instance;
+    final userEmail = FirebaseAuth.instance.currentUser?.email ?? 'guest';
+    const double deliveryCharge = 200.0; // PKR
+
+    if (cartController.cartItems.isEmpty) {
+      redSnackBar('Error', 'Your cart is empty');
+      return;
+    }
+
+    if (checkoutController.name.value.isEmpty ||
+        checkoutController.phone.value.isEmpty ||
+        checkoutController.address.value.isEmpty ||
+        checkoutController.postalCode.value.isEmpty ||
+        checkoutController.paymentMethod.value.isEmpty) {
+      redSnackBar(
+        'Missing Info',
+        'Complete shipping & payment steps before placing order.',
+      );
+      return;
+    }
+
+    try {
+      final orderRef = await firestore.collection("orders").add({
+        "user": userEmail,
+        "shipping": {
+          "name": checkoutController.name.value,
+          "phone": checkoutController.phone.value,
+          "postalCode": checkoutController.postalCode.value,
+          "address": checkoutController.address.value,
+        },
+        "paymentMethod": checkoutController.paymentMethod.value,
+        "items":
+            cartController.cartItems.entries
+                .map(
+                  (entry) => {
+                    "productId": entry.key.productId,
+                    "name": entry.key.productName,
+                    "price": entry.key.productPrice,
+                    "quantity": entry.value,
+                  },
+                )
+                .toList(),
+        "total": cartController.totalPrice + deliveryCharge,
+        "deliveryCharge": deliveryCharge,
+        "timestamp": DateTime.now(),
+      });
+
+      // ✅ Add 6 tracking steps
+      final now = DateTime.now();
+      final trackingSteps = [
+        {
+          "title": "Sender is preparing to ship your order",
+          "date": now,
+          "isCompleted": true,
+        },
+        {
+          "title": "Sender has shipped your parcel",
+          "date": now.add(Duration(hours: 4)),
+          "isCompleted": false,
+        },
+        {
+          "title": "Parcel is in transit",
+          "date": now.add(Duration(hours: 12)),
+          "isCompleted": false,
+        },
+        {
+          "title": "Parcel is received at delivery Branch",
+          "date": now.add(Duration(days: 1)),
+          "isCompleted": false,
+        },
+        {
+          "title": "Parcel is out for delivery",
+          "date": now.add(Duration(days: 2)),
+          "isCompleted": false,
+        },
+        {
+          "title": "Parcel is successfully delivered",
+          "date": now.add(Duration(days: 3)),
+          "isCompleted": false,
+        },
+      ];
+
+      for (var step in trackingSteps) {
+        await orderRef.collection("trackingSteps").add(step);
+      }
+
+      // ✅ Clear cart
+      cartController.ClearCart();
+
+      // ✅ Show success and navigate
+      Get.snackbar(
+        '✅ Success',
+        'Your order has been placed successfully!',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.black,
+        colorText: Colors.white,
+        icon: const Icon(Icons.check_circle_outline, color: Colors.white),
+      );
+
+      // ✅ Navigate to Track Order Page with orderId
+      Get.offAll(() => TrackOrderPage(orderId: orderRef.id));
+    } catch (e) {
+      Get.snackbar(
+        '❌ Error',
+        'Failed to place order. Try again.',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.black,
+        colorText: Colors.white,
+        icon: const Icon(Icons.error_outline, color: Colors.redAccent),
+      );
+      debugPrint("Order error: $e");
+    }
   }
 }
