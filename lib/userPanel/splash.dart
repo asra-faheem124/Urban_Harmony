@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:laptop_harbor/Admin/admin_home.dart';
 import 'package:laptop_harbor/controller/getUserData.dart';
 import 'package:laptop_harbor/userPanel/BottomBar.dart';
-import 'package:laptop_harbor/userPanel/Home.dart';
 import 'package:laptop_harbor/userPanel/welcome.dart';
 
 class SplashScreen extends StatefulWidget {

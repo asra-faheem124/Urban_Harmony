@@ -6,6 +6,7 @@ import 'package:laptop_harbor/Admin/admin_home.dart';
 import 'package:laptop_harbor/controller/getUserData.dart';
 import 'package:laptop_harbor/controller/loginController.dart';
 import 'package:laptop_harbor/userPanel/BottomBar.dart';
+import 'package:laptop_harbor/userPanel/Widgets/SnackBar.dart';
 import 'package:laptop_harbor/userPanel/Widgets/button.dart';
 import 'package:laptop_harbor/userPanel/forgotPassword.dart';
 import 'package:laptop_harbor/userPanel/signup.dart';
@@ -27,11 +28,14 @@ class Login extends StatelessWidget {
           key: _formKey,
           child: Column(
             children: [
-               Container(
+              Container(
                 width: double.infinity,
                 height: 200,
                 decoration: BoxDecoration(
-                  image: DecorationImage(image: AssetImage('assets/images/splash.jpg'), fit: BoxFit.cover)
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/splash.jpg'),
+                    fit: BoxFit.cover,
+                  ),
                 ),
                 child: Image.asset('assets/images/logo.png'),
               ),
@@ -51,21 +55,27 @@ class Login extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: 30),
-                      
-              TextFormField(
-                controller: email,
-                decoration: InputDecoration(
-                  hintText: 'Email Address',
-                  hintStyle: TextStyle(fontSize: 16, color: Colors.black),
-                ),
-                validator: (value) {
-                  if (value!.isEmpty) return "Please enter your email";
-                  if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                    return "Enter a valid email";
-                  }
-                  return null;
-                },
-              ),
+
+                        TextFormField(
+                          controller: email,
+                          decoration: InputDecoration(
+                            hintText: 'Email Address',
+                            hintStyle: TextStyle(
+                              fontSize: 16,
+                              color: Colors.black,
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value!.isEmpty)
+                              return "Please enter your email";
+                            if (!RegExp(
+                              r'^[^@]+@[^@]+\.[^@]+',
+                            ).hasMatch(value)) {
+                              return "Enter a valid email";
+                            }
+                            return null;
+                          },
+                        ),
                         SizedBox(height: 30),
                         Container(
                           child: Obx(
@@ -117,147 +127,67 @@ class Login extends StatelessWidget {
                             child: Text("Forgot Password?"),
                           ),
                         ),
-              
+
                         SizedBox(height: 50),
                         Center(
                           child: Container(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                MyButton(title: 'LOGIN',height: 50, onPressed: () async {
-                                   if (_formKey.currentState != null &&
-                                          _formKey.currentState!.validate()) {
-                                        String useremail = email.text.trim();
-                                        String userpassword = password.text.trim();
-              
-                                        UserCredential? userCredential =
-                                            await logincontroller.LogInMethod(
-                                              useremail,
-                                              userpassword,
+                                MyButton(
+                                  title: 'LOGIN',
+                                  height: 50,
+                                  onPressed: () async {
+                                    if (_formKey.currentState != null &&
+                                        _formKey.currentState!.validate()) {
+                                      String useremail = email.text.trim();
+                                      String userpassword =
+                                          password.text.trim();
+
+                                      UserCredential? userCredential =
+                                          await logincontroller.LogInMethod(
+                                            useremail,
+                                            userpassword,
+                                          );
+
+                                      if (userCredential != null) {
+                                        var userData =
+                                            await getuserdatacontroller
+                                                .getuserdata(
+                                                  userCredential.user!.uid,
+                                                );
+
+                                        if (userCredential
+                                            .user!
+                                            .emailVerified) {
+                                          if (userData[0]['isAdmin'] == true) {
+                                            greenSnackBar(
+                                              '✅ Success!',
+                                              'Login Successful! Welcome to admin dashboard.',
                                             );
-              
-                                        if (userCredential != null) {
-                                          var userData = await getuserdatacontroller
-                                              .getuserdata(
-                                                userCredential.user!.uid,
-                                              );
-              
-                                          if (userCredential.user!.emailVerified) {
-                                            if (userData[0]['isAdmin'] == true) {
-                                              Get.snackbar(
-                                            '✅ Success',
-                                            'Login Successful! Welcome to admin dashboard',
-                                            snackPosition: SnackPosition.BOTTOM,
-                                            backgroundColor: Colors.black,
-                                            colorText: Colors.white,
-                                            margin: const EdgeInsets.all(16),
-                                            borderRadius: 20,
-                                            icon: const Icon(
-                                              Icons.check_circle_outline,
-                                              color: Colors.white,
-                                              size: 28,
-                                            ),
-                                            shouldIconPulse: false,
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 20,
-                                              vertical: 18,
-                                            ),
-                                            barBlur: 10,
-                                            duration: const Duration(
-                                              seconds: 4,
-                                            ),
-                                            isDismissible: true,
-                                            forwardAnimationCurve:
-                                                Curves.easeOutBack,
-                                            snackStyle: SnackStyle.FLOATING,
-                                          );
-                                              Get.offAll(AdminHomeScreen());
-                                            } else {
-                                             Get.snackbar(
-                                            '✅ Success',
-                                            'Login Successful! Welcome to your dashboard',
-                                            snackPosition: SnackPosition.BOTTOM,
-                                            backgroundColor: Colors.black,
-                                            colorText: Colors.white,
-                                            margin: const EdgeInsets.all(16),
-                                            borderRadius: 20,
-                                            icon: const Icon(
-                                              Icons.check_circle_outline,
-                                              color: Colors.white,
-                                              size: 28,
-                                            ),
-                                            shouldIconPulse: false,
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 20,
-                                              vertical: 18,
-                                            ),
-                                            barBlur: 10,
-                                            duration: const Duration(
-                                              seconds: 4,
-                                            ),
-                                            isDismissible: true,
-                                            forwardAnimationCurve:
-                                                Curves.easeOutBack,
-                                            snackStyle: SnackStyle.FLOATING,
-                                          );
-                                              Get.offAll(BottomBar());
-                                            }
+                                            Get.offAll(AdminHomeScreen());
                                           } else {
-                                             Get.snackbar(
-                                          '❌ Error',
-                                          'Please verify your email',
-                                          snackPosition: SnackPosition.BOTTOM,
-                                          backgroundColor: Colors.black,
-                                          colorText: Colors.white,
-                                          margin: const EdgeInsets.all(16),
-                                          borderRadius: 20,
-                                          icon: const Icon(
-                                            Icons.error_outline,
-                                            color: Colors.redAccent,
-                                            size: 28,
-                                          ),
-                                          shouldIconPulse: false,
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 20,
-                                            vertical: 18,
-                                          ),
-                                          barBlur: 10,
-                                          duration: const Duration(seconds: 4),
-                                          isDismissible: true,
-                                          forwardAnimationCurve:
-                                              Curves.easeOutBack,
-                                          snackStyle: SnackStyle.FLOATING,
-                                        );
+                                            greenSnackBar(
+                                              '✅ Success!',
+                                              'Login Successful! Welcome to your dashboard.',
+                                            );
+                                            Get.offAll(BottomBar());
                                           }
+                                        } else {
+                                          redSnackBar(
+                                            '❌ Error!',
+                                            'Please verify your email.',
+                                          );
                                         }
-                                      } else {
-                                         Get.snackbar(
-                                          '❌ Error',
-                                          'Please fill out all the fields correctly.',
-                                          snackPosition: SnackPosition.BOTTOM,
-                                          backgroundColor: Colors.black,
-                                          colorText: Colors.white,
-                                          margin: const EdgeInsets.all(16),
-                                          borderRadius: 20,
-                                          icon: const Icon(
-                                            Icons.error_outline,
-                                            color: Colors.redAccent,
-                                            size: 28,
-                                          ),
-                                          shouldIconPulse: false,
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 20,
-                                            vertical: 18,
-                                          ),
-                                          barBlur: 10,
-                                          duration: const Duration(seconds: 4),
-                                          isDismissible: true,
-                                          forwardAnimationCurve:
-                                              Curves.easeOutBack,
-                                          snackStyle: SnackStyle.FLOATING,
-                                        );
                                       }
-                                }),
+                                    } else {
+                                      redSnackBar(
+                                        '❌ Error!',
+                                        'Please fill out all the fields correctly.',
+                                      );
+                                    }
+                                  },
+                                ),
                                 SizedBox(height: 30),
                                 Text(
                                   'or signin with',

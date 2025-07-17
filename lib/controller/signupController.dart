@@ -4,6 +4,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/model/user_model.dart';
 import 'package:flutter/material.dart';
+import 'package:laptop_harbor/userPanel/Widgets/SnackBar.dart';
 
 class Signupcontroller extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -42,16 +43,7 @@ class Signupcontroller extends GetxController {
       return userCredential;
     } on FirebaseAuthException catch (e) {
       EasyLoading.dismiss();
-      Get.snackbar(
-        'Error',
-        e.message ?? 'Some error has occured...',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.black,
-        colorText: Colors.white,
-        margin: EdgeInsets.all(16),
-        borderRadius: 8,
-        icon: Icon(Icons.error, color: Colors.white),
-      );
+      redSnackBar('Error!', e.message ?? 'Some error has occured');
     }
     return null;
   }

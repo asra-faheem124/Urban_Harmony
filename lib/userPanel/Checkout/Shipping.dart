@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/controller/checkoutController.dart';
+import 'package:laptop_harbor/userPanel/Widgets/SnackBar.dart';
 
 class Shipping extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
@@ -99,62 +100,24 @@ class Shipping extends StatelessWidget {
                     ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                        // Save data to controller
-                        checkoutController.name.value = nameController.text;
-                        checkoutController.phone.value = phoneController.text;
-                        checkoutController.postalCode.value =
-                            postalCodeController.text;
-                        checkoutController.address.value =
-                            addressController.text;
+                          // Save data to controller
+                          checkoutController.name.value = nameController.text;
+                          checkoutController.phone.value = phoneController.text;
+                          checkoutController.postalCode.value =
+                              postalCodeController.text;
+                          checkoutController.address.value =
+                              addressController.text;
 
-                        onConfirm(); // move to next step
-                         Get.snackbar(
-                                      '✅ Success',
-                                      'Shipping detils submitted successfully!',
-                                      snackPosition: SnackPosition.BOTTOM,
-                                      backgroundColor: Colors.black,
-                                      colorText: Colors.white,
-                                      margin: const EdgeInsets.all(16),
-                                      borderRadius: 20,
-                                      icon: const Icon(
-                                        Icons.check_circle_outline,
-                                        color: Colors.white,
-                                        size: 28,
-                                      ),
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 20,
-                                        vertical: 18,
-                                      ),
-                                      barBlur: 10,
-                                      duration: const Duration(seconds: 4),
-                                      isDismissible: true,
-                                      forwardAnimationCurve: Curves.easeOutBack,
-                                      snackStyle: SnackStyle.FLOATING,
-                                    );
-                        }else{
-                           Get.snackbar(
-                                      '❌ Error',
-                                      'Please fill out all the fields correctly.',
-                                      snackPosition: SnackPosition.BOTTOM,
-                                      backgroundColor: Colors.black,
-                                      colorText: Colors.white,
-                                      margin: const EdgeInsets.all(16),
-                                      borderRadius: 20,
-                                      icon: const Icon(
-                                        Icons.error_outline,
-                                        color: Colors.redAccent,
-                                        size: 28,
-                                      ),
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 20,
-                                        vertical: 18,
-                                      ),
-                                      barBlur: 10,
-                                      duration: const Duration(seconds: 4),
-                                      isDismissible: true,
-                                      forwardAnimationCurve: Curves.easeOutBack,
-                                      snackStyle: SnackStyle.FLOATING,
-                                    );
+                          onConfirm(); // move to next step
+                          greenSnackBar(
+                            '✅ Success!',
+                            'Shipping detils submitted successfully.',
+                          );
+                        } else {
+                          redSnackBar(
+                            '❌ Error!',
+                            'Please fill out all the fields correctly.',
+                          );
                         }
                       },
                       style: ElevatedButton.styleFrom(

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/userPanel/TrackOrder.dart';
 import 'package:laptop_harbor/userPanel/BottomBar.dart';
-import 'package:laptop_harbor/userPanel/Home.dart';
 import 'package:laptop_harbor/userPanel/Widgets/button.dart';
 
 class Confirmation extends StatelessWidget {

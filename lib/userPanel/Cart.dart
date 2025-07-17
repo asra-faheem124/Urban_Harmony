@@ -1,10 +1,8 @@
 import 'dart:convert';
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/controller/cartController.dart';
-import 'package:laptop_harbor/model/product_model.dart';
 import 'package:laptop_harbor/userPanel/Checkout/Bar.dart';
 import 'package:laptop_harbor/userPanel/Widgets/button.dart';
 

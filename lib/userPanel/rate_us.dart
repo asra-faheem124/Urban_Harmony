@@ -4,6 +4,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/userPanel/BottomBar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:laptop_harbor/userPanel/Widgets/SnackBar.dart';
 import 'package:laptop_harbor/userPanel/Widgets/button.dart';
 
 class RateUsPage extends StatefulWidget {
@@ -35,27 +36,7 @@ class _RateUsPageState extends State<RateUsPage> {
           'timestamp': FieldValue.serverTimestamp(),
         });
 
-        Get.snackbar(
-        '✅ Success',
-        'Thanks for your feedback',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.black,
-        colorText: Colors.white,
-        margin: const EdgeInsets.all(16),
-        borderRadius: 20,
-        icon: const Icon(
-          Icons.check_circle_outline,
-          color: Colors.white,
-          size: 28,
-        ),
-        shouldIconPulse: false,
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-        barBlur: 10,
-        duration: const Duration(seconds: 4),
-        isDismissible: true,
-        forwardAnimationCurve: Curves.easeOutBack,
-        snackStyle: SnackStyle.FLOATING,
-      );
+        greenSnackBar('✅ Success!', 'Thanks for your feedback.');
 
         Get.offAll(() => BottomBar());
 
@@ -65,37 +46,10 @@ class _RateUsPageState extends State<RateUsPage> {
           _rating = 0;
         });
       } catch (e) {
-        Get.snackbar(
-        '❌ Error',
-        'Failed to submit your review. Try again!',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.black,
-        colorText: Colors.white,
-        margin: const EdgeInsets.all(16),
-        borderRadius: 20,
-        icon: const Icon(
-          Icons.error_outline,
-          color: Colors.redAccent,
-          size: 28,
-        ),
-        shouldIconPulse: false,
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-        barBlur: 10,
-        duration: const Duration(seconds: 4),
-        isDismissible: true,
-        forwardAnimationCurve: Curves.easeOutBack,
-        snackStyle: SnackStyle.FLOATING,
-      );
+        redSnackBar('❌ Error!', 'Failed to submit your review. Try again!');
       }
     } else if (_rating == 0) {
-      Get.snackbar(
-        '❌ Error',
-        'Please provide a star rating',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.black,
-        colorText: Colors.white,
-        icon: const Icon(Icons.error_outline, color: Colors.redAccent, size: 28),
-      );
+      redSnackBar('❌ Error!', 'Please provide a star rating.');
     }
   }
 
@@ -138,8 +92,8 @@ class _RateUsPageState extends State<RateUsPage> {
                 itemCount: 5,
                 itemSize: 40,
                 itemPadding: const EdgeInsets.symmetric(horizontal: 4),
-                itemBuilder: (context, _) =>
-                    const Icon(Icons.star, color: Colors.amber),
+                itemBuilder:
+                    (context, _) => const Icon(Icons.star, color: Colors.amber),
                 onRatingUpdate: (rating) {
                   setState(() {
                     _rating = rating;
@@ -157,8 +111,8 @@ class _RateUsPageState extends State<RateUsPage> {
                   prefixIcon: Icon(Icons.email),
                   border: OutlineInputBorder(),
                 ),
-                validator: (value) =>
-                    value!.isEmpty ? "Email is required" : null,
+                validator:
+                    (value) => value!.isEmpty ? "Email is required" : null,
               ),
 
               const SizedBox(height: 20),
@@ -171,8 +125,8 @@ class _RateUsPageState extends State<RateUsPage> {
                   border: OutlineInputBorder(),
                 ),
                 maxLines: 4,
-                validator: (value) =>
-                    value!.isEmpty ? "Please write a review" : null,
+                validator:
+                    (value) => value!.isEmpty ? "Please write a review" : null,
               ),
 
               const SizedBox(height: 25),

@@ -216,30 +216,13 @@ class _ReviewState extends State<Review> {
         await orderRef.collection("trackingSteps").add(step);
       }
 
-      // ✅ Clear cart
       cartController.ClearCart();
 
-      // ✅ Show success and navigate
-      Get.snackbar(
-        '✅ Success',
-        'Your order has been placed successfully!',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.black,
-        colorText: Colors.white,
-        icon: const Icon(Icons.check_circle_outline, color: Colors.white),
-      );
+      greenSnackBar('✅ Success!', 'Your order has been placed successfully.');
 
-      // ✅ Navigate to Track Order Page with orderId
       Get.offAll(() => TrackOrderPage(orderId: orderRef.id));
     } catch (e) {
-      Get.snackbar(
-        '❌ Error',
-        'Failed to place order. Try again.',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.black,
-        colorText: Colors.white,
-        icon: const Icon(Icons.error_outline, color: Colors.redAccent),
-      );
+      redSnackBar('❌ Error!', 'Failed to place order. Try again.');
       debugPrint("Order error: $e");
     }
   }

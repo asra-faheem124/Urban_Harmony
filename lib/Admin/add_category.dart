@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:laptop_harbor/Admin/admin_category.dart';
 import 'package:laptop_harbor/controller/categoryController.dart';
+import 'package:laptop_harbor/userPanel/Widgets/SnackBar.dart';
 import 'package:laptop_harbor/userPanel/Widgets/button.dart';
 import 'package:laptop_harbor/userPanel/constant.dart';
 
@@ -121,54 +122,10 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                                   categoryName: categoryName.text.trim(),
                                   categoryImage: imageFile,
                                 );
-                                Get.snackbar(
-                                  '✅ Success',
-                                  'Category added successfully!',
-                                  snackPosition: SnackPosition.BOTTOM,
-                                  backgroundColor: Colors.black,
-                                  colorText: Colors.white,
-                                  margin: const EdgeInsets.all(16),
-                                  borderRadius: 20,
-                                  icon: const Icon(
-                                    Icons.check_circle_outline,
-                                    color: Colors.white,
-                                    size: 28,
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 20,
-                                    vertical: 18,
-                                  ),
-                                  barBlur: 10,
-                                  duration: const Duration(seconds: 4),
-                                  isDismissible: true,
-                                  forwardAnimationCurve: Curves.easeOutBack,
-                                  snackStyle: SnackStyle.FLOATING,
-                                );
+                              greenSnackBar('Success!', 'Category Added Successfully.');
                                 Get.to(AdminCategoryPage());
                               } else {
-                                Get.snackbar(
-                                  '❌ Error',
-                                  'Please fill out the field correctly.',
-                                  snackPosition: SnackPosition.BOTTOM,
-                                  backgroundColor: Colors.black,
-                                  colorText: Colors.white,
-                                  margin: const EdgeInsets.all(16),
-                                  borderRadius: 20,
-                                  icon: const Icon(
-                                    Icons.error_outline,
-                                    color: Colors.redAccent,
-                                    size: 28,
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 20,
-                                    vertical: 18,
-                                  ),
-                                  barBlur: 10,
-                                  duration: const Duration(seconds: 4),
-                                  isDismissible: true,
-                                  forwardAnimationCurve: Curves.easeOutBack,
-                                  snackStyle: SnackStyle.FLOATING,
-                                );
+                               redSnackBar('Error!', 'Please fill out all the fields correctly.');
                               }
                             },
                           ),

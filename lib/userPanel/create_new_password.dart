@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/userPanel/Home.dart';
+import 'package:laptop_harbor/userPanel/Widgets/SnackBar.dart';
 import 'package:laptop_harbor/userPanel/Widgets/button.dart';
 
 class ChangePassword extends StatefulWidget {
@@ -48,25 +49,7 @@ class _ChangePasswordState extends State<ChangePassword> {
       });
 
       // Step 4: Notify success
-      Get.snackbar(
-        '✅ Success',
-        'Password changed successfully',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.black,
-        colorText: Colors.white,
-        margin: const EdgeInsets.all(16),
-        borderRadius: 20,
-        icon: const Icon(
-          Icons.check_circle_outline,
-          color: Colors.white,
-          size: 28,
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-        duration: const Duration(seconds: 4),
-        isDismissible: true,
-        forwardAnimationCurve: Curves.easeOutBack,
-        snackStyle: SnackStyle.FLOATING,
-      );
+      greenSnackBar('✅ Success!', 'Password changed successfully.');
 
       Get.offAll(() => const HomeScreen());
     } on FirebaseAuthException catch (e) {
@@ -77,33 +60,9 @@ class _ChangePasswordState extends State<ChangePassword> {
         errorMsg = 'Password must be at least 6 characters';
       }
 
-      Get.snackbar(
-        '❌ Error',
-        errorMsg,
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.black,
-        colorText: Colors.white,
-        margin: const EdgeInsets.all(16),
-        borderRadius: 20,
-        icon: const Icon(
-          Icons.error_outline,
-          color: Colors.redAccent,
-          size: 28,
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-        duration: const Duration(seconds: 4),
-        isDismissible: true,
-        forwardAnimationCurve: Curves.easeOutBack,
-        snackStyle: SnackStyle.FLOATING,
-      );
+      redSnackBar('❌ Error', 'Some error has occured.');
     } catch (e) {
-      Get.snackbar(
-        '❌ Error',
-        'Unexpected error occurred: ${e.toString()}',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.black,
-        colorText: Colors.white,
-      );
+      redSnackBar('❌ Error!', 'Unexpected error occurred: ${e.toString()}.');
     }
   }
 
@@ -230,11 +189,15 @@ class _ChangePasswordState extends State<ChangePassword> {
                         ),
                         const SizedBox(height: 40),
                         Center(
-                          child: MyButton(title: 'Update', height: 50, onPressed: (){
-                            if (_formKey.currentState!.validate()) {
-                                  changePassword();
-                                }
-                          })
+                          child: MyButton(
+                            title: 'Update',
+                            height: 50,
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                changePassword();
+                              }
+                            },
+                          ),
                         ),
                       ],
                     ),

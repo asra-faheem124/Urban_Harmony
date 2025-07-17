@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/controller/forgotPasswordController.dart';
 import 'package:laptop_harbor/controller/loginController.dart';
+import 'package:laptop_harbor/userPanel/Widgets/SnackBar.dart';
 import 'package:laptop_harbor/userPanel/Widgets/button.dart';
 
 class ForgotPassword extends StatelessWidget {
@@ -62,19 +63,8 @@ class ForgotPassword extends StatelessWidget {
                                     String useremail = email.text.trim();
                                     await forgotpasswordcontroller.ForgotPassword(useremail);
                                     }else{
-                                      Get.snackbar(
-                                          'Error',
-                                          'Please enter a valid email',
-                                          snackPosition: SnackPosition.TOP,
-                                          backgroundColor: Colors.black,
-                                          colorText: Colors.white,
-                                          margin: EdgeInsets.all(16),
-                                          borderRadius: 8,
-                                          icon: Icon(
-                                            Icons.error,
-                                            color: Colors.white,
-                                          ),
-                                        );
+                                     redSnackBar('Error!',
+                                          'Please enter a valid email.');
                                     }
                 })
               ),

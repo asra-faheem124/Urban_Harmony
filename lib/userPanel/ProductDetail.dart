@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:laptop_harbor/controller/cartController.dart';
 import 'package:laptop_harbor/model/product_model.dart';
 import 'package:laptop_harbor/userPanel/Cart.dart';
+import 'package:laptop_harbor/userPanel/Widgets/SnackBar.dart';
 import 'package:laptop_harbor/userPanel/rate_us.dart';
 
 class ProductDetail extends StatefulWidget {
@@ -163,29 +164,8 @@ class _ProductDetailState extends State<ProductDetail> {
                     IconButton(
                       onPressed: () {
                         if (!isLoggedIn) {
-                           Get.snackbar(
-                                      '❌ Login Required',
-                                      'Please login to add items to cart',
-                                      snackPosition: SnackPosition.BOTTOM,
-                                      backgroundColor: Colors.black,
-                                      colorText: Colors.white,
-                                      margin: const EdgeInsets.all(16),
-                                      borderRadius: 20,
-                                      icon: const Icon(
-                                        Icons.error_outline,
-                                        color: Colors.redAccent,
-                                        size: 28,
-                                      ),
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 20,
-                                        vertical: 18,
-                                      ),
-                                      barBlur: 10,
-                                      duration: const Duration(seconds: 4),
-                                      isDismissible: true,
-                                      forwardAnimationCurve: Curves.easeOutBack,
-                                      snackStyle: SnackStyle.FLOATING,
-                                    );
+                         redSnackBar('❌ Login Required!',
+                                      'Please login to add items to cart.');
                           return;
                         }
 
@@ -207,9 +187,7 @@ class _ProductDetailState extends State<ProductDetail> {
                     IconButton(
                       onPressed: () {
                         if (!isLoggedIn) {
-                          Get.snackbar("Login Required", "Please login to rate this product",
-                              backgroundColor: Colors.red.shade100,
-                              colorText: Colors.black);
+                         redSnackBar("Login Required!", "Please login to rate this product.");
                           return;
                         }
 

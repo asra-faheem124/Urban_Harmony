@@ -1,11 +1,9 @@
 import 'dart:convert';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/Admin/add_product.dart';
 import 'package:laptop_harbor/controller/categoryController.dart';
 import 'package:laptop_harbor/controller/productController.dart';
-import 'package:laptop_harbor/model/product_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:laptop_harbor/userPanel/Widgets/button.dart';
 import 'package:laptop_harbor/userPanel/constant.dart';

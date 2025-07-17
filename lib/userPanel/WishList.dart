@@ -113,6 +113,5 @@ class WishList extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 }

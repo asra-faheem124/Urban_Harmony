@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/userPanel/BottomBar.dart';
+import 'package:laptop_harbor/userPanel/Widgets/SnackBar.dart';
 import 'package:laptop_harbor/userPanel/Widgets/button.dart';
 import 'package:lottie/lottie.dart';
 
@@ -33,38 +34,19 @@ class LogoutScreen extends StatelessWidget {
             style: TextStyle(fontSize: 20),
           ),
           SizedBox(height: 10),
-          MyButton(title: "Logout",height: 50, onPressed: () {
-            FirebaseAuth _auth = FirebaseAuth.instance;
-            _auth.signOut();
-             Get.snackbar(
-                                            '✅ Success',
-                                            'Logout Successful! You have been logged out',
-                                            snackPosition: SnackPosition.BOTTOM,
-                                            backgroundColor: Colors.black,
-                                            colorText: Colors.white,
-                                            margin: const EdgeInsets.all(16),
-                                            borderRadius: 20,
-                                            icon: const Icon(
-                                              Icons.check_circle_outline,
-                                              color: Colors.white,
-                                              size: 28,
-                                            ),
-                                            shouldIconPulse: false,
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 20,
-                                              vertical: 18,
-                                            ),
-                                            barBlur: 10,
-                                            duration: const Duration(
-                                              seconds: 4,
-                                            ),
-                                            isDismissible: true,
-                                            forwardAnimationCurve:
-                                                Curves.easeOutBack,
-                                            snackStyle: SnackStyle.FLOATING,
-                                          );
-            Get.offAll(BottomBar());
-          }),
+          MyButton(
+            title: "Logout",
+            height: 50,
+            onPressed: () {
+              FirebaseAuth _auth = FirebaseAuth.instance;
+              _auth.signOut();
+              greenSnackBar(
+                '✅ Success!',
+                'Logout Successful! You have been logged out.',
+              );
+              Get.offAll(BottomBar());
+            },
+          ),
         ],
       ),
     );

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/controller/signupController.dart';
+import 'package:laptop_harbor/userPanel/Widgets/SnackBar.dart';
 import 'package:laptop_harbor/userPanel/Widgets/button.dart';
 import 'package:laptop_harbor/userPanel/login.dart';
 
@@ -71,20 +72,26 @@ class SignUp extends StatelessWidget {
                           },
                         ),
                         SizedBox(height: 30),
-                       TextFormField(
-                controller: email,
-                decoration: InputDecoration(
-                  hintText: 'Email Address',
-                  hintStyle: TextStyle(fontSize: 16, color: Colors.black),
-                ),
-                validator: (value) {
-                  if (value!.isEmpty) return "Please enter your email";
-                  if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                    return "Enter a valid email";
-                  }
-                  return null;
-                },
-              ),
+                        TextFormField(
+                          controller: email,
+                          decoration: InputDecoration(
+                            hintText: 'Email Address',
+                            hintStyle: TextStyle(
+                              fontSize: 16,
+                              color: Colors.black,
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value!.isEmpty)
+                              return "Please enter your email";
+                            if (!RegExp(
+                              r'^[^@]+@[^@]+\.[^@]+',
+                            ).hasMatch(value)) {
+                              return "Enter a valid email";
+                            }
+                            return null;
+                          },
+                        ),
                         SizedBox(height: 30),
                         Container(
                           child: Obx(
@@ -145,79 +152,39 @@ class SignUp extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                               MyButton(title: 'SIGNUP',height: 50, onPressed: ()async{
-                                if (_formKey.currentState!.validate()) {
-                                        String username = name.text.trim();
-                                        String useremail = email.text.trim();
-                                        String userpassword =
-                                            password.text.trim();
-                                        String userphoneNumber =
-                                            phoneNumber.text.trim();
-                                        UserCredential? userCredential =
-                                            await signupcontroller.SignUpMethod(
-                                              username,
-                                              useremail,
-                                              userpassword,
-                                              userphoneNumber,
-                                            );
-                                        if (userCredential != null) {
-                                          Get.snackbar(
-                                            '✅ Success',
-                                            'Signup Successful! Please verify your email address.',
-                                            snackPosition: SnackPosition.BOTTOM,
-                                            backgroundColor: Colors.black,
-                                            colorText: Colors.white,
-                                            margin: const EdgeInsets.all(16),
-                                            borderRadius: 20,
-                                            icon: const Icon(
-                                              Icons.check_circle_outline,
-                                              color: Colors.white,
-                                              size: 28,
-                                            ),
-                                            shouldIconPulse: false,
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 20,
-                                              vertical: 18,
-                                            ),
-                                            barBlur: 10,
-                                            duration: const Duration(
-                                              seconds: 4,
-                                            ),
-                                            isDismissible: true,
-                                            forwardAnimationCurve:
-                                                Curves.easeOutBack,
-                                            snackStyle: SnackStyle.FLOATING,
+                                MyButton(
+                                  title: 'SIGNUP',
+                                  height: 50,
+                                  onPressed: () async {
+                                    if (_formKey.currentState!.validate()) {
+                                      String username = name.text.trim();
+                                      String useremail = email.text.trim();
+                                      String userpassword =
+                                          password.text.trim();
+                                      String userphoneNumber =
+                                          phoneNumber.text.trim();
+                                      UserCredential? userCredential =
+                                          await signupcontroller.SignUpMethod(
+                                            username,
+                                            useremail,
+                                            userpassword,
+                                            userphoneNumber,
                                           );
-                                          Get.to(Login());
-                                        }
-                                      } else {
-                                        Get.snackbar(
-                                          '❌ Error',
-                                          'Please fill out all the fields correctly.',
-                                          snackPosition: SnackPosition.BOTTOM,
-                                          backgroundColor: Colors.black,
-                                          colorText: Colors.white,
-                                          margin: const EdgeInsets.all(16),
-                                          borderRadius: 20,
-                                          icon: const Icon(
-                                            Icons.error_outline,
-                                            color: Colors.redAccent,
-                                            size: 28,
-                                          ),
-                                          shouldIconPulse: false,
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 20,
-                                            vertical: 18,
-                                          ),
-                                          barBlur: 10,
-                                          duration: const Duration(seconds: 4),
-                                          isDismissible: true,
-                                          forwardAnimationCurve:
-                                              Curves.easeOutBack,
-                                          snackStyle: SnackStyle.FLOATING,
+                                      if (userCredential != null) {
+                                        greenSnackBar(
+                                          '✅ Success!',
+                                          'Signup Successful! Please verify your email address.',
                                         );
+                                        Get.to(Login());
                                       }
-                               }),
+                                    } else {
+                                      redSnackBar(
+                                        '❌ Error!',
+                                        'Please fill out all the fields correctly.',
+                                      );
+                                    }
+                                  },
+                                ),
                                 SizedBox(height: 30),
                                 Text(
                                   'or signup with',
