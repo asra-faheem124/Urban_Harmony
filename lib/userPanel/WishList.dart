@@ -1,117 +1,82 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-
-class ProductItem {
-  final String image;
-  final String name;
-  final String description;
-  final String price;
-  int quantity;
-
-  ProductItem({
-    required this.image,
-    required this.name,
-    required this.description,
-    required this.price,
-    this.quantity = 1,
-  });
-}
+import 'package:get/get.dart';
+import 'package:laptop_harbor/controller/wishlistController.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class WishList extends StatelessWidget {
-  List<ProductItem> prodList = [
-    ProductItem(
-      image: "assets/images/Dell G15 Gaming.png",
-      name: "Apple MacBook",
-      description: "i9 9th Gen",
-      price: "PKR 150",
-    ),
-    ProductItem(
-      image: "assets/images/Lenovo IdeaPad Slim 3.png",
-      name: "MacBook Pro 14",
-      description: "i9 9th Gen",
-      price: "PKR 300",
-    ),
-    ProductItem(
-      image: "assets/images/Dell G15 Gaming.png",
-      name: "MacBook Pro 14",
-      description: "i9 9th Gen",
-      price: "PKR 150",
-    ),
-    // ProductItem(
-    //   image: "assets/images/cart4.png",
-    //   name: "Coca Cola Can",
-    //   description: "325ml Price",
-    //   price: "PKR 150",
-    // ),
-    // ProductItem(
-    //   image: "assets/images/cart5.png",
-    //   name: "Pepsi Can",
-    //   description: "325ml Price",
-    //   price: "PKR 150",
-    // ),
-  ];
+  final WishlistController wishlistController = Get.put(WishlistController());
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          children: [
-            const SizedBox(height: 40),
-            const Center(
-              child: Text(
-                "Wish List",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-            ),
-            const SizedBox(height: 20),
-            const Divider(color: Colors.grey),
-            Expanded(
-              child: ListView.separated(
-                itemCount: prodList.length,
-                separatorBuilder:
-                    (context, index) =>
-                        const Divider(thickness: 1, color: Colors.grey),
-                itemBuilder: (context, index) {
-                  final item = prodList[index];
-                  return ListTile(
-                    leading: Image.asset(item.image, width: 100, height: 100),
-                    title: Text(
-                      item.name,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
+    wishlistController.fetchWishlist(); // Fetch latest on build
 
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(item.description),
-                        const SizedBox(height: 8),
-                        Text(
-                          item.price,
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(Icons.favorite),
-                        SizedBox(width: 10,),
-                        Icon(Icons.delete)
-                      ],
-                    ),
-                  );
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text("Wish List"),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        elevation: 0,
+      ),
+      body: Obx(() {
+        final prodList = wishlistController.wishlist;
+
+        if (prodList.isEmpty) {
+          return const Center(
+            child: Text("Your wishlist is empty."),
+          );
+        }
+
+        return ListView.separated(
+          padding: const EdgeInsets.all(16),
+          itemCount: prodList.length,
+          separatorBuilder: (_, __) => const Divider(),
+          itemBuilder: (context, index) {
+            final item = prodList[index];
+            final imageBytes = base64Decode(item['productImage']);
+            final avgRating = (item['averageRating'] ?? 0.0).toDouble();
+            final reviewCount = item['ratingCount'] ?? 0;
+
+            return ListTile(
+              contentPadding: const EdgeInsets.symmetric(vertical: 8),
+              leading: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.memory(imageBytes, width: 80, height: 80, fit: BoxFit.cover),
+              ),
+              title: Text(item['productName'], style: const TextStyle(fontWeight: FontWeight.bold)),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(item['productDesc']),
+                  const SizedBox(height: 4),
+                  Text("PKR ${item['productPrice']}", style: const TextStyle(fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      RatingBarIndicator(
+                        rating: avgRating,
+                        itemBuilder: (_, __) => const Icon(Icons.star, color: Colors.amber),
+                        itemCount: 5,
+                        itemSize: 16,
+                      ),
+                      const SizedBox(width: 8),
+                      Text("($reviewCount reviews)", style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                    ],
+                  ),
+                ],
+              ),
+              trailing: IconButton(
+                icon: const Icon(Icons.delete, color: Colors.red),
+                onPressed: () {
+                  wishlistController.removeFromWishlist(item['productId']);
                 },
               ),
-            ),
-
-            SizedBox(height: 20),
-          ],
-        ),
-      ),
+            );
+          },
+        );
+      }),
     );
   }
 }

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/controller/cartController.dart';
+import 'package:laptop_harbor/controller/wishlistController.dart';
 import 'package:laptop_harbor/model/product_model.dart';
 import 'package:laptop_harbor/userPanel/Cart.dart';
 import 'package:laptop_harbor/userPanel/Widgets/SnackBar.dart';
@@ -20,6 +21,7 @@ class ProductDetail extends StatefulWidget {
 }
 
 class _ProductDetailState extends State<ProductDetail> {
+  final WishlistController wishlistController = Get.put(WishlistController());
   final Cartcontroller cartcontroller = Get.put(Cartcontroller());
   bool isFav = false;
   double averageRating = 0.0;
@@ -29,13 +31,33 @@ class _ProductDetailState extends State<ProductDetail> {
   void initState() {
     super.initState();
     fetchRatings();
+    checkIfInWishlist();
+  }
+
+  void checkIfInWishlist() async {
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user == null) {
+      setState(() {
+        isFav = false;
+      });
+      return;
+    }
+
+    final exists = await wishlistController.isInWishlist(
+      widget.productData['productId'],
+    );
+    setState(() {
+      isFav = exists;
+    });
   }
 
   Future<void> fetchRatings() async {
-    final snapshot = await FirebaseFirestore.instance
-        .collection('ratings')
-        .where('productId', isEqualTo: widget.productData['productId'])
-        .get();
+    final snapshot =
+        await FirebaseFirestore.instance
+            .collection('ratings')
+            .where('productId', isEqualTo: widget.productData['productId'])
+            .get();
 
     if (snapshot.docs.isNotEmpty) {
       double sum = 0;
@@ -107,11 +129,34 @@ class _ProductDetailState extends State<ProductDetail> {
                   ),
                 ),
                 IconButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    final user = FirebaseAuth.instance.currentUser;
+
+                    if (user == null) {
+                      redSnackBar(
+                        "❌ Login Required!",
+                        "Please login to use the wishlist.",
+                      );
+                      return;
+                    }
+
+                    if (isFav) {
+                      await wishlistController.removeFromWishlist(
+                        widget.productData['productId'],
+                      );
+                      redSnackBar("Removed", "Product removed from wishlist.");
+                    } else {
+                      await wishlistController.addToWishlist(
+                        widget.productData['productId'],
+                      );
+                      greenSnackBar("Added", "Product added to wishlist.");
+                    }
+
                     setState(() {
                       isFav = !isFav;
                     });
                   },
+
                   icon: Icon(
                     isFav ? Icons.favorite : Icons.favorite_border,
                     color: isFav ? Colors.red : Colors.grey,
@@ -126,8 +171,9 @@ class _ProductDetailState extends State<ProductDetail> {
                 children: [
                   RatingBarIndicator(
                     rating: averageRating,
-                    itemBuilder: (context, _) =>
-                        const Icon(Icons.star, color: Colors.amber),
+                    itemBuilder:
+                        (context, _) =>
+                            const Icon(Icons.star, color: Colors.amber),
                     itemCount: 5,
                     itemSize: 22.0,
                     direction: Axis.horizontal,
@@ -164,8 +210,10 @@ class _ProductDetailState extends State<ProductDetail> {
                     IconButton(
                       onPressed: () {
                         if (!isLoggedIn) {
-                         redSnackBar('❌ Login Required!',
-                                      'Please login to add items to cart.');
+                          redSnackBar(
+                            '❌ Login Required!',
+                            'Please login to add items to cart.',
+                          );
                           return;
                         }
 
@@ -187,12 +235,16 @@ class _ProductDetailState extends State<ProductDetail> {
                     IconButton(
                       onPressed: () {
                         if (!isLoggedIn) {
-                         redSnackBar("Login Required!", "Please login to rate this product.");
+                          redSnackBar(
+                            "Login Required!",
+                            "Please login to rate this product.",
+                          );
                           return;
                         }
 
-                        Get.to(() =>
-                            RateUsPage(productId: product['productId']));
+                        Get.to(
+                          () => RateUsPage(productId: product['productId']),
+                        );
                       },
                       icon: const Icon(
                         Icons.rate_review,
@@ -217,10 +269,14 @@ class _ProductDetailState extends State<ProductDetail> {
 
             // Review List
             StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection('ratings')
-                  .where('productId', isEqualTo: widget.productData['productId'])
-                  .snapshots(),
+              stream:
+                  FirebaseFirestore.instance
+                      .collection('ratings')
+                      .where(
+                        'productId',
+                        isEqualTo: widget.productData['productId'],
+                      )
+                      .snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());
@@ -274,8 +330,9 @@ class _ProductDetailState extends State<ProductDetail> {
                         children: [
                           RatingBarIndicator(
                             rating: (data['rating'] ?? 0).toDouble(),
-                            itemBuilder: (context, _) =>
-                                const Icon(Icons.star, color: Colors.amber),
+                            itemBuilder:
+                                (context, _) =>
+                                    const Icon(Icons.star, color: Colors.amber),
                             itemCount: 5,
                             itemSize: 16,
                           ),
