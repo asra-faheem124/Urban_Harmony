@@ -2,9 +2,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/Admin/add_product.dart';
+import 'package:laptop_harbor/Admin/products_edit.dart';
 import 'package:laptop_harbor/controller/categoryController.dart';
 import 'package:laptop_harbor/controller/productController.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:laptop_harbor/userPanel/Widgets/SnackBar.dart';
 import 'package:laptop_harbor/userPanel/Widgets/button.dart';
 import 'package:laptop_harbor/userPanel/constant.dart';
 
@@ -15,10 +17,11 @@ class AdminProductsPage extends StatelessWidget {
   AdminProductsPage({super.key});
 
   Future<double> fetchAverageRating(String productId) async {
-    final snapshot = await FirebaseFirestore.instance
-        .collection('ratings')
-        .where('productId', isEqualTo: productId)
-        .get();
+    final snapshot =
+        await FirebaseFirestore.instance
+            .collection('ratings')
+            .where('productId', isEqualTo: productId)
+            .get();
 
     if (snapshot.docs.isEmpty) return 0.0;
 
@@ -160,35 +163,59 @@ class AdminProductsPage extends StatelessWidget {
                                 children: [
                                   IconButton(
                                     onPressed: () {
-                                      // TODO: Navigate to edit page
+                                      Get.to(EditProductPage(product: product));
                                     },
-                                    icon: const Icon(Icons.edit, color: Colors.blue),
+                                    icon: const Icon(
+                                      Icons.edit,
+                                      color: Colors.blue,
+                                    ),
                                   ),
                                   Tooltip(
                                     message: "Delete Product",
                                     child: IconButton(
-                                      icon: const Icon(Icons.delete, color: Colors.redAccent),
+                                      icon: const Icon(
+                                        Icons.delete,
+                                        color: Colors.redAccent,
+                                      ),
                                       onPressed: () async {
                                         final confirm = await showDialog(
                                           context: context,
-                                          builder: (context) => AlertDialog(
-                                            title: const Text("Confirm Delete"),
-                                            content: const Text("Are you sure you want to delete this product?"),
-                                            actions: [
-                                              TextButton(
-                                                onPressed: () => Navigator.pop(context, false),
-                                                child: const Text("Cancel"),
+                                          builder:
+                                              (context) => AlertDialog(
+                                                title: const Text(
+                                                  "Confirm Delete",
+                                                ),
+                                                content: const Text(
+                                                  "Are you sure you want to delete this product?",
+                                                ),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed:
+                                                        () => Navigator.pop(
+                                                          context,
+                                                          false,
+                                                        ),
+                                                    child: const Text("Cancel"),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed:
+                                                        () => Navigator.pop(
+                                                          context,
+                                                          true,
+                                                        ),
+                                                    child: const Text("Delete"),
+                                                  ),
+                                                ],
                                               ),
-                                              TextButton(
-                                                onPressed: () => Navigator.pop(context, true),
-                                                child: const Text("Delete"),
-                                              ),
-                                            ],
-                                          ),
                                         );
                                         if (confirm == true) {
-                                          // TODO: call delete method
-                                          // productcontroller.deleteProduct(product.productId);
+                                          await productcontroller.deleteProduct(
+                                            product.productId,
+                                          );
+                                          greenSnackBar(
+                                            "Deleted",
+                                            "Product deleted successfully",
+                                          );
                                         }
                                       },
                                     ),

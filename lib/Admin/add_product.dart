@@ -8,6 +8,7 @@ import 'package:laptop_harbor/controller/categoryController.dart';
 import 'package:laptop_harbor/controller/productController.dart';
 import 'package:laptop_harbor/userPanel/Widgets/SnackBar.dart';
 import 'package:laptop_harbor/userPanel/Widgets/button.dart';
+import 'package:laptop_harbor/userPanel/constant.dart';
 
 class AddProduct extends StatefulWidget {
   AddProduct({super.key});
@@ -44,17 +45,7 @@ class _AddProductState extends State<AddProduct> {
           child: Center(
             child: Column(
               children: [
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    'Add Product',
-                    style: TextStyle(
-                      fontSize: 28,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
+                Admin_Heading(title: 'Add Product'),
                 const SizedBox(height: 10),
 
                 Padding(

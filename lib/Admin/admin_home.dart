@@ -1,31 +1,96 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:laptop_harbor/userPanel/Widgets/drawer.dart';
+import 'dart:developer';
 
-class AdminHomeScreen extends StatelessWidget {
+import 'package:laptop_harbor/userPanel/constant.dart';
+
+class AdminHomeScreen extends StatefulWidget {
   const AdminHomeScreen({super.key});
 
-  Future<int> getCount(String collection) async {
-    var snapshot = await FirebaseFirestore.instance.collection(collection).get();
-    return snapshot.docs.length;
+  @override
+  State<AdminHomeScreen> createState() => _AdminHomeScreenState();
+}
+
+class _AdminHomeScreenState extends State<AdminHomeScreen> {
+  int totalUsers = 0;
+  int totalCategories = 0;
+  int totalProducts = 0;
+  int totalOrders = 0;
+  int totalRatings = 0;
+  int totalContact = 0;
+
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchDashboardData();
   }
 
-  Future<double> getRevenue() async {
-    var orders = await FirebaseFirestore.instance.collection('orders').get();
-    double total = 0;
-    for (var doc in orders.docs) {
-      total += doc['totalAmount'] ?? 0;
+  Future<void> fetchDashboardData() async {
+    try {
+      final usersSnap = await FirebaseFirestore.instance.collection('User').get();
+      final catSnap = await FirebaseFirestore.instance.collection('category').get();
+      final productSnap = await FirebaseFirestore.instance.collection('products').get();
+      final orderSnap = await FirebaseFirestore.instance.collection('orders').get();
+      final ratingSnap = await FirebaseFirestore.instance.collection('ratings').get();
+      final contactSnap = await FirebaseFirestore.instance.collection('contactMessages').get();
+
+      setState(() {
+        totalUsers = usersSnap.size;
+        totalCategories = catSnap.size;
+        totalProducts = productSnap.size;
+        totalOrders = orderSnap.size;
+        totalRatings = ratingSnap.size;
+        totalContact = contactSnap.size;
+        isLoading = false;
+      });
+    } catch (e) {
+      log("Error fetching admin data: $e");
+      setState(() {
+        isLoading = false;
+      });
     }
-    return total;
+  }
+
+  Widget buildTile(String title, String value, IconData icon, Color color) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: color.withOpacity(0.2)),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, color: color, size: 32),
+          const SizedBox(width: 16),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(title,
+                  style: TextStyle(fontSize: 16, color: Colors.grey[800])),
+              const SizedBox(height: 4),
+              Text(value,
+                  style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: color)),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       backgroundColor: Colors.white,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Padding(
+         title: Padding(
           padding: const EdgeInsets.all(8.0),
           child: SizedBox(
             height: 50,
@@ -35,108 +100,51 @@ class AdminHomeScreen extends StatelessWidget {
         ),
         actions: [
           Builder(
-            builder:
-                (context) => IconButton(
-                  icon: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Icon(Icons.menu, color: Colors.black),
-                  ),
-                  onPressed: () {
-                    // Open the right-side drawer
-                    Scaffold.of(context).openEndDrawer();
-                  },
-                ),
+            builder: (context) => IconButton(
+              icon: const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Icon(Icons.menu, color: Colors.black),
+              ),
+              onPressed: () => Scaffold.of(context).openEndDrawer(),
+            ),
           ),
         ],
       ),
       endDrawer: DrawerWidget(),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(16),
-          child: Column(
-            children: [
-              Text(
-                textAlign: TextAlign.start,
-                      'Admin Dashboard',
-                      style: TextStyle(
-                        fontSize: 26,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-              FutureBuilder(
-                future: Future.wait([
-                  getCount('User'),
-                  getCount('category'),
-                  getCount('products'),
-                  getCount('ratings'),
-                  getCount('contactMessages'),
-                  getRevenue(),
-                ]),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) return CircularProgressIndicator();
-        
-                  final data = snapshot.data!;
-                  return Column(
-                     children: [
-            buildStatCard('Total Users', data[0].toString(), Icons.person, Colors.teal),
-            buildStatCard('Total Categories', data[1].toString(), Icons.category_rounded, Colors.lightBlue),
-            buildStatCard('Total Products', data[2].toString(), Icons.laptop_chromebook_rounded, Colors.black),
-            buildStatCard('Total Ratings', data[3].toString(), Icons.star, Colors.amber),
-            buildStatCard('Feedback Messages', data[4].toString(), Icons.message, Colors.deepPurple),
-          ],
-                  );
-                },
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Admin_Heading(title: 'Admin Dashboard'),
+                  const SizedBox(height: 20),
+                  GridView.count(
+                    crossAxisCount: 2,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 16,
+                    childAspectRatio: 2.4,
+                    children: [
+                      buildTile('Total Users', totalUsers.toString(),
+                          Icons.person, Colors.teal),
+                      buildTile('Categories', totalCategories.toString(),
+                          Icons.category, Colors.blue),
+                      buildTile('Products', totalProducts.toString(),
+                          Icons.laptop_mac, Colors.deepOrange),
+                      buildTile('Orders', totalOrders.toString(),
+                          Icons.receipt_long, Colors.green),
+                      buildTile('Ratings', totalRatings.toString(),
+                          Icons.star, Colors.amber),
+                     buildTile('Contact Messages', totalContact.toString(),
+                          Icons.message_rounded, Colors.purple),
+                    ],
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
-
-Widget buildStatCard(String title, String value, IconData icon, Color color) {
-  return Container(
-    margin: EdgeInsets.symmetric(vertical: 10),
-    padding: EdgeInsets.all(16),
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(16),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.grey.withOpacity(0.2),
-          blurRadius: 10,
-          offset: Offset(0, 4),
-        ),
-      ],
-    ),
-    child: Row(
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            color: color.withOpacity(0.1),
-            shape: BoxShape.circle,
-          ),
-          padding: EdgeInsets.all(12),
-          child: Icon(icon, color: color, size: 30),
-        ),
-        SizedBox(width: 16),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: TextStyle(fontSize: 16, color: Colors.grey[700]),
-            ),
-            SizedBox(height: 4),
-            Text(
-              value,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-          ],
-        ),
-      ],
-    ),
-  );
-}
 }

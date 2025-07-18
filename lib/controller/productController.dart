@@ -50,4 +50,28 @@ class Productcontroller extends GetxController {
       redSnackBar('❌ Error!', 'Something went wrong $e');
     }
   }
+
+  Future<void> updateProduct({
+  required String productId,
+  required String productName,
+  required String productDesc,
+  required String productPrice,
+  required Uint8List productImage,
+  required String productCategory,
+}) async {
+  await FirebaseFirestore.instance.collection('products').doc(productId).update({
+    'productName': productName,
+    'productDesc': productDesc,
+    'productPrice': productPrice,
+    'productImage': base64Encode(productImage),
+    'categoryId': productCategory,
+  });
+  FetchProduct(); // Refresh list
+}
+
+Future<void> deleteProduct(String productId) async {
+  await FirebaseFirestore.instance.collection('products').doc(productId).delete();
+  FetchProduct(); 
+}
+
 }

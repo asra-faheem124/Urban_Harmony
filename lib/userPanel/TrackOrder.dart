@@ -44,17 +44,33 @@ class TrackOrderPage extends StatelessWidget {
                   if (!snapshot.hasData || snapshot.data!.docs.isEmpty)
                     return const Center(child: Text("No tracking updates yet."));
 
-                  final steps = snapshot.data!.docs.map((doc) {
-                    final Timestamp ts = doc['date'];
-                    final formattedDate =
-                        DateFormat('dd MMM yyyy, hh:mm a').format(ts.toDate());
+                final steps = snapshot.data!.docs.map((doc) {
+  dynamic rawDate = doc['date'];
+  late String formattedDate;
 
-                    return TrackingStep(
-                      doc['title'],
-                      formattedDate,
-                      doc['isCompleted'],
-                    );
-                  }).toList();
+  if (rawDate is Timestamp) {
+    final date = rawDate.toDate();
+    formattedDate = "${date.day}/${date.month}/${date.year} ${date.hour}:${date.minute}";
+  } else if (rawDate is String) {
+    // Try parsing the string to DateTime
+    final date = DateTime.tryParse(rawDate);
+    if (date != null) {
+      formattedDate = "${date.day}/${date.month}/${date.year} ${date.hour}:${date.minute}";
+    } else {
+      formattedDate = rawDate; // Fallback to raw string
+    }
+  } else {
+    formattedDate = "Unknown date";
+  }
+
+  return TrackingStep(
+    doc['title'],
+    formattedDate,
+    doc['isCompleted'],
+  );
+}).toList();
+
+
 
                   return ListView.builder(
                     itemCount: steps.length,

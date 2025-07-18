@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/Admin/admin_category.dart';
 import 'package:laptop_harbor/Admin/admin_feedback.dart';
-import 'package:laptop_harbor/Admin/admin_home.dart';
 import 'package:laptop_harbor/Admin/admin_orders.dart';
 import 'package:laptop_harbor/Admin/admin_products.dart';
 import 'package:laptop_harbor/Admin/admin_ratings.dart';
@@ -87,11 +86,6 @@ class DrawerWidget extends StatelessWidget {
                   ),
                   SizedBox(height: 10),
                   if (isAdmin) ...[
-                    ListTile(
-            leading: Icon(Icons.dashboard),
-            title: Text('Dashboard'),
-            onTap: () => Get.offAll(AdminHomeScreen()),
-          ),
           ListTile(
             leading: Icon(Icons.person),
             title: Text('Users'),
@@ -127,10 +121,6 @@ class DrawerWidget extends StatelessWidget {
                       leading: Icon(Icons.list),
                       title: Text('My Orders'),
                       onTap: () => Get.to(OrdersHistoryPage()),
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.location_on_outlined),
-                      title: Text('Address'),
                     ),
                      ListTile(
                       leading: Icon(Icons.contact_support_outlined),

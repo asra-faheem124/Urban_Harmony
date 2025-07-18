@@ -7,6 +7,7 @@ import 'package:laptop_harbor/userPanel/help_and_support.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:laptop_harbor/userPanel/logout.dart';
+import 'package:laptop_harbor/userPanel/order_history.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -128,7 +129,7 @@ class _ProfileState extends State<Profile> {
 
             // Custom list items
             SizedBox(
-              height: 200,
+              height: 260,
               child: ListView(
                 padding: const EdgeInsets.all(16),
                 shrinkWrap: false,
@@ -180,6 +181,62 @@ class _ProfileState extends State<Profile> {
                         IconButton(
                           onPressed: () {
                             Get.to(EditProfile());
+                          },
+                          icon: Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                      // borderRadius: BorderRadius.circular(12),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 6,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 24, // size of the circle
+                          backgroundColor:
+                              Colors.black, // background circle color
+                          child: Icon(
+                            Icons.receipt_long_rounded,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: const [
+                            Text(
+                              "Your Orders",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(height: 4),
+                            Text(
+                              "View your past order history",
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          ],
+                        ),
+                        Spacer(),
+                        IconButton(
+                          onPressed: () {
+                            Get.to(OrdersHistoryPage());
                           },
                           icon: Icon(
                             Icons.arrow_forward_ios,

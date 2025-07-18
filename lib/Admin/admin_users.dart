@@ -72,12 +72,6 @@ class AdminUsersPage extends StatelessWidget {
             spacing: 8,
             children: [
               IconButton(
-                icon: const Icon(Icons.edit, color: Colors.blue),
-                onPressed: () {
-                  // Add edit functionality here
-                },
-              ),
-              IconButton(
                 icon: const Icon(Icons.delete, color: Colors.red),
                 onPressed: () async {
                   final confirm = await showDialog(

@@ -46,4 +46,23 @@ class Categorycontroller extends GetxController {
       redSnackBar('❌ Error', 'Something went wrong $e');
     }
   }
+
+
+Future<void> deleteCategory(String categoryId) async {
+  await FirebaseFirestore.instance.collection('category').doc(categoryId).delete();
+  FetchCategory(); // Refresh list after deletion
+}
+
+Future<void> updateCategory({
+  required String categoryId,
+  required String categoryName,
+  required Uint8List categoryImage,
+}) async {
+  final base64Image = base64Encode(categoryImage);
+  await FirebaseFirestore.instance.collection('category').doc(categoryId).update({
+    'categoryName': categoryName,
+    'categoryImage': base64Image,
+  });
+  FetchCategory(); 
+}
 }

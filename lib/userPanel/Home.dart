@@ -1,9 +1,11 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/userPanel/Profile.dart';
+import 'package:laptop_harbor/userPanel/Widgets/animated_text.dart';
 import 'package:laptop_harbor/userPanel/Widgets/drawer.dart';
 import 'package:laptop_harbor/userPanel/Widgets/products.dart';
 import 'package:laptop_harbor/userPanel/Widgets/top_rated_laptops.dart';
@@ -21,115 +23,87 @@ class _HomeScreenState extends State<HomeScreen> {
   FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   Future<DocumentSnapshot> _getUserData() async {
-  final uid = FirebaseAuth.instance.currentUser?.uid;
-  if (uid != null) {
-    return FirebaseFirestore.instance.collection('User').doc(uid).get();
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid != null) {
+      return FirebaseFirestore.instance.collection('User').doc(uid).get();
+    }
+    throw Exception("User not logged in");
   }
-  throw Exception("User not logged in");
-}
 
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-  backgroundColor: Colors.white,
-  title: Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: SizedBox(
-      height: 50,
-      width: 100,
-      child: Image.asset('assets/images/logo2.png'),
-    ),
-  ),
-  actions: [
-    FutureBuilder<DocumentSnapshot>(
-      future: _getUserData(), // call function to fetch user data
-      builder: (context, snapshot) {
-        final user = FirebaseAuth.instance.currentUser;
-        
-        // If user is logged in and data is available
-        if (user != null && snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
-          final userData = snapshot.data!.data() as Map<String, dynamic>;
-          final name = userData['name'] ?? '';
-          final firstLetter = name.isNotEmpty ? name[0].toUpperCase() : '?';
+        backgroundColor: Colors.white,
+        title: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: SizedBox(
+            height: 50,
+            width: 100,
+            child: Image.asset('assets/images/logo2.png'),
+          ),
+        ),
+        actions: [
+          FutureBuilder<DocumentSnapshot>(
+            future: _getUserData(), // call function to fetch user data
+            builder: (context, snapshot) {
+              final user = FirebaseAuth.instance.currentUser;
 
-          return Padding(
-            padding: const EdgeInsets.only(right: 12),
-            child: GestureDetector(
-              onTap: () => Get.to(Profile()),
-              child: CircleAvatar(
-                backgroundColor: Colors.grey[300],
-                child: Text(
-                  firstLetter,
-                  style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              // If user is logged in and data is available
+              if (user != null &&
+                  snapshot.connectionState == ConnectionState.done &&
+                  snapshot.hasData) {
+                final userData = snapshot.data!.data() as Map<String, dynamic>;
+                final name = userData['name'] ?? '';
+                final firstLetter =
+                    name.isNotEmpty ? name[0].toUpperCase() : '?';
+
+                return Padding(
+                  padding: const EdgeInsets.only(right: 12),
+                  child: GestureDetector(
+                    onTap: () => Get.to(Profile()),
+                    child: CircleAvatar(
+                      backgroundColor: Colors.grey[300],
+                      child: Text(
+                        firstLetter,
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              }
+
+              // If not logged in
+              return IconButton(
+                icon: Icon(Icons.app_registration_rounded, color: Colors.black),
+                onPressed: () {
+                  Get.to(SignUp());
+                },
+              );
+            },
+          ),
+          Builder(
+            builder:
+                (context) => IconButton(
+                  icon: Icon(Icons.menu, color: Colors.black),
+                  onPressed: () {
+                    Scaffold.of(context).openEndDrawer();
+                  },
                 ),
-              ),
-            ),
-          );
-        }
-
-        // If not logged in
-        return IconButton(
-          icon: Icon(Icons.app_registration_rounded, color: Colors.black),
-          onPressed: () {
-           Get.to(SignUp());
-          },
-        );
-      },
-    ),
-    Builder(
-      builder: (context) => IconButton(
-        icon: Icon(Icons.menu, color: Colors.black),
-        onPressed: () {
-          Scaffold.of(context).openEndDrawer();
-        },
+          ),
+        ],
       ),
-    ),
-  ],
-),
       endDrawer: DrawerWidget(),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 8.0,
-                vertical: 8.0,
-              ),
-              child: Center(
-                child: Container(
-                  margin: EdgeInsets.only(top: 10),
-                  width: 450,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(50.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 7.0,
-                        offset: Offset(0, 5),
-                      ),
-                    ],
-                  ),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: "Try Search here...",
-
-                      suffixIcon: Icon(Icons.search),
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 14,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-
-            SizedBox(height: 20),
+            AnimatedHeadline(),
+            SizedBox(height: 10),
             CarouselSlider(
               options: CarouselOptions(
                 height: 200.0,
@@ -195,21 +169,18 @@ class _HomeScreenState extends State<HomeScreen> {
                         "See more",
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: screenWidth * 0.03, 
+                          fontSize: screenWidth * 0.03,
                         ),
                       ),
-                      icon: Icon(
-                        Icons.arrow_forward,
-                        size: screenWidth * 0.05, 
-                      ),
+                      icon: Icon(Icons.arrow_forward, size: screenWidth * 0.05),
                     ),
                   ],
                 ),
               ),
             ),
-          DynamicProducts(),
-          SizedBox(height: 20,),
-           Padding(
+            DynamicProducts(),
+            SizedBox(height: 20),
+            Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 16,
               ), // less padding for small screens
@@ -233,8 +204,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 20,),
-            TopRatedLaptopsGrid()
+            SizedBox(height: 20),
+            TopRatedLaptopsGrid(),
           ],
         ),
       ),
