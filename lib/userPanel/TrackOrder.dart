@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:laptop_harbor/userPanel/Widgets/button.dart';
+import 'package:laptop_harbor/userPanel/constant.dart';
 
 class TrackOrderPage extends StatelessWidget {
   final String orderId;
@@ -17,10 +20,7 @@ class TrackOrderPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Track Order", style: TextStyle(color: Colors.black)),
         backgroundColor: Colors.white,
-        centerTitle: true,
-        elevation: 0,
         iconTheme: const IconThemeData(color: Colors.black),
       ),
       backgroundColor: Colors.white,
@@ -29,6 +29,7 @@ class TrackOrderPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            User_Heading(title: 'Track order'),
             Text("Order ID: $orderId", style: const TextStyle(color: Colors.grey)),
             const SizedBox(height: 16),
 

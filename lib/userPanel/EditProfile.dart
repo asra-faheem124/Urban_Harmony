@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:laptop_harbor/userPanel/BottomBar.dart';
 import 'package:laptop_harbor/userPanel/Widgets/SnackBar.dart';
 import 'package:laptop_harbor/userPanel/Widgets/button.dart';
+import 'package:laptop_harbor/userPanel/constant.dart';
 import 'package:laptop_harbor/userPanel/create_new_password.dart';
 
 class EditProfile extends StatefulWidget {
@@ -58,10 +59,7 @@ class _EditProfileState extends State<EditProfile> {
               ),
               const SizedBox(height: 10),
               const Center(
-                child: Text(
-                  "Profile Settings",
-                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-                ),
+                child: User_Heading(title: 'Profile Settings')
               ),
               const SizedBox(height: 30),
               Center(

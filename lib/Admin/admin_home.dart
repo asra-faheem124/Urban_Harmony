@@ -139,5 +139,4 @@ Widget buildStatCard(String title, String value, IconData icon, Color color) {
     ),
   );
 }
-
 }

@@ -4,6 +4,7 @@ import 'package:laptop_harbor/controller/forgotPasswordController.dart';
 import 'package:laptop_harbor/controller/loginController.dart';
 import 'package:laptop_harbor/userPanel/Widgets/SnackBar.dart';
 import 'package:laptop_harbor/userPanel/Widgets/button.dart';
+import 'package:laptop_harbor/userPanel/constant.dart';
 
 class ForgotPassword extends StatelessWidget {
     final _formKey = GlobalKey<FormState>();
@@ -25,17 +26,7 @@ class ForgotPassword extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 30),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'Forgot Password?',
-                    style: TextStyle(
-                      fontSize: 28,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
+               User_Heading(title: 'Forgot Password'),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child:  TextFormField(

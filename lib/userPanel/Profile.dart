@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/userPanel/EditProfile.dart';
 import 'package:laptop_harbor/userPanel/about-app.dart';
+import 'package:laptop_harbor/userPanel/constant.dart';
 import 'package:laptop_harbor/userPanel/help_and_support.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -53,14 +54,7 @@ class _ProfileState extends State<Profile> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // My Profile Heading
-                const Padding(
-                  padding: EdgeInsets.only(left: 30),
-                  child: Text(
-                    "My Profile",
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                  ),
-                ), // Text: My Profile
+               User_Heading(title: 'My Profile'),
 
                 // Profile Card
                 Center(

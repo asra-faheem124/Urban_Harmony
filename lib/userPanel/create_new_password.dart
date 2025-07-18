@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:laptop_harbor/userPanel/Home.dart';
 import 'package:laptop_harbor/userPanel/Widgets/SnackBar.dart';
 import 'package:laptop_harbor/userPanel/Widgets/button.dart';
+import 'package:laptop_harbor/userPanel/constant.dart';
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({super.key});
@@ -84,14 +85,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Update Password?',
-                          style: TextStyle(
-                            fontSize: 28,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
+                        User_Heading(title: 'Update Password'),
                         const SizedBox(height: 20),
                         Obx(
                           () => TextFormField(

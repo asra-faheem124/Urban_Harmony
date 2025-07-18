@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:laptop_harbor/controller/cartController.dart';
 import 'package:laptop_harbor/userPanel/Checkout/Bar.dart';
 import 'package:laptop_harbor/userPanel/Widgets/button.dart';
+import 'package:laptop_harbor/userPanel/constant.dart';
 
 class Cart extends StatelessWidget {
   Cart({super.key});
@@ -34,10 +35,7 @@ class Cart extends StatelessWidget {
           return Column(
             children: [
               const Center(
-                child: Text(
-                  "My Cart",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
+                child: User_Heading(title: 'My Cart',)
               ),
               const SizedBox(height: 20),
               const Divider(color: Colors.grey),

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:laptop_harbor/Admin/admin_category.dart';
 import 'package:laptop_harbor/Admin/admin_feedback.dart';
 import 'package:laptop_harbor/Admin/admin_home.dart';
+import 'package:laptop_harbor/Admin/admin_orders.dart';
 import 'package:laptop_harbor/Admin/admin_products.dart';
 import 'package:laptop_harbor/Admin/admin_ratings.dart';
 import 'package:laptop_harbor/Admin/admin_users.dart';
@@ -12,6 +13,7 @@ import 'package:laptop_harbor/controller/getUserData.dart';
 import 'package:laptop_harbor/userPanel/contact_feedback.dart';
 import 'package:laptop_harbor/userPanel/login.dart';
 import 'package:laptop_harbor/userPanel/logout.dart';
+import 'package:laptop_harbor/userPanel/order_history.dart';
 import 'package:laptop_harbor/userPanel/terms_and_conditions.dart';
 
 class DrawerWidget extends StatelessWidget {
@@ -108,7 +110,7 @@ class DrawerWidget extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.receipt_long),
             title: Text('Orders'),
-            onTap: () {},
+            onTap: () {Get.to(AdminOrdersPage());},
           ),
           ListTile(
             leading: Icon(Icons.rate_review),
@@ -123,7 +125,8 @@ class DrawerWidget extends StatelessWidget {
                   ] else ...[
                     ListTile(
                       leading: Icon(Icons.list),
-                      title: Text('Orders'),
+                      title: Text('My Orders'),
+                      onTap: () => Get.to(OrdersHistoryPage()),
                     ),
                     ListTile(
                       leading: Icon(Icons.location_on_outlined),

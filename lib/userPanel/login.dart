@@ -8,6 +8,7 @@ import 'package:laptop_harbor/controller/loginController.dart';
 import 'package:laptop_harbor/userPanel/BottomBar.dart';
 import 'package:laptop_harbor/userPanel/Widgets/SnackBar.dart';
 import 'package:laptop_harbor/userPanel/Widgets/button.dart';
+import 'package:laptop_harbor/userPanel/constant.dart';
 import 'package:laptop_harbor/userPanel/forgotPassword.dart';
 import 'package:laptop_harbor/userPanel/signup.dart';
 
@@ -47,13 +48,7 @@ class Login extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            'Login into \nyour account',
-                            style: TextStyle(fontSize: 28, color: Colors.black),
-                          ),
-                        ),
+                        User_Heading(title:  'Login into \nyour account'),
                         SizedBox(height: 30),
 
                         TextFormField(

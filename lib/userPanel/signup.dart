@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:laptop_harbor/controller/signupController.dart';
 import 'package:laptop_harbor/userPanel/Widgets/SnackBar.dart';
 import 'package:laptop_harbor/userPanel/Widgets/button.dart';
+import 'package:laptop_harbor/userPanel/constant.dart';
 import 'package:laptop_harbor/userPanel/login.dart';
 
 class SignUp extends StatelessWidget {
@@ -44,13 +45,7 @@ class SignUp extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            'Create \nyour account',
-                            style: TextStyle(fontSize: 28, color: Colors.black),
-                          ),
-                        ),
+                        User_Heading(title:  'Create \nyour account'),
                         SizedBox(height: 30),
                         TextFormField(
                           controller: name,

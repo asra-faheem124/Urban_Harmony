@@ -6,6 +6,7 @@ import 'package:laptop_harbor/userPanel/BottomBar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:laptop_harbor/userPanel/Widgets/SnackBar.dart';
 import 'package:laptop_harbor/userPanel/Widgets/button.dart';
+import 'package:laptop_harbor/userPanel/constant.dart';
 
 class RateUsPage extends StatefulWidget {
   final String productId;
@@ -68,9 +69,6 @@ class _RateUsPageState extends State<RateUsPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: const Text("Rate Us", style: TextStyle(color: Colors.black)),
-        iconTheme: const IconThemeData(color: Colors.black),
-        elevation: 0,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -78,9 +76,10 @@ class _RateUsPageState extends State<RateUsPage> {
           key: _formKey,
           child: Column(
             children: [
+              User_Heading(title: 'Rate Us'),
               const Text(
                 "We'd love your feedback!",
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 24),
               ),
               const SizedBox(height: 20),
 

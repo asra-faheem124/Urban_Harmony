@@ -33,50 +33,59 @@ class _ReviewState extends State<Review> {
           const SizedBox(height: 16),
           const Text(
             "Review Your Order",
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
 
-          Expanded(
-            child:
-                cartItems.isEmpty
-                    ? const Center(child: Text("Your cart is empty."))
-                    : ListView.separated(
-                      padding: const EdgeInsets.all(16),
-                      separatorBuilder: (_, __) => const Divider(),
-                      itemCount: cartItems.length,
-                      itemBuilder: (context, index) {
-                        final entry = cartItems.entries.elementAt(index);
-                        final product = entry.key;
-                        final quantity = entry.value;
-
-                        Uint8List imageBytes = base64Decode(
-                          product.productImage,
-                        );
-                        int unitPrice = int.tryParse(product.productPrice) ?? 0;
-                        int totalPrice = unitPrice * quantity;
-
-                        return ListTile(
-                          leading: Image.memory(
-                            imageBytes,
-                            width: 60,
-                            height: 60,
-                          ),
-                          title: Text(
-                            product.productName,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          subtitle: Text("x$quantity"),
-                          trailing: Text(
-                            "PKR $totalPrice",
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        );
-                      },
-                    ),
+          // Shipping Info
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text("Shipping Information", style: TextStyle(fontWeight: FontWeight.bold)),
+                const SizedBox(height: 4),
+                Text("Name: ${checkoutController.name.value}"),
+                Text("Phone: ${checkoutController.phone.value}"),
+                Text("Address: ${checkoutController.address.value}, Postal Code: ${checkoutController.postalCode.value}"),
+                const SizedBox(height: 12),
+                const Text("Payment Method", style: TextStyle(fontWeight: FontWeight.bold)),
+                const SizedBox(height: 4),
+                Text("Cash On Delivery"),
+              ],
+            ),
           ),
 
-          // Bottom section
+          const Divider(thickness: 1),
+
+          // Product List
+          Expanded(
+            child: cartItems.isEmpty
+                ? const Center(child: Text("Your cart is empty."))
+                : ListView.separated(
+                    padding: const EdgeInsets.all(16),
+                    separatorBuilder: (_, __) => const Divider(),
+                    itemCount: cartItems.length,
+                    itemBuilder: (context, index) {
+                      final entry = cartItems.entries.elementAt(index);
+                      final product = entry.key;
+                      final quantity = entry.value;
+
+                      Uint8List imageBytes = base64Decode(product.productImage);
+                      int unitPrice = int.tryParse(product.productPrice) ?? 0;
+                      int totalPrice = unitPrice * quantity;
+
+                      return ListTile(
+                        leading: Image.memory(imageBytes, width: 60, height: 60),
+                        title: Text(product.productName, style: const TextStyle(fontWeight: FontWeight.bold)),
+                        subtitle: Text("x$quantity"),
+                        trailing: Text("PKR $totalPrice", style: const TextStyle(fontWeight: FontWeight.bold)),
+                      );
+                    },
+                  ),
+          ),
+
+          // Order Summary
           Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -84,31 +93,23 @@ class _ReviewState extends State<Review> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Subtotal", style: TextStyle(fontSize: 16)),
+                    const Text("Subtotal", style: TextStyle(fontSize: 16)),
                     Text("PKR ${cartController.totalPrice.toStringAsFixed(0)}"),
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Delivery Charges", style: TextStyle(fontSize: 16)),
+                    const Text("Delivery Charges", style: TextStyle(fontSize: 16)),
                     Text("PKR ${deliveryCharge.toStringAsFixed(0)}"),
                   ],
                 ),
-                Divider(),
+                const Divider(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      "Total",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      "PKR ${(cartController.totalPrice + deliveryCharge).toStringAsFixed(0)}",
-                    ),
+                    const Text("Total", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    Text("PKR ${(cartController.totalPrice + deliveryCharge).toStringAsFixed(0)}"),
                   ],
                 ),
 
@@ -128,11 +129,11 @@ class _ReviewState extends State<Review> {
     );
   }
 
-  /// ✅ PLACE ORDER FUNCTION INSIDE STATE
+  /// ✅ PLACE ORDER FUNCTION
   Future<void> placeOrder() async {
     final firestore = FirebaseFirestore.instance;
     final userEmail = FirebaseAuth.instance.currentUser?.email ?? 'guest';
-    const double deliveryCharge = 200.0; // PKR
+    const double deliveryCharge = 200.0;
 
     if (cartController.cartItems.isEmpty) {
       redSnackBar('Error', 'Your cart is empty');
@@ -142,12 +143,8 @@ class _ReviewState extends State<Review> {
     if (checkoutController.name.value.isEmpty ||
         checkoutController.phone.value.isEmpty ||
         checkoutController.address.value.isEmpty ||
-        checkoutController.postalCode.value.isEmpty ||
-        checkoutController.paymentMethod.value.isEmpty) {
-      redSnackBar(
-        'Missing Info',
-        'Complete shipping & payment steps before placing order.',
-      );
+        checkoutController.postalCode.value.isEmpty ) {
+      redSnackBar('Missing Info', 'Complete shipping before placing order.');
       return;
     }
 
@@ -160,56 +157,28 @@ class _ReviewState extends State<Review> {
           "postalCode": checkoutController.postalCode.value,
           "address": checkoutController.address.value,
         },
-        "paymentMethod": checkoutController.paymentMethod.value,
-        "items":
-            cartController.cartItems.entries
-                .map(
-                  (entry) => {
-                    "productId": entry.key.productId,
-                    "name": entry.key.productName,
-                    "price": entry.key.productPrice,
-                    "quantity": entry.value,
-                  },
-                )
-                .toList(),
+        "paymentMethod": 'Cash On Delivery',
+        "items": cartController.cartItems.entries.map((entry) {
+          return {
+            "productId": entry.key.productId,
+            "name": entry.key.productName,
+            "price": entry.key.productPrice,
+            "quantity": entry.value,
+          };
+        }).toList(),
         "total": cartController.totalPrice + deliveryCharge,
         "deliveryCharge": deliveryCharge,
         "timestamp": DateTime.now(),
       });
 
-      // ✅ Add 6 tracking steps
       final now = DateTime.now();
       final trackingSteps = [
-        {
-          "title": "Sender is preparing to ship your order",
-          "date": now,
-          "isCompleted": true,
-        },
-        {
-          "title": "Sender has shipped your parcel",
-          "date": now.add(Duration(hours: 4)),
-          "isCompleted": false,
-        },
-        {
-          "title": "Parcel is in transit",
-          "date": now.add(Duration(hours: 12)),
-          "isCompleted": false,
-        },
-        {
-          "title": "Parcel is received at delivery Branch",
-          "date": now.add(Duration(days: 1)),
-          "isCompleted": false,
-        },
-        {
-          "title": "Parcel is out for delivery",
-          "date": now.add(Duration(days: 2)),
-          "isCompleted": false,
-        },
-        {
-          "title": "Parcel is successfully delivered",
-          "date": now.add(Duration(days: 3)),
-          "isCompleted": false,
-        },
+        {"title": "Sender is preparing to ship your order", "date": now, "isCompleted": true},
+        {"title": "Sender has shipped your parcel", "date": now.add(Duration(hours: 4)), "isCompleted": false},
+        {"title": "Parcel is in transit", "date": now.add(Duration(hours: 12)), "isCompleted": false},
+        {"title": "Parcel is received at delivery Branch", "date": now.add(Duration(days: 1)), "isCompleted": false},
+        {"title": "Parcel is out for delivery", "date": now.add(Duration(days: 2)), "isCompleted": false},
+        {"title": "Parcel is successfully delivered", "date": now.add(Duration(days: 3)), "isCompleted": false},
       ];
 
       for (var step in trackingSteps) {
@@ -219,8 +188,7 @@ class _ReviewState extends State<Review> {
       cartController.ClearCart();
 
       greenSnackBar('✅ Success!', 'Your order has been placed successfully.');
-
-      Get.offAll(() => TrackOrderPage(orderId: orderRef.id));
+      Get.offAll(() => Confirmation(orderId: orderRef.id));
     } catch (e) {
       redSnackBar('❌ Error!', 'Failed to place order. Try again.');
       debugPrint("Order error: $e");

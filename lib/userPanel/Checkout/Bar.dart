@@ -30,15 +30,6 @@ class _StepperUIState extends State<StepperUI> {
       appBar: AppBar(
         title: const Text('Checkout Steps'),
         centerTitle: true,
-        actions: [
-           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: IconButton(
-              icon: const Icon(Icons.shopping_cart, color: Colors.black),
-              onPressed: () {},
-            ),
-          ),
-        ],
       ),
       body: Column(
         children: [

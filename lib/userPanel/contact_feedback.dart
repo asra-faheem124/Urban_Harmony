@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:laptop_harbor/userPanel/Home.dart';
 import 'package:laptop_harbor/userPanel/Widgets/SnackBar.dart';
 import 'package:laptop_harbor/userPanel/Widgets/button.dart';
+import 'package:laptop_harbor/userPanel/constant.dart';
 
 class ContactFeedbackPage extends StatefulWidget {
   ContactFeedbackPage({super.key});
@@ -54,17 +55,7 @@ class _ContactFeedbackPageState extends State<ContactFeedbackPage> {
           child: Center(
             child: Column(
               children: [
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    'Contact & Feedback',
-                    style: TextStyle(
-                      fontSize: 28,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
+                User_Heading(title: 'Contact & Feedback'),
                 const SizedBox(height: 10),
 
                 Padding(
