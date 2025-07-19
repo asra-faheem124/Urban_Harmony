@@ -5,7 +5,7 @@ void redSnackBar(String title, String message){
    Get.snackbar(
                                       title,
                                       message,
-                                      snackPosition: SnackPosition.BOTTOM,
+                                      snackPosition: SnackPosition.TOP,
                                       backgroundColor: Colors.black,
                                       colorText: Colors.white,
                                       margin: const EdgeInsets.all(16),
@@ -31,7 +31,7 @@ void greenSnackBar(String title, String message){
   Get.snackbar(
                                       title,
                                       message,
-                                      snackPosition: SnackPosition.BOTTOM,
+                                      snackPosition: SnackPosition.TOP,
                                       backgroundColor: Colors.black,
                                       colorText: Colors.white,
                                       margin: const EdgeInsets.all(16),

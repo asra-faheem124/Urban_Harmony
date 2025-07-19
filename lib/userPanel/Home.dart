@@ -1,14 +1,15 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:laptop_harbor/controller/notificationController';
 import 'package:laptop_harbor/userPanel/Profile.dart';
 import 'package:laptop_harbor/userPanel/Widgets/animated_text.dart';
 import 'package:laptop_harbor/userPanel/Widgets/drawer.dart';
 import 'package:laptop_harbor/userPanel/Widgets/products.dart';
 import 'package:laptop_harbor/userPanel/Widgets/top_rated_laptops.dart';
+import 'package:laptop_harbor/userPanel/notification.dart';
 import 'package:laptop_harbor/userPanel/product.dart';
 import 'package:laptop_harbor/userPanel/signup.dart';
 
@@ -20,6 +21,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final NotificationController notificationController = Get.put(NotificationController());
+
   FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   Future<DocumentSnapshot> _getUserData() async {
@@ -45,6 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         actions: [
+  
           FutureBuilder<DocumentSnapshot>(
             future: _getUserData(), // call function to fetch user data
             builder: (context, snapshot) {
@@ -59,21 +63,58 @@ class _HomeScreenState extends State<HomeScreen> {
                 final firstLetter =
                     name.isNotEmpty ? name[0].toUpperCase() : '?';
 
-                return Padding(
-                  padding: const EdgeInsets.only(right: 12),
-                  child: GestureDetector(
-                    onTap: () => Get.to(Profile()),
-                    child: CircleAvatar(
-                      backgroundColor: Colors.grey[300],
-                      child: Text(
-                        firstLetter,
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
+                return Row(
+                  children: [
+                    Stack(
+  children: [
+    IconButton(
+      icon: const Icon(Icons.notifications_none),
+      onPressed: () {
+        Get.to(() => NotificationsScreen());
+      },
+    ),
+    Obx(() {
+      if (notificationController.unreadCount.value == 0) {
+        return SizedBox();
+      } else {
+        return Positioned(
+          right: 6,
+          top: 6,
+          child: Container(
+            padding: EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              color: Colors.red,
+              shape: BoxShape.circle,
+            ),
+            child: Text(
+              '${notificationController.unreadCount.value}',
+              style: TextStyle(color: Colors.white, fontSize: 10),
+            ),
+          ),
+        );
+      }
+    }),
+  ],
+),
+
+
+                    Padding(
+                      padding: const EdgeInsets.only(right: 12),
+                      child: GestureDetector(
+                        onTap: () => Get.to(Profile()),
+                        child: CircleAvatar(
+                          backgroundColor: Colors.grey[300],
+                          child: Text(
+                            firstLetter,
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  ),
+                  ],
                 );
               }
 

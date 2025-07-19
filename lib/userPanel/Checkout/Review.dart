@@ -162,96 +162,105 @@ class _ReviewState extends State<Review> {
   }
 
   /// ✅ PLACE ORDER FUNCTION
-  Future<void> placeOrder() async {
-    final firestore = FirebaseFirestore.instance;
-    final userEmail = FirebaseAuth.instance.currentUser?.email ?? 'guest';
-    const double deliveryCharge = 200.0;
+Future<void> placeOrder() async {
+  final firestore = FirebaseFirestore.instance;
+  final currentUser = FirebaseAuth.instance.currentUser;
 
-    if (cartController.cartItems.isEmpty) {
-      redSnackBar('Error', 'Your cart is empty');
-      return;
-    }
-
-    if (checkoutController.name.value.isEmpty ||
-        checkoutController.phone.value.isEmpty ||
-        checkoutController.address.value.isEmpty ||
-        checkoutController.postalCode.value.isEmpty) {
-      redSnackBar('Missing Info', 'Complete shipping before placing order.');
-      return;
-    }
-
-    try {
-      final orderRef = await firestore.collection("orders").add({
-        "user": userEmail,
-        "shipping": {
-          "name": checkoutController.name.value,
-          "phone": checkoutController.phone.value,
-          "postalCode": checkoutController.postalCode.value,
-          "address": checkoutController.address.value,
-        },
-        "paymentMethod": 'Cash On Delivery',
-        "items":
-            cartController.cartItems.entries
-                .map(
-                  (entry) => {
-                    "productId": entry.key.productId,
-                    "name": entry.key.productName,
-                    "price": entry.key.productPrice,
-                    "quantity": entry.value,
-                    "image": entry.key.productImage,
-                  },
-                )
-                .toList(),
-        "total": cartController.totalPrice + deliveryCharge,
-        "deliveryCharge": deliveryCharge,
-        "timestamp": DateTime.now(),
-      });
-
-      final now = DateTime.now();
-      final trackingSteps = [
-        {
-          "title": "Sender is preparing to ship your order",
-          "date": now,
-          "isCompleted": true,
-        },
-        {
-          "title": "Sender has shipped your parcel",
-          "date": now.add(Duration(hours: 4)),
-          "isCompleted": false,
-        },
-        {
-          "title": "Parcel is in transit",
-          "date": now.add(Duration(hours: 12)),
-          "isCompleted": false,
-        },
-        {
-          "title": "Parcel is received at delivery Branch",
-          "date": now.add(Duration(days: 1)),
-          "isCompleted": false,
-        },
-        {
-          "title": "Parcel is out for delivery",
-          "date": now.add(Duration(days: 2)),
-          "isCompleted": false,
-        },
-        {
-          "title": "Parcel is successfully delivered",
-          "date": now.add(Duration(days: 3)),
-          "isCompleted": false,
-        },
-      ];
-
-      for (var step in trackingSteps) {
-        await orderRef.collection("trackingSteps").add(step);
-      }
-
-      cartController.ClearCart();
-
-      greenSnackBar('✅ Success!', 'Your order has been placed successfully.');
-      Get.offAll(() => Confirmation(orderId: orderRef.id));
-    } catch (e) {
-      redSnackBar('❌ Error!', 'Failed to place order. Try again.');
-      debugPrint("Order error: $e");
-    }
+  if (currentUser == null) {
+    redSnackBar('Error', 'User not logged in.');
+    return;
   }
+
+  final userEmail = currentUser.email ?? 'guest';
+  final userId = currentUser.uid;
+  const double deliveryCharge = 200.0;
+
+  if (cartController.cartItems.isEmpty) {
+    redSnackBar('Error', 'Your cart is empty');
+    return;
+  }
+
+  if (checkoutController.name.value.isEmpty ||
+      checkoutController.phone.value.isEmpty ||
+      checkoutController.address.value.isEmpty ||
+      checkoutController.postalCode.value.isEmpty) {
+    redSnackBar('Missing Info', 'Complete shipping before placing order.');
+    return;
+  }
+
+  try {
+    // ✅ Create order document
+    final orderRef = await firestore.collection("orders").add({
+      "user": userEmail,
+      "userId": userId, // ✅ Needed for notification filtering
+      "shipping": {
+        "name": checkoutController.name.value,
+        "phone": checkoutController.phone.value,
+        "postalCode": checkoutController.postalCode.value,
+        "address": checkoutController.address.value,
+      },
+      "paymentMethod": 'Cash On Delivery',
+      "items": cartController.cartItems.entries.map((entry) {
+        return {
+          "productId": entry.key.productId,
+          "name": entry.key.productName,
+          "price": entry.key.productPrice,
+          "quantity": entry.value,
+          "image": entry.key.productImage,
+        };
+      }).toList(),
+      "total": cartController.totalPrice + deliveryCharge,
+      "deliveryCharge": deliveryCharge,
+      "timestamp": DateTime.now(),
+    });
+
+    final now = DateTime.now();
+    final trackingSteps = [
+      {
+        "title": "Sender is preparing to ship your order",
+        "date": now,
+        "isCompleted": true,
+      },
+      {
+        "title": "Sender has shipped your parcel",
+        "date": now.add(Duration(hours: 4)),
+        "isCompleted": false,
+      },
+      {
+        "title": "Parcel is in transit",
+        "date": now.add(Duration(hours: 12)),
+        "isCompleted": false,
+      },
+      {
+        "title": "Parcel is received at delivery Branch",
+        "date": now.add(Duration(days: 1)),
+        "isCompleted": false,
+      },
+      {
+        "title": "Parcel is out for delivery",
+        "date": now.add(Duration(days: 2)),
+        "isCompleted": false,
+      },
+      {
+        "title": "Parcel is successfully delivered",
+        "date": now.add(Duration(days: 3)),
+        "isCompleted": false,
+      },
+    ];
+
+    // ✅ Save tracking steps as subcollection
+    for (var step in trackingSteps) {
+      await orderRef.collection("trackingSteps").add(step);
+    }
+
+    cartController.ClearCart();
+
+    greenSnackBar('✅ Success!', 'Your order has been placed successfully.');
+    Get.offAll(() => Confirmation(orderId: orderRef.id));
+  } catch (e) {
+    redSnackBar('❌ Error!', 'Failed to place order. Try again.');
+    debugPrint("Order error: $e");
+  }
+}
+
 }

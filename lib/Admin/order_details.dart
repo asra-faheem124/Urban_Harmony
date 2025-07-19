@@ -47,9 +47,7 @@ class AdminOrderDetailsPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Order Details"),
         backgroundColor: Colors.white,
-        elevation: 0,
       ),
       body: FutureBuilder<DocumentSnapshot>(
         future: orderDoc.get(),
