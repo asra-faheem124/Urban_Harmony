@@ -147,22 +147,12 @@ class _ProductsScreenState extends State<ProductsScreen> {
                 Expanded(
                   child: display.isEmpty
                       ? Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Lottie.asset(
-              'assets/lottie/No DFata Found.json',
-              width: 200,
-              height: 200,
-              fit: BoxFit.contain,
-            ),
-            const SizedBox(height: 16),
+        child: 
             const Text(
               'No matching results',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-          ],
-        ),
+          
       )
                       : ListView.builder(
                           itemCount: display.length,

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:laptop_harbor/userPanel/BottomBar.dart';
 import 'package:laptop_harbor/userPanel/Home.dart';
 import 'package:laptop_harbor/userPanel/Widgets/SnackBar.dart';
 import 'package:laptop_harbor/userPanel/Widgets/button.dart';
@@ -183,7 +184,7 @@ class _ContactFeedbackPageState extends State<ContactFeedbackPage> {
                                   '✅ Success!',
                                   'Message sent successfully.',
                                 );
-                                Get.offAll(HomeScreen());
+                                Get.offAll(BottomBar());
                                 // Clear fields
                                 nameController.clear();
                                 emailController.clear();
