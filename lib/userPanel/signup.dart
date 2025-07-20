@@ -149,7 +149,7 @@ class SignUp extends StatelessWidget {
                               children: [
                                 MyButton(
                                   title: 'SIGNUP',
-                                  height: 50,
+                                  height: 50.0,
                                   onPressed: () async {
                                     if (_formKey.currentState!.validate()) {
                                       String username = name.text.trim();

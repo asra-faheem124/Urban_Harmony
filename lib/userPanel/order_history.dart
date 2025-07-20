@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/userPanel/TrackOrder.dart';
-import 'package:laptop_harbor/userPanel/constant.dart';
 
 class OrdersHistoryPage extends StatelessWidget {
   OrdersHistoryPage({super.key});
@@ -75,8 +74,10 @@ class OrdersHistoryPage extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("Order #$orderId",
-                                style: const TextStyle(fontWeight: FontWeight.bold)),
+                            Flexible(
+                              child: Text("Order #$orderId",
+                                  style: const TextStyle(fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis,),
+                            ),
                             Text(
                               "${date.day}/${date.month}/${date.year} ${date.hour}:${date.minute.toString().padLeft(2, '0')}",
                               style: const TextStyle(color: Colors.grey),

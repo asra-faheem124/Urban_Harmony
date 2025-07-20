@@ -36,7 +36,7 @@ class LogoutScreen extends StatelessWidget {
           SizedBox(height: 10),
           MyButton(
             title: "Logout",
-            height: 50,
+            height: 50.0,
             onPressed: () {
               FirebaseAuth _auth = FirebaseAuth.instance;
               _auth.signOut();

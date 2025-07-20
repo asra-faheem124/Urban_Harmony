@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class MyButton extends StatelessWidget {
   final title;
-  final height;
+  final dynamic height;
   final VoidCallback onPressed;
 
   const MyButton({

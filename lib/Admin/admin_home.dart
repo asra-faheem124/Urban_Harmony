@@ -1,5 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:laptop_harbor/Admin/admin_category.dart';
+import 'package:laptop_harbor/Admin/admin_feedback.dart';
+import 'package:laptop_harbor/Admin/admin_orders.dart';
+import 'package:laptop_harbor/Admin/admin_products.dart';
+import 'package:laptop_harbor/Admin/admin_ratings.dart';
+import 'package:laptop_harbor/Admin/admin_users.dart';
 import 'package:laptop_harbor/userPanel/Widgets/drawer.dart';
 import 'dart:developer';
 
@@ -30,12 +36,18 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
 
   Future<void> fetchDashboardData() async {
     try {
-      final usersSnap = await FirebaseFirestore.instance.collection('User').get();
-      final catSnap = await FirebaseFirestore.instance.collection('category').get();
-      final productSnap = await FirebaseFirestore.instance.collection('products').get();
-      final orderSnap = await FirebaseFirestore.instance.collection('orders').get();
-      final ratingSnap = await FirebaseFirestore.instance.collection('ratings').get();
-      final contactSnap = await FirebaseFirestore.instance.collection('contactMessages').get();
+      final usersSnap =
+          await FirebaseFirestore.instance.collection('User').get();
+      final catSnap =
+          await FirebaseFirestore.instance.collection('category').get();
+      final productSnap =
+          await FirebaseFirestore.instance.collection('products').get();
+      final orderSnap =
+          await FirebaseFirestore.instance.collection('orders').get();
+      final ratingSnap =
+          await FirebaseFirestore.instance.collection('ratings').get();
+      final contactSnap =
+          await FirebaseFirestore.instance.collection('contactMessages').get();
 
       setState(() {
         totalUsers = usersSnap.size;
@@ -54,32 +66,53 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
     }
   }
 
-  Widget buildTile(String title, String value, IconData icon, Color color) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: color.withOpacity(0.2)),
-      ),
-      child: Row(
-        children: [
-          Icon(icon, color: color, size: 32),
-          const SizedBox(width: 16),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(title,
-                  style: TextStyle(fontSize: 16, color: Colors.grey[800])),
-              const SizedBox(height: 4),
-              Text(value,
-                  style: TextStyle(
+  Widget buildTile(
+    String title,
+    String value,
+    IconData icon,
+    Color color,
+    VoidCallback onTap,
+  ) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(16),
+        margin: const EdgeInsets.symmetric(vertical: 6),
+        decoration: BoxDecoration(
+          color: color.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: color.withOpacity(0.2)),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(fontSize: 16, color: Colors.grey[800]),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    value,
+                    style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
-                      color: color)),
-            ],
-          ),
-        ],
+                      color: color,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 16),
+            Icon(icon, color: color, size: 32),
+          ],
+        ),
       ),
     );
   }
@@ -90,7 +123,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-         title: Padding(
+        title: Padding(
           padding: const EdgeInsets.all(8.0),
           child: SizedBox(
             height: 50,
@@ -100,51 +133,101 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
         ),
         actions: [
           Builder(
-            builder: (context) => IconButton(
-              icon: const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Icon(Icons.menu, color: Colors.black),
-              ),
-              onPressed: () => Scaffold.of(context).openEndDrawer(),
-            ),
+            builder:
+                (context) => IconButton(
+                  icon: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Icon(Icons.menu, color: Colors.black),
+                  ),
+                  onPressed: () => Scaffold.of(context).openEndDrawer(),
+                ),
           ),
         ],
       ),
       endDrawer: DrawerWidget(),
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Admin_Heading(title: 'Admin Dashboard'),
-                  const SizedBox(height: 20),
-                  GridView.count(
-                    crossAxisCount: 2,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    crossAxisSpacing: 16,
-                    mainAxisSpacing: 16,
-                    childAspectRatio: 2.4,
-                    children: [
-                      buildTile('Total Users', totalUsers.toString(),
-                          Icons.person, Colors.teal),
-                      buildTile('Categories', totalCategories.toString(),
-                          Icons.category, Colors.blue),
-                      buildTile('Products', totalProducts.toString(),
-                          Icons.laptop_mac, Colors.deepOrange),
-                      buildTile('Orders', totalOrders.toString(),
-                          Icons.receipt_long, Colors.green),
-                      buildTile('Ratings', totalRatings.toString(),
-                          Icons.star, Colors.amber),
-                     buildTile('Contact Messages', totalContact.toString(),
-                          Icons.message_rounded, Colors.purple),
-                    ],
-                  ),
-                ],
+      body:
+          isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Admin_Heading(title: 'Admin Dashboard'),
+                    const SizedBox(height: 20),
+
+                    buildTile(
+                      'Total Users',
+                      totalUsers.toString(),
+                      Icons.person,
+                      Colors.teal,
+                      () => Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => AdminUsersPage()),
+                      ),
+                    ),
+
+                    buildTile(
+                      'Categories',
+                      totalCategories.toString(),
+                      Icons.category,
+                      Colors.blue,
+                      () => Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => AdminCategoryPage()),
+                      ),
+                    ),
+
+                    buildTile(
+                      'Products',
+                      totalProducts.toString(),
+                      Icons.laptop_mac,
+                      Colors.deepOrange,
+                        () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => AdminProductsPage(),
+                          ),
+                        ),
+                        ),
+
+                    buildTile(
+                      'Orders',
+                      totalOrders.toString(),
+                      Icons.receipt_long,
+                      Colors.green,
+                        () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => AdminOrdersPage()),
+                        ),
+                    ),
+
+                    buildTile(
+                      'Ratings',
+                      totalRatings.toString(),
+                      Icons.star,
+                      Colors.amber,
+                        () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => AdminRatingsPage()),
+                        ),
+                    ),
+
+                    buildTile(
+                      'Contact Messages',
+                      totalContact.toString(),
+                      Icons.message_rounded,
+                      Colors.purple,
+                        () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => AdminFeedbackPage(),
+                          ),
+                        ),
+                    ),
+                  ],
+                ),
               ),
-            ),
     );
   }
 }

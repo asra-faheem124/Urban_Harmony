@@ -66,7 +66,7 @@ class AdminProductsPage extends StatelessWidget {
                 Admin_Heading(title: 'Products'),
                 MyButton(
                   title: 'Add Product',
-                  height: 40,
+                  height: 40.0,
                   onPressed: () => Get.to(AddProduct()),
                 ),
               ],

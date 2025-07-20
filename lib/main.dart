@@ -1,7 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:laptop_harbor/Admin/add_product.dart';
+import 'package:laptop_harbor/Admin/admin_category.dart';
 import 'package:laptop_harbor/Admin/admin_home.dart';
+import 'package:laptop_harbor/Admin/admin_products.dart';
+import 'package:laptop_harbor/userPanel/product.dart';
 import 'package:laptop_harbor/userPanel/splash.dart';
 import 'firebase_options.dart';
 

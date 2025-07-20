@@ -150,7 +150,7 @@ class _EditProfileState extends State<EditProfile> {
                         Center(
                           child: MyButton(
                             title: 'Save Changes',
-                            height: 50,
+                            height: 50.0,
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 final uid = auth.currentUser!.uid;

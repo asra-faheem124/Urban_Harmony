@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:laptop_harbor/controller/wishlistController.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:laptop_harbor/userPanel/constant.dart';
+import 'package:lottie/lottie.dart';
 
 class WishList extends StatelessWidget {
   final WishlistController wishlistController = Get.put(WishlistController());
@@ -21,8 +22,22 @@ class WishList extends StatelessWidget {
         final prodList = wishlistController.wishlist;
 
         if (prodList.isEmpty) {
-          return const Center(
-            child: Text("Your wishlist is empty."),
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                   Lottie.asset(
+              'assets/videos/Empty Box.json', // Path to your animation file
+              width: 200, // Customize size
+              height: 200, // Customize size
+              fit: BoxFit.fill, // Animation fit style
+            ),
+            Text(
+                    "You wishlist is empty",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
           );
         }
 

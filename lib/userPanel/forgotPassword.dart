@@ -48,7 +48,7 @@ class ForgotPassword extends StatelessWidget {
               
                 SizedBox(height: 30,),
               Center(
-                child: MyButton(title: 'Reset Password',height: 50, onPressed: () async {
+                child: MyButton(title: 'Reset Password',height: 50.0, onPressed: () async {
                    if (_formKey.currentState != null &&
                                       _formKey.currentState!.validate()) {
                                     String useremail = email.text.trim();

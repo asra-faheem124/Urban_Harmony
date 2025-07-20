@@ -31,7 +31,7 @@ class AdminCategoryPage extends StatelessWidget {
                 Admin_Heading(title: 'Categories'),
                 MyButton(
                   title: 'Add Category',
-                  height: 40,
+                  height: 40.0,
                   onPressed: () => Get.to(AddCategoryPage()),
                 ),
               ],

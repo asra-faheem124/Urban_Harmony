@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
+import 'package:laptop_harbor/userPanel/TrackOrder.dart';
+import 'package:laptop_harbor/userPanel/Widgets/button.dart';
 import 'package:laptop_harbor/userPanel/constant.dart';
 
 class NotificationsScreen extends StatefulWidget {
@@ -71,28 +74,53 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                     final data = doc.data() as Map<String, dynamic>;
                 
                     return ListTile(
-                      leading: Icon(
-                        (data["isRead"] ?? false)
-                            ? Icons.notifications_none
-                            : Icons.notifications,
-                        color: (data["isRead"] ?? false) ? Colors.grey : Colors.blue,
-                      ),
-                      title: Text(data["title"] ?? "No Title"),
-                      subtitle: Text(data["message"] ?? "No message"),
-                      trailing: Text(
-                        (data["timestamp"] is Timestamp)
-                            ? (data["timestamp"] as Timestamp)
-                                .toDate()
-                                .toLocal()
-                                .toString()
-                                .split('.')[0]
-                            : "",
-                        style: const TextStyle(fontSize: 12),
-                      ),
-                      onTap: () {
-                        doc.reference.update({"isRead": true});
-                      },
-                    );
+  leading: Icon(
+    (data["isRead"] ?? false)
+        ? Icons.notifications_none
+        : Icons.notifications,
+    color: (data["isRead"] ?? false) ? Colors.grey : Colors.blue,
+  ),
+  title: Text(data["title"] ?? "No Title"),
+  subtitle: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(data["message"] ?? "No message"),
+      if (data["type"] == "order_tracking" && data["orderId"] != null)
+  Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text("Order ID: ${data["orderId"]}"),
+      const SizedBox(height: 8),
+      ElevatedButton(
+        onPressed: () {
+          Get.to(() => TrackOrderPage(orderId: data["orderId"]));
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.blue,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        ),
+        child: const Text("Track Order", style: TextStyle(color: Colors.white)),
+      ),
+    ],
+  )
+
+    ],
+  ),
+  trailing: Text(
+    (data["timestamp"] is Timestamp)
+        ? (data["timestamp"] as Timestamp)
+            .toDate()
+            .toLocal()
+            .toString()
+            .split('.')[0]
+        : "",
+    style: const TextStyle(fontSize: 12),
+  ),
+  onTap: () {
+    doc.reference.update({"isRead": true});
+  },
+);
+
                   },
                 ),
               ),

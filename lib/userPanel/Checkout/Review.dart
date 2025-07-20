@@ -10,6 +10,7 @@ import 'package:laptop_harbor/userPanel/Checkout/Confirmation.dart';
 import 'package:laptop_harbor/userPanel/TrackOrder.dart';
 import 'package:laptop_harbor/userPanel/Widgets/SnackBar.dart';
 import 'package:laptop_harbor/userPanel/Widgets/button.dart';
+import 'package:laptop_harbor/userPanel/email_service.dart';
 
 class Review extends StatefulWidget {
   const Review({super.key});
@@ -148,7 +149,7 @@ class _ReviewState extends State<Review> {
                 const SizedBox(height: 16),
                 MyButton(
                   title: 'Confirm Order',
-                  height: 50,
+                  height: 50.0,
                   onPressed: () async {
                     await placeOrder();
                   },
@@ -213,6 +214,18 @@ Future<void> placeOrder() async {
       "deliveryCharge": deliveryCharge,
       "timestamp": DateTime.now(),
     });
+    // Generate order details string
+String orderDetails = cartController.cartItems.entries.map((entry) {
+  return "${entry.key.productName} x${entry.value} - Rs. ${entry.key.productPrice * entry.value}";
+}).join("\n");
+
+await sendOrderConfirmationEmail(
+  userName: checkoutController.name.value,
+  userEmail: userEmail,
+  orderId: orderRef.id,
+  orderDetails: orderDetails,
+);
+
 
     final now = DateTime.now();
     final trackingSteps = [

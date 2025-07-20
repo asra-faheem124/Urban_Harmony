@@ -6,6 +6,7 @@ import 'package:laptop_harbor/controller/cartController.dart';
 import 'package:laptop_harbor/userPanel/Checkout/Bar.dart';
 import 'package:laptop_harbor/userPanel/Widgets/button.dart';
 import 'package:laptop_harbor/userPanel/constant.dart';
+import 'package:lottie/lottie.dart';
 
 class Cart extends StatelessWidget {
   Cart({super.key});
@@ -27,8 +28,22 @@ class Cart extends StatelessWidget {
           final cartItems = cartcontroller.cartItems;
 
           if (cartItems.isEmpty) {
-            return const Center(
-              child: Text("Your cart is empty."),
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                   Lottie.asset(
+              'assets/videos/Empty List.json', // Path to your animation file
+              width: 200, // Customize size
+              height: 200, // Customize size
+              fit: BoxFit.fill, // Animation fit style
+                        ),
+                        Text(
+                      "You cart is empty",
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                ],
+              ),
             );
           }
 
@@ -120,7 +135,7 @@ class Cart extends StatelessWidget {
 
               MyButton(
                 title: 'Go To Checkout',
-                height: 50,
+                height: 50.0,
                 onPressed: () {
                   Get.to(StepperUI());
                 },

@@ -37,107 +37,109 @@ class _HomeScreenState extends State<HomeScreen> {
     final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SizedBox(
-            height: 50,
-            width: 100,
-            child: Image.asset('assets/images/logo2.png'),
-          ),
-        ),
-        actions: [
-  
-          FutureBuilder<DocumentSnapshot>(
-            future: _getUserData(), // call function to fetch user data
-            builder: (context, snapshot) {
-              final user = FirebaseAuth.instance.currentUser;
+     appBar: AppBar(
+  backgroundColor: Colors.white,
+  title: Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: SizedBox(
+      height: 50,
+      width: 100,
+      child: Image.asset('assets/images/logo2.png'),
+    ),
+  ),
+  actions: [
+    FutureBuilder<DocumentSnapshot>(
+      future: _getUserData(), // Your async function to get user data
+      builder: (context, snapshot) {
+        final user = FirebaseAuth.instance.currentUser;
 
-              // If user is logged in and data is available
-              if (user != null &&
-                  snapshot.connectionState == ConnectionState.done &&
-                  snapshot.hasData) {
-                final userData = snapshot.data!.data() as Map<String, dynamic>;
-                final name = userData['name'] ?? '';
-                final firstLetter =
-                    name.isNotEmpty ? name[0].toUpperCase() : '?';
+        // Logged-in and data available
+        if (user != null &&
+            snapshot.connectionState == ConnectionState.done &&
+            snapshot.hasData &&
+            snapshot.data!.exists) {
 
-                return Row(
-                  children: [
-                    Stack(
-  children: [
-    IconButton(
-      icon: const Icon(Icons.notifications_none),
-      onPressed: () {
-        Get.to(() => NotificationsScreen());
+          final userData = snapshot.data!.data() as Map<String, dynamic>?;
+          final name = userData?['name'] ?? '';
+          final firstLetter = name.isNotEmpty ? name[0].toUpperCase() : '?';
+
+          return Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Notifications with red badge
+              Stack(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.notifications_none, color: Colors.black),
+                    onPressed: () {
+                      Get.to(() => NotificationsScreen());
+                    },
+                  ),
+                  Obx(() {
+                    if (notificationController.unreadCount.value == 0) {
+                      return const SizedBox();
+                    } else {
+                      return Positioned(
+                        right: 6,
+                        top: 6,
+                        child: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: const BoxDecoration(
+                            color: Colors.red,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Text(
+                            '${notificationController.unreadCount.value}',
+                            style: const TextStyle(color: Colors.white, fontSize: 10),
+                          ),
+                        ),
+                      );
+                    }
+                  }),
+                ],
+              ),
+              // Profile avatar
+              Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: GestureDetector(
+                  onTap: () => Get.to(() => Profile()),
+                  child: CircleAvatar(
+                    backgroundColor: Colors.grey[300],
+                    child: Text(
+                      firstLetter,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        }
+
+        // If user is not logged in
+        return IconButton(
+          icon: const Icon(Icons.app_registration_rounded, color: Colors.black),
+          onPressed: () {
+            Get.to(() => SignUp());
+          },
+        );
       },
     ),
-    Obx(() {
-      if (notificationController.unreadCount.value == 0) {
-        return SizedBox();
-      } else {
-        return Positioned(
-          right: 6,
-          top: 6,
-          child: Container(
-            padding: EdgeInsets.all(4),
-            decoration: BoxDecoration(
-              color: Colors.red,
-              shape: BoxShape.circle,
-            ),
-            child: Text(
-              '${notificationController.unreadCount.value}',
-              style: TextStyle(color: Colors.white, fontSize: 10),
-            ),
-          ),
-        );
-      }
-    }),
+    // Drawer icon (always shown)
+    Builder(
+      builder: (context) => IconButton(
+        icon: const Icon(Icons.menu, color: Colors.black),
+        onPressed: () {
+          Scaffold.of(context).openEndDrawer();
+        },
+      ),
+    ),
   ],
 ),
 
-
-                    Padding(
-                      padding: const EdgeInsets.only(right: 12),
-                      child: GestureDetector(
-                        onTap: () => Get.to(Profile()),
-                        child: CircleAvatar(
-                          backgroundColor: Colors.grey[300],
-                          child: Text(
-                            firstLetter,
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                );
-              }
-
-              // If not logged in
-              return IconButton(
-                icon: Icon(Icons.app_registration_rounded, color: Colors.black),
-                onPressed: () {
-                  Get.to(SignUp());
-                },
-              );
-            },
-          ),
-          Builder(
-            builder:
-                (context) => IconButton(
-                  icon: Icon(Icons.menu, color: Colors.black),
-                  onPressed: () {
-                    Scaffold.of(context).openEndDrawer();
-                  },
-                ),
-          ),
-        ],
-      ),
       endDrawer: DrawerWidget(),
       body: SingleChildScrollView(
         child: Column(

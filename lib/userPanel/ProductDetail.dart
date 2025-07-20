@@ -305,10 +305,13 @@ class _ProductDetailState extends State<ProductDetail> {
                       title: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            data['email'] ?? 'User',
-                            style: const TextStyle(fontWeight: FontWeight.w600),
-                          ),
+                          Expanded(
+      child: Text(
+        data['email'] ?? 'User',
+        style: const TextStyle(fontWeight: FontWeight.w600),
+        overflow: TextOverflow.ellipsis,
+      ),
+    ),
                           if (timestamp != null)
                             Text(
                               "${timestamp.day}/${timestamp.month}/${timestamp.year}",

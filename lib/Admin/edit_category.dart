@@ -112,7 +112,7 @@ class _EditCategoryPageState extends State<EditCategoryPage> {
                         Center(
                           child: MyButton(
                             title: 'Update',
-                            height: 50,
+                            height: 50.0,
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 Uint8List updatedImage = image != null

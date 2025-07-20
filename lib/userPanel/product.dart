@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:laptop_harbor/userPanel/ProductDetail.dart';
 import 'package:laptop_harbor/userPanel/Widgets/button.dart';
 import 'package:laptop_harbor/userPanel/constant.dart';
+import 'package:lottie/lottie.dart';
 
 class ProductsScreen extends StatefulWidget {
   const ProductsScreen({super.key});
@@ -132,19 +133,37 @@ class _ProductsScreenState extends State<ProductsScreen> {
                     },
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
-                  child: Row(
-                    children: [
-                      Expanded(child: _buildCategoryDropdown()),
-                      const SizedBox(width: 12),
-                      Expanded(child: _buildSortDropdown()),
-                    ],
-                  ),
-                ),
+               Padding(
+  padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
+  child: Row(
+    children: [
+      Expanded(child: _buildCategoryDropdown()),
+      const SizedBox(width: 5),
+      Expanded(child: _buildSortDropdown()),
+    ],
+  ),
+),
+
                 Expanded(
                   child: display.isEmpty
-                      ? const Center(child: Text('No products found.'))
+                      ? Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Lottie.asset(
+              'assets/lottie/No DFata Found.json',
+              width: 200,
+              height: 200,
+              fit: BoxFit.contain,
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              'No matching results',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      )
                       : ListView.builder(
                           itemCount: display.length,
                           itemBuilder: (ctx, i) {
@@ -203,7 +222,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                                       color: Colors.green)),
                                               MyButton(
                                                 title: 'Details',
-                                                height: 40,
+                                                height: 40.0,
                                                 onPressed: () =>
                                                     Get.to(ProductDetail(productData: data)),
                                               ),
@@ -245,12 +264,13 @@ class _ProductsScreenState extends State<ProductsScreen> {
         contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       ),
       value: _sortOption,
+      isExpanded: true,
       items: const [
         'None',
         'Price: Low to High',
         'Price: High to Low',
         'Rating: High to Low'
-      ].map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
+      ].map((c) => DropdownMenuItem(value: c, child: Text(c, overflow: TextOverflow.ellipsis,))).toList(),
       onChanged: (v) => setState(() => _sortOption = v!),
     );
   }

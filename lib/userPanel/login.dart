@@ -131,7 +131,7 @@ class Login extends StatelessWidget {
                               children: [
                                 MyButton(
                                   title: 'LOGIN',
-                                  height: 50,
+                                  height: 50.0,
                                   onPressed: () async {
                                     if (_formKey.currentState != null &&
                                         _formKey.currentState!.validate()) {

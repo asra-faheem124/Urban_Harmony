@@ -96,7 +96,7 @@ class AdminFeedbackPage extends StatelessWidget {
                           const SizedBox(width: 12),
                           Icon(Icons.email, size: 18, color: Colors.grey[700]),
                           const SizedBox(width: 4),
-                          Text(data['email'] ?? ''),
+                          Flexible(child: Text(data['email'] ?? '', overflow: TextOverflow.ellipsis,)),
                         ],
                       ),
                     ],

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:laptop_harbor/userPanel/BottomBar.dart';
 import 'package:laptop_harbor/userPanel/Home.dart';
 import 'package:laptop_harbor/userPanel/Widgets/SnackBar.dart';
 import 'package:laptop_harbor/userPanel/Widgets/button.dart';
@@ -52,7 +53,7 @@ class _ChangePasswordState extends State<ChangePassword> {
       // Step 4: Notify success
       greenSnackBar('✅ Success!', 'Password changed successfully.');
 
-      Get.offAll(() => const HomeScreen());
+      Get.offAll(() => const BottomBar());
     } on FirebaseAuthException catch (e) {
       String errorMsg = 'Something went wrong. Try again later.';
       if (e.code == 'wrong-password') {
@@ -185,7 +186,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                         Center(
                           child: MyButton(
                             title: 'Update',
-                            height: 50,
+                            height: 50.0,
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
                                 changePassword();

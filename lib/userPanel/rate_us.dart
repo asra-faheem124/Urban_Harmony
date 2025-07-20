@@ -130,7 +130,7 @@ class _RateUsPageState extends State<RateUsPage> {
 
               const SizedBox(height: 25),
 
-              MyButton(title: 'Submit', height: 50, onPressed: _submit),
+              MyButton(title: 'Submit', height: 50.0, onPressed: _submit),
             ],
           ),
         ),

@@ -5,6 +5,7 @@ import 'package:laptop_harbor/userPanel/Home.dart';
 import 'package:laptop_harbor/userPanel/Profile.dart';
 import 'package:laptop_harbor/userPanel/WishList.dart';
 import 'package:laptop_harbor/userPanel/product.dart';
+import 'package:lottie/lottie.dart';
 
 class BottomBar extends StatefulWidget {
   const BottomBar({super.key});
@@ -39,10 +40,11 @@ class _BottomBarState extends State<BottomBar> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CircleAvatar(
-            backgroundColor: Colors.black,
-            radius: 50,
-            child: Icon(Icons.person_add_disabled_outlined, color: Colors.white, size: 40,),
+           Lottie.asset(
+            'assets/videos/Connection error.json', // Path to your animation file
+            width: 200, // Customize size
+            height: 200, // Customize size
+            fit: BoxFit.fill, // Animation fit style
           ),
           SizedBox(height: 15,),
           Text(
