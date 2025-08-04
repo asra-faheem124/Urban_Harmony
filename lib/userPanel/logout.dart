@@ -31,7 +31,7 @@ class LogoutScreen extends StatelessWidget {
           Text(
             "Logging out will end your current session, you can always log back in anytime to access your account",
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 20),
+            style: TextStyle(fontSize: 18),
           ),
           SizedBox(height: 10),
           MyButton(

@@ -92,6 +92,7 @@ class _EditProfileState extends State<EditProfile> {
                         const SizedBox(height: 30),
                         TextFormField(
                           controller: email,
+                           readOnly: true,
                           decoration: const InputDecoration(
                             hintText: 'Email Address',
                             hintStyle: TextStyle(

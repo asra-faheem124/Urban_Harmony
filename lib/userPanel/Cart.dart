@@ -19,8 +19,7 @@ class Cart extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-          iconTheme: const IconThemeData(color: Colors.black),
-
+        iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -32,16 +31,20 @@ class Cart extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                   Lottie.asset(
-              'assets/videos/Empty List.json', // Path to your animation file
-              width: 200, // Customize size
-              height: 200, // Customize size
-              fit: BoxFit.fill, // Animation fit style
-                        ),
-                        Text(
-                      "You cart is empty",
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  CircleAvatar(
+                    backgroundColor: Colors.grey[300],
+                    radius: 50,
+                    child: Icon(
+                      Icons.shopping_cart_rounded,
+                      size: 50,
+                      color: Colors.black,
                     ),
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    "You cart is empty",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
                 ],
               ),
             );
@@ -49,24 +52,26 @@ class Cart extends StatelessWidget {
 
           return Column(
             children: [
-              const Center(
-                child: User_Heading(title: 'My Cart',)
-              ),
+              const Center(child: User_Heading(title: 'My Cart')),
               const SizedBox(height: 20),
               const Divider(color: Colors.grey),
               Expanded(
                 child: ListView.separated(
                   itemCount: cartItems.length,
-                  separatorBuilder: (context, index) =>
-                      const Divider(thickness: 1, color: Colors.grey),
+                  separatorBuilder:
+                      (context, index) =>
+                          const Divider(thickness: 1, color: Colors.grey),
                   itemBuilder: (context, index) {
                     final product = cartItems.keys.toList()[index];
                     final quantity = cartItems[product]!;
                     Uint8List productImage = base64Decode(product.productImage);
 
                     return ListTile(
-                      leading:
-                          Image.memory(productImage, width: 50, height: 50),
+                      leading: Image.memory(
+                        productImage,
+                        width: 50,
+                        height: 50,
+                      ),
                       title: Text(
                         product.productName,
                         style: const TextStyle(fontWeight: FontWeight.bold),

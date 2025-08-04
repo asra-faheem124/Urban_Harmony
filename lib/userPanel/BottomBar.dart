@@ -40,19 +40,22 @@ class _BottomBarState extends State<BottomBar> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-           Lottie.asset(
-            'assets/videos/Connection error.json', // Path to your animation file
-            width: 200, // Customize size
-            height: 200, // Customize size
-            fit: BoxFit.fill, // Animation fit style
+          CircleAvatar(
+            backgroundColor: Colors.grey[300],
+            radius: 50,
+            child: Icon(
+              Icons.sentiment_dissatisfied_rounded,
+              size: 50,
+              color: Colors.black,
+            ),
           ),
-          SizedBox(height: 15,),
+          SizedBox(height: 20),
           Text(
-        "You are not logged in",
-        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-      ),
+            "You are not logged in",
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
         ],
-      )
+      ),
     );
   }
 

@@ -36,13 +36,15 @@ class _ProductsScreenState extends State<ProductsScreen> {
   }
 
   Future<void> _loadAll() async {
-    final catSnap = await FirebaseFirestore.instance.collection('category').get();
+    final catSnap =
+        await FirebaseFirestore.instance.collection('category').get();
     Map<String, String> catMap = {
-      for (var c in catSnap.docs) c['categoryId']: c['categoryName']
+      for (var c in catSnap.docs) c['categoryId']: c['categoryName'],
     };
     _categories = ['All', ...catMap.values.toSet()];
 
-    final prodSnap = await FirebaseFirestore.instance.collection('products').get();
+    final prodSnap =
+        await FirebaseFirestore.instance.collection('products').get();
     List<Map<String, dynamic>> temp = [];
 
     for (var p in prodSnap.docs) {
@@ -51,14 +53,17 @@ class _ProductsScreenState extends State<ProductsScreen> {
       double avg = 0;
       int cnt = 0;
 
-      final rSnap = await FirebaseFirestore.instance
-          .collection('ratings')
-          .where('productId', isEqualTo: data['productId'])
-          .get();
+      final rSnap =
+          await FirebaseFirestore.instance
+              .collection('ratings')
+              .where('productId', isEqualTo: data['productId'])
+              .get();
 
       cnt = rSnap.size;
       if (cnt > 0) {
-        avg = rSnap.docs.map((d) => d['rating'] as num).reduce((a, b) => a + b) / cnt;
+        avg =
+            rSnap.docs.map((d) => d['rating'] as num).reduce((a, b) => a + b) /
+            cnt;
       }
 
       temp.add({
@@ -80,27 +85,38 @@ class _ProductsScreenState extends State<ProductsScreen> {
 
     // Apply search filter by product name or category
     if (_searchQuery.isNotEmpty) {
-      display = display.where((item) {
-        final name = item['data']['productName'].toString().toLowerCase();
-        final catName = item['categoryName'].toString().toLowerCase();
-        return name.contains(_searchQuery) || catName.contains(_searchQuery);
-      }).toList();
+      display =
+          display.where((item) {
+            final name = item['data']['productName'].toString().toLowerCase();
+            final catName = item['categoryName'].toString().toLowerCase();
+            return name.contains(_searchQuery) ||
+                catName.contains(_searchQuery);
+          }).toList();
     }
 
     // Apply category filter
     if (_selectedCategory != 'All') {
-      display = display.where((item) => item['categoryName'] == _selectedCategory).toList();
+      display =
+          display
+              .where((item) => item['categoryName'] == _selectedCategory)
+              .toList();
     }
 
     // Apply sort
     switch (_sortOption) {
       case 'Price: Low to High':
-        display.sort((a, b) =>
-            int.parse(a['data']['productPrice']).compareTo(int.parse(b['data']['productPrice'])));
+        display.sort(
+          (a, b) => int.parse(
+            a['data']['productPrice'],
+          ).compareTo(int.parse(b['data']['productPrice'])),
+        );
         break;
       case 'Price: High to Low':
-        display.sort((a, b) =>
-            int.parse(b['data']['productPrice']).compareTo(int.parse(a['data']['productPrice'])));
+        display.sort(
+          (a, b) => int.parse(
+            b['data']['productPrice'],
+          ).compareTo(int.parse(a['data']['productPrice'])),
+        );
         break;
       case 'Rating: High to Low':
         display.sort((a, b) => b['rating'].compareTo(a['rating']));
@@ -109,127 +125,175 @@ class _ProductsScreenState extends State<ProductsScreen> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-      ),
-      body: _products.isEmpty
-          ? const Center(child: CircularProgressIndicator())
-          : Column(
-              children: [
-                User_Heading(title: 'Laptops'),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
-                  child: TextField(
-                    controller: _searchController,
-                    decoration: InputDecoration(
-                      labelText: 'Search Products or Categories',
-                      prefixIcon: const Icon(Icons.search),
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+      appBar: AppBar(backgroundColor: Colors.white),
+      body:
+          _products.isEmpty
+              ? const Center(child: CircularProgressIndicator())
+              : Column(
+                children: [
+                  User_Heading(title: 'Laptops'),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12.0,
+                      vertical: 8,
                     ),
-                    onChanged: (value) {
-                      setState(() {
-                        _searchQuery = value.trim().toLowerCase();
-                      });
-                    },
+                    child: TextField(
+                      controller: _searchController,
+                      decoration: InputDecoration(
+                        labelText: 'Search Products or Categories',
+                        prefixIcon: const Icon(Icons.search),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          _searchQuery = value.trim().toLowerCase();
+                        });
+                      },
+                    ),
                   ),
-                ),
-               Padding(
-  padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
-  child: Row(
-    children: [
-      Expanded(child: _buildCategoryDropdown()),
-      const SizedBox(width: 5),
-      Expanded(child: _buildSortDropdown()),
-    ],
-  ),
-),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12.0,
+                      vertical: 8,
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(child: _buildCategoryDropdown()),
+                        const SizedBox(width: 5),
+                        Expanded(child: _buildSortDropdown()),
+                      ],
+                    ),
+                  ),
 
-                Expanded(
-                  child: display.isEmpty
-                      ? Center(
-        child: 
-            const Text(
-              'No matching results',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-          
-      )
-                      : ListView.builder(
-                          itemCount: display.length,
-                          itemBuilder: (ctx, i) {
-                            final prod = display[i];
-                            final data = prod['data'] as Map<String, dynamic>;
-                            final avg = prod['rating'] as double;
-                            final cnt = prod['ratingCount'] as int;
-                            final catName = prod['categoryName'] as String;
-                            final img = base64Decode(data['productImage']);
+                  Expanded(
+                    child:
+                        display.isEmpty
+                            ? Center(
+                              child: const Text(
+                                'No matching results',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            )
+                            : ListView.builder(
+                              itemCount: display.length,
+                              itemBuilder: (ctx, i) {
+                                final prod = display[i];
+                                final data =
+                                    prod['data'] as Map<String, dynamic>;
+                                final avg = prod['rating'] as double;
+                                final cnt = prod['ratingCount'] as int;
+                                final catName = prod['categoryName'] as String;
+                                final img = base64Decode(data['productImage']);
 
-                            return Card(
-                              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                              elevation: 4,
-                              child: Padding(
-                                padding: const EdgeInsets.all(12),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(12),
-                                      child: Image.memory(img,
-                                          width: 100, height: 100, fit: BoxFit.cover),
-                                    ),
-                                    const SizedBox(width: 12),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(data['productName'],
-                                              style: const TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold)),
-                                          const SizedBox(height: 4),
-                                          Text(catName,
-                                              style: const TextStyle(color: Colors.grey)),
-                                          const SizedBox(height: 6),
-                                          Row(children: [
-                                            const Icon(Icons.star,
-                                                size: 16, color: Colors.amber),
-                                            const SizedBox(width: 4),
-                                            Text(avg.toStringAsFixed(1)),
-                                            const SizedBox(width: 6),
-                                            Text('($cnt) Reviews',
-                                                style: const TextStyle(color: Colors.grey)),
-                                          ]),
-                                          const SizedBox(height: 6),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                return Card(
+                                  margin: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 8,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  elevation: 4,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(12),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.circular(
+                                            12,
+                                          ),
+                                          child: Image.memory(
+                                            img,
+                                            width: 100,
+                                            height: 100,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 12),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
-                                              Text('Rs ${data['productPrice']}',
-                                                  style: const TextStyle(
+                                              Text(
+                                                data['productName'],
+                                                style: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 4),
+                                              Text(
+                                                catName,
+                                                style: const TextStyle(
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 6),
+                                              Row(
+                                                children: [
+                                                  const Icon(
+                                                    Icons.star,
+                                                    size: 16,
+                                                    color: Colors.amber,
+                                                  ),
+                                                  const SizedBox(width: 4),
+                                                  Text(avg.toStringAsFixed(1)),
+                                                  const SizedBox(width: 6),
+                                                  Text(
+                                                    '($cnt) Reviews',
+                                                    style: const TextStyle(
+                                                      color: Colors.grey,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              const SizedBox(height: 6),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    'Rs ${data['productPrice']}',
+                                                    style: const TextStyle(
                                                       fontSize: 16,
-                                                      fontWeight: FontWeight.w600,
-                                                      color: Colors.green)),
-                                              MyButton(
-                                                title: 'Details',
-                                                height: 40.0,
-                                                onPressed: () =>
-                                                    Get.to(ProductDetail(productData: data)),
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: Colors.green,
+                                                    ),
+                                                  ),
+                                                  MyButton(
+                                                    title: 'Details',
+                                                    height: 40.0,
+                                                    onPressed:
+                                                        () => Get.to(
+                                                          ProductDetail(
+                                                            productData: data,
+                                                          ),
+                                                        ),
+                                                  ),
+                                                ],
                                               ),
                                             ],
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                ),
-              ],
-            ),
+                                  ),
+                                );
+                              },
+                            ),
+                  ),
+                ],
+              ),
     );
   }
 
@@ -238,10 +302,16 @@ class _ProductsScreenState extends State<ProductsScreen> {
       decoration: InputDecoration(
         labelText: 'Category',
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 12,
+          vertical: 10,
+        ),
       ),
       value: _selectedCategory,
-      items: _categories.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
+      items:
+          _categories
+              .map((c) => DropdownMenuItem(value: c, child: Text(c)))
+              .toList(),
       onChanged: (v) => setState(() => _selectedCategory = v!),
     );
   }
@@ -251,16 +321,27 @@ class _ProductsScreenState extends State<ProductsScreen> {
       decoration: InputDecoration(
         labelText: 'Sort',
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 12,
+          vertical: 10,
+        ),
       ),
       value: _sortOption,
       isExpanded: true,
-      items: const [
-        'None',
-        'Price: Low to High',
-        'Price: High to Low',
-        'Rating: High to Low'
-      ].map((c) => DropdownMenuItem(value: c, child: Text(c, overflow: TextOverflow.ellipsis,))).toList(),
+      items:
+          const [
+                'None',
+                'Price: Low to High',
+                'Price: High to Low',
+                'Rating: High to Low',
+              ]
+              .map(
+                (c) => DropdownMenuItem(
+                  value: c,
+                  child: Text(c, overflow: TextOverflow.ellipsis),
+                ),
+              )
+              .toList(),
       onChanged: (v) => setState(() => _sortOption = v!),
     );
   }

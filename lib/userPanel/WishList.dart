@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:laptop_harbor/controller/wishlistController.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:laptop_harbor/userPanel/constant.dart';
-import 'package:lottie/lottie.dart';
 
 class WishList extends StatelessWidget {
   final WishlistController wishlistController = Get.put(WishlistController());
@@ -15,9 +14,7 @@ class WishList extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-      ),
+      appBar: AppBar(backgroundColor: Colors.white),
       body: Obx(() {
         final prodList = wishlistController.wishlist;
 
@@ -25,19 +22,19 @@ class WishList extends StatelessWidget {
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                   Lottie.asset(
-              'assets/videos/Empty Box.json', // Path to your animation file
-              width: 200, // Customize size
-              height: 200, // Customize size
-              fit: BoxFit.fill, // Animation fit style
+              children: [
+                CircleAvatar(
+                  backgroundColor: Colors.grey[300],
+                  radius: 50,
+                  child: Icon(Icons.favorite, size: 50, color: Colors.black),
+                ),
+                SizedBox(height: 20),
+                Text(
+                  "You wishlist is empty",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
-            Text(
-                    "You wishlist is empty",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
           );
         }
 
@@ -56,31 +53,52 @@ class WishList extends StatelessWidget {
                     final imageBytes = base64Decode(item['productImage']);
                     final avgRating = (item['averageRating'] ?? 0.0).toDouble();
                     final reviewCount = item['ratingCount'] ?? 0;
-                
+
                     return ListTile(
                       contentPadding: const EdgeInsets.symmetric(vertical: 8),
                       leading: ClipRRect(
                         borderRadius: BorderRadius.circular(8),
-                        child: Image.memory(imageBytes, width: 80, height: 80, fit: BoxFit.cover),
+                        child: Image.memory(
+                          imageBytes,
+                          width: 80,
+                          height: 80,
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                      title: Text(item['productName'], style: const TextStyle(fontWeight: FontWeight.bold)),
+                      title: Text(
+                        item['productName'],
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(item['productDesc']),
                           const SizedBox(height: 4),
-                          Text("PKR ${item['productPrice']}", style: const TextStyle(fontWeight: FontWeight.bold)),
+                          Text(
+                            "PKR ${item['productPrice']}",
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
                           const SizedBox(height: 4),
                           Row(
                             children: [
                               RatingBarIndicator(
                                 rating: avgRating,
-                                itemBuilder: (_, __) => const Icon(Icons.star, color: Colors.amber),
+                                itemBuilder:
+                                    (_, __) => const Icon(
+                                      Icons.star,
+                                      color: Colors.amber,
+                                    ),
                                 itemCount: 5,
                                 itemSize: 16,
                               ),
                               const SizedBox(width: 8),
-                              Text("($reviewCount reviews)", style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                              Text(
+                                "($reviewCount reviews)",
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey,
+                                ),
+                              ),
                             ],
                           ),
                         ],
@@ -88,7 +106,9 @@ class WishList extends StatelessWidget {
                       trailing: IconButton(
                         icon: const Icon(Icons.delete, color: Colors.red),
                         onPressed: () {
-                          wishlistController.removeFromWishlist(item['productId']);
+                          wishlistController.removeFromWishlist(
+                            item['productId'],
+                          );
                         },
                       ),
                     );

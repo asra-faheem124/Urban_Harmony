@@ -9,6 +9,7 @@ import 'package:laptop_harbor/controller/wishlistController.dart';
 import 'package:laptop_harbor/model/product_model.dart';
 import 'package:laptop_harbor/userPanel/Cart.dart';
 import 'package:laptop_harbor/userPanel/Widgets/SnackBar.dart';
+import 'package:laptop_harbor/userPanel/login.dart';
 import 'package:laptop_harbor/userPanel/rate_us.dart';
 
 class ProductDetail extends StatefulWidget {
@@ -129,8 +130,9 @@ class _ProductDetailState extends State<ProductDetail> {
                     if (user == null) {
                       redSnackBar(
                         "❌ Login Required!",
-                        "Please login to use the wishlist.",
+                        "Please login to add items to the wishlist.",
                       );
+                      Get.to(Login());
                       return;
                     }
 
@@ -208,6 +210,7 @@ class _ProductDetailState extends State<ProductDetail> {
                             '❌ Login Required!',
                             'Please login to add items to cart.',
                           );
+                          Get.to(Login());
                           return;
                         }
 
@@ -233,6 +236,7 @@ class _ProductDetailState extends State<ProductDetail> {
                             "Login Required!",
                             "Please login to rate this product.",
                           );
+                          Get.to(Login());
                           return;
                         }
 
@@ -306,12 +310,14 @@ class _ProductDetailState extends State<ProductDetail> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Expanded(
-      child: Text(
-        data['email'] ?? 'User',
-        style: const TextStyle(fontWeight: FontWeight.w600),
-        overflow: TextOverflow.ellipsis,
-      ),
-    ),
+                            child: Text(
+                              data['email'] ?? 'User',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w600,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                           if (timestamp != null)
                             Text(
                               "${timestamp.day}/${timestamp.month}/${timestamp.year}",
