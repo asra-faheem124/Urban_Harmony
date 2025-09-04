@@ -34,7 +34,7 @@ class DrawerWidget extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.all(12.0),
-                child: Image.asset('assets/images/logo (1).png', height: 100),
+                child: Image.asset('assets/images/Logo1.png', height: 100),
               ),
               SizedBox(height: 10),
               ListTile(

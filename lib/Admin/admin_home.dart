@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:laptop_harbor/Admin/admin_category.dart';
 import 'package:laptop_harbor/Admin/admin_design.dart';
+import 'package:laptop_harbor/Admin/admin_design_category.dart';
 import 'package:laptop_harbor/Admin/admin_feedback.dart';
 import 'package:laptop_harbor/Admin/admin_orders.dart';
 import 'package:laptop_harbor/Admin/admin_products.dart';
@@ -22,6 +23,7 @@ class AdminHomeScreen extends StatefulWidget {
 class _AdminHomeScreenState extends State<AdminHomeScreen> {
   int totalUsers = 0;
   int totalCategories = 0;
+  int totalDesignCategories = 0;
   int totalProducts = 0;
   int totalDesign = 0;
   int totalOrders = 0;
@@ -42,6 +44,8 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
           await FirebaseFirestore.instance.collection('User').get();
       final catSnap =
           await FirebaseFirestore.instance.collection('category').get();
+          final deCatSnap =
+          await FirebaseFirestore.instance.collection('designCategories').get();
       final productSnap =
           await FirebaseFirestore.instance.collection('products').get();
           final designSnap =
@@ -56,6 +60,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
       setState(() {
         totalUsers = usersSnap.size;
         totalCategories = catSnap.size;
+        totalDesignCategories = deCatSnap.size;
         totalProducts = productSnap.size;
         totalDesign = designSnap.size;
         totalOrders = orderSnap.size;
@@ -133,7 +138,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
           child: SizedBox(
             height: 50,
             width: 100,
-            child: Image.asset('assets/images/logo2.png'),
+            child: Image.asset('assets/images/Logo1.png'),
           ),
         ),
         actions: [
@@ -180,6 +185,17 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                       () => Navigator.push(
                         context,
                         MaterialPageRoute(builder: (_) => AdminCategoryPage()),
+                      ),
+                    ),
+
+                     buildTile(
+                      'Design Categories',
+                      totalCategories.toString(),
+                      Icons.category,
+                      Colors.blue,
+                      () => Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => AdminDesignCategoryPage()),
                       ),
                     ),
 

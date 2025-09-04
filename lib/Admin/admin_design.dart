@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/Admin/add_design.dart';
 import 'package:laptop_harbor/Admin/add_product.dart';
+import 'package:laptop_harbor/Admin/edit_design.dart';
 import 'package:laptop_harbor/Admin/products_edit.dart';
 import 'package:laptop_harbor/controller/categoryController.dart';
 import 'package:laptop_harbor/controller/designController.dart';
@@ -13,7 +14,7 @@ import 'package:laptop_harbor/userPanel/Widgets/button.dart';
 import 'package:laptop_harbor/userPanel/constant.dart';
 
 class AdminDesignPage extends StatelessWidget {
-  final Designcontroller designcontroller = Get.put(Designcontroller());
+  final DesignController designcontroller = Get.put(DesignController());
   final Categorycontroller categorycontroller = Get.put(Categorycontroller());
 
   AdminDesignPage({super.key});
@@ -52,7 +53,7 @@ class AdminDesignPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     categorycontroller.FetchCategory().then((_) {
-      designcontroller.Fetchdesign();
+      designcontroller.fetchDesigns();
     });
 
     return Scaffold(
@@ -152,7 +153,7 @@ class AdminDesignPage extends StatelessWidget {
                                 children: [
                                   IconButton(
                                     onPressed: () {
-                                      // Get.to(EditProductPage(product: product));
+                                      Get.to(EditDesignPage(product: product));
                                     },
                                     icon: const Icon(
                                       Icons.edit,
@@ -160,7 +161,7 @@ class AdminDesignPage extends StatelessWidget {
                                     ),
                                   ),
                                   Tooltip(
-                                    message: "Delete Product",
+                                    message: "Delete Design",
                                     child: IconButton(
                                       icon: const Icon(
                                         Icons.delete,
@@ -175,7 +176,7 @@ class AdminDesignPage extends StatelessWidget {
                                                   "Confirm Delete",
                                                 ),
                                                 content: const Text(
-                                                  "Are you sure you want to delete this product?",
+                                                  "Are you sure you want to delete this design?",
                                                 ),
                                                 actions: [
                                                   TextButton(
@@ -198,7 +199,7 @@ class AdminDesignPage extends StatelessWidget {
                                               ),
                                         );
                                         if (confirm == true) {
-                                          await designcontroller.deletedesign(
+                                          await designcontroller.deleteDesign(
                                             product.designId,
                                           );
                                           greenSnackBar(

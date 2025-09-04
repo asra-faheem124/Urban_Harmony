@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:laptop_harbor/userPanel/Widgets/products.dart';
 import 'package:laptop_harbor/userPanel/product.dart';
+import 'package:laptop_harbor/userPanel/rooms.dart';
 
 class Explore extends StatelessWidget {
   const Explore({super.key});
@@ -8,8 +10,9 @@ class Explore extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: const Text("Explore"),
         centerTitle: true,
         
@@ -25,10 +28,7 @@ class Explore extends StatelessWidget {
               icon: Icons.meeting_room,
               color: Colors.teal,
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const RoomsPage()),
-                );
+              Get.to(RoomsPage());
               },
             ),
             const SizedBox(height: 20),
@@ -108,32 +108,3 @@ class Explore extends StatelessWidget {
   }
 }
 
-// 👉 Page showing different rooms
-class RoomsPage extends StatelessWidget {
-  const RoomsPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final rooms = ["Living Room", "Bedroom", "Kitchen", "Dining", "Office"];
-    return Scaffold(
-      appBar: AppBar(title: const Text("Rooms")),
-      body: ListView.builder(
-        itemCount: rooms.length,
-        itemBuilder: (context, index) {
-          return Card(
-            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: ListTile(
-              leading: const Icon(Icons.home, color: Colors.teal),
-              title: Text(
-                rooms[index],
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-              ),
-              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-              onTap: () {},
-            ),
-          );
-        },
-      ),
-    );
-  }
-}
