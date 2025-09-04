@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:laptop_harbor/Admin/admin_category.dart';
+import 'package:laptop_harbor/Admin/admin_design.dart';
 import 'package:laptop_harbor/Admin/admin_feedback.dart';
 import 'package:laptop_harbor/Admin/admin_orders.dart';
 import 'package:laptop_harbor/Admin/admin_products.dart';
@@ -22,6 +23,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
   int totalUsers = 0;
   int totalCategories = 0;
   int totalProducts = 0;
+  int totalDesign = 0;
   int totalOrders = 0;
   int totalRatings = 0;
   int totalContact = 0;
@@ -42,6 +44,8 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
           await FirebaseFirestore.instance.collection('category').get();
       final productSnap =
           await FirebaseFirestore.instance.collection('products').get();
+          final designSnap =
+          await FirebaseFirestore.instance.collection('design').get();
       final orderSnap =
           await FirebaseFirestore.instance.collection('orders').get();
       final ratingSnap =
@@ -53,6 +57,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
         totalUsers = usersSnap.size;
         totalCategories = catSnap.size;
         totalProducts = productSnap.size;
+        totalDesign = designSnap.size;
         totalOrders = orderSnap.size;
         totalRatings = ratingSnap.size;
         totalContact = contactSnap.size;
@@ -187,6 +192,18 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                           context,
                           MaterialPageRoute(
                             builder: (_) => AdminProductsPage(),
+                          ),
+                        ),
+                        ),
+                         buildTile(
+                      'Design',
+                      totalProducts.toString(),
+                      Icons.bed,
+                      Colors.deepOrange,
+                        () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => AdminDesignPage(),
                           ),
                         ),
                         ),

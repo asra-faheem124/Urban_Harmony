@@ -131,7 +131,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
               ? const Center(child: CircularProgressIndicator())
               : Column(
                 children: [
-                  User_Heading(title: 'Laptops'),
+                  User_Heading(title: 'All products'),
                   Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 12.0,

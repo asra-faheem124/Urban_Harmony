@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/userPanel/Cart.dart';
+import 'package:laptop_harbor/userPanel/Explore.dart';
 import 'package:laptop_harbor/userPanel/Home.dart';
 import 'package:laptop_harbor/userPanel/Profile.dart';
 import 'package:laptop_harbor/userPanel/WishList.dart';
@@ -23,7 +24,7 @@ class _BottomBarState extends State<BottomBar> {
 
   final List<Widget> loggedInPages = [
     HomeScreen(),
-    ProductsScreen(),
+    Explore(),
     Cart(),
     WishList(),
     Profile(),
