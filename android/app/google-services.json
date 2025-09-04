@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "303942612229",
-    "project_id": "laptopharbor-9593d",
-    "storage_bucket": "laptopharbor-9593d.firebasestorage.app"
+    "project_number": "931321051678",
+    "project_id": "urbanharmony-4693a",
+    "storage_bucket": "urbanharmony-4693a.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:303942612229:android:ba8d0316d1fb582f97336c",
+        "mobilesdk_app_id": "1:931321051678:android:6b215c037a35382eb6cc0f",
         "android_client_info": {
           "package_name": "com.example.laptop_harbor"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAIXazLu4UNW4sO2ms1AjvEzPt3hEiiPLs"
+          "current_key": "AIzaSyDVAuQiHurNhtzaCTMxu63YVGCp8v_bEGI"
         }
       ],
       "services": {

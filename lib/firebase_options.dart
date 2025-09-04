@@ -41,48 +41,48 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDCs7urtpr12tHfbKRWa7ctmRdQbtkW8hQ',
-    appId: '1:303942612229:web:c4aac70b58ff106097336c',
-    messagingSenderId: '303942612229',
-    projectId: 'laptopharbor-9593d',
-    authDomain: 'laptopharbor-9593d.firebaseapp.com',
-    storageBucket: 'laptopharbor-9593d.firebasestorage.app',
-    measurementId: 'G-YEFNPQ32K0',
+    apiKey: 'AIzaSyB6sbe-fNkt_j2HAgOLDaK9xlRFvr9QdNk',
+    appId: '1:931321051678:web:8d1954cd4ba2e0d3b6cc0f',
+    messagingSenderId: '931321051678',
+    projectId: 'urbanharmony-4693a',
+    authDomain: 'urbanharmony-4693a.firebaseapp.com',
+    storageBucket: 'urbanharmony-4693a.firebasestorage.app',
+    measurementId: 'G-MQ6MVDWKS7',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAIXazLu4UNW4sO2ms1AjvEzPt3hEiiPLs',
-    appId: '1:303942612229:android:ba8d0316d1fb582f97336c',
-    messagingSenderId: '303942612229',
-    projectId: 'laptopharbor-9593d',
-    storageBucket: 'laptopharbor-9593d.firebasestorage.app',
+    apiKey: 'AIzaSyDVAuQiHurNhtzaCTMxu63YVGCp8v_bEGI',
+    appId: '1:931321051678:android:6b215c037a35382eb6cc0f',
+    messagingSenderId: '931321051678',
+    projectId: 'urbanharmony-4693a',
+    storageBucket: 'urbanharmony-4693a.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBGj3mog0IasIArA6tHFVlpKADB6tmIckI',
-    appId: '1:303942612229:ios:fbae2ff91fad89fb97336c',
-    messagingSenderId: '303942612229',
-    projectId: 'laptopharbor-9593d',
-    storageBucket: 'laptopharbor-9593d.firebasestorage.app',
+    apiKey: 'AIzaSyB-NpA85VoVkNi7JC5nNKCxDPs9tDMrl-o',
+    appId: '1:931321051678:ios:f39b66d666c8f00fb6cc0f',
+    messagingSenderId: '931321051678',
+    projectId: 'urbanharmony-4693a',
+    storageBucket: 'urbanharmony-4693a.firebasestorage.app',
     iosBundleId: 'com.example.laptopHarbor',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBGj3mog0IasIArA6tHFVlpKADB6tmIckI',
-    appId: '1:303942612229:ios:fbae2ff91fad89fb97336c',
-    messagingSenderId: '303942612229',
-    projectId: 'laptopharbor-9593d',
-    storageBucket: 'laptopharbor-9593d.firebasestorage.app',
+    apiKey: 'AIzaSyB-NpA85VoVkNi7JC5nNKCxDPs9tDMrl-o',
+    appId: '1:931321051678:ios:f39b66d666c8f00fb6cc0f',
+    messagingSenderId: '931321051678',
+    projectId: 'urbanharmony-4693a',
+    storageBucket: 'urbanharmony-4693a.firebasestorage.app',
     iosBundleId: 'com.example.laptopHarbor',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyDCs7urtpr12tHfbKRWa7ctmRdQbtkW8hQ',
-    appId: '1:303942612229:web:2cf35bded740729897336c',
-    messagingSenderId: '303942612229',
-    projectId: 'laptopharbor-9593d',
-    authDomain: 'laptopharbor-9593d.firebaseapp.com',
-    storageBucket: 'laptopharbor-9593d.firebasestorage.app',
-    measurementId: 'G-5KRMJ4R4M7',
+    apiKey: 'AIzaSyB6sbe-fNkt_j2HAgOLDaK9xlRFvr9QdNk',
+    appId: '1:931321051678:web:42ea5889d570c11db6cc0f',
+    messagingSenderId: '931321051678',
+    projectId: 'urbanharmony-4693a',
+    authDomain: 'urbanharmony-4693a.firebaseapp.com',
+    storageBucket: 'urbanharmony-4693a.firebasestorage.app',
+    measurementId: 'G-H939Y68Y2M',
   );
 }

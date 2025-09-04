@@ -1,7 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/model/product_model.dart';
-import 'package:laptop_harbor/userPanel/BottomBar.dart';
 import 'package:laptop_harbor/userPanel/Widgets/SnackBar.dart';
 
 class Cartcontroller extends GetxController {

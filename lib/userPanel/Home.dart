@@ -42,9 +42,9 @@ class _HomeScreenState extends State<HomeScreen> {
   title: Padding(
     padding: const EdgeInsets.all(8.0),
     child: SizedBox(
-      height: 50,
+      height: 100,
       width: 100,
-      child: Image.asset('assets/images/logo2.png'),
+      child: Image.asset('assets/images/logo (1).png'),
     ),
   ),
   actions: [

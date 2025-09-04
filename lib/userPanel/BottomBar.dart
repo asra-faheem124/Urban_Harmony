@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
 import 'package:laptop_harbor/userPanel/Cart.dart';
 import 'package:laptop_harbor/userPanel/Home.dart';
 import 'package:laptop_harbor/userPanel/Profile.dart';
 import 'package:laptop_harbor/userPanel/WishList.dart';
+import 'package:laptop_harbor/userPanel/login.dart';
 import 'package:laptop_harbor/userPanel/product.dart';
 import 'package:lottie/lottie.dart';
 
@@ -54,6 +56,8 @@ class _BottomBarState extends State<BottomBar> {
             "You are not logged in",
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
+          SizedBox(height: 10,),
+          TextButton(onPressed: ()=>Get.to(Login()), child: Text('Go to Login'))
         ],
       ),
     );
