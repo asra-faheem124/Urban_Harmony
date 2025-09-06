@@ -8,36 +8,46 @@ import 'package:laptop_harbor/userPanel/Widgets/SnackBar.dart';
 class Signupcontroller extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
-  //obscure
+
   var isVisible = false.obs;
-  //signup method
-  Future<UserCredential?> SignUpMethod(
+
+  Future<UserCredential?> signUpMethod(
     String name,
     String email,
     String password,
     String phoneNumber,
-  ) async {
+    String role, {
+    String? bio,
+    String? profilePic,
+  }) async {
     try {
       EasyLoading.show(status: 'Please Wait');
-      //creating authentication
-      UserCredential userCredential = await _auth
-          .createUserWithEmailAndPassword(email: email, password: password);
+
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
       await userCredential.user!.sendEmailVerification();
 
-      Usermodel usermodel = Usermodel(
+      UserModel usermodel = UserModel(
         id: userCredential.user!.uid,
         name: name,
         email: email,
         password: password,
         phoneNumber: phoneNumber,
-        isAdmin: false,
+        role: role,
+        bio: bio,
+        profilePic: profilePic,
+        portfolio: [],
+        availability: [],
       );
 
-      //inserting data
-      _firebaseFirestore
+      await _firebaseFirestore
           .collection('User')
           .doc(userCredential.user!.uid)
           .set(usermodel.toMap());
+
       EasyLoading.dismiss();
       return userCredential;
     } on FirebaseAuthException catch (e) {

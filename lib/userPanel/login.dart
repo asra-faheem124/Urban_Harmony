@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/Admin/admin_home.dart';
+import 'package:laptop_harbor/DesignerPanel/Designer_home.dart';
 import 'package:laptop_harbor/controller/getUserData.dart';
 import 'package:laptop_harbor/controller/loginController.dart';
 import 'package:laptop_harbor/userPanel/BottomBar.dart';
@@ -37,7 +38,7 @@ class Login extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        User_Heading(title:  'Login into \nyour account'),
+                        User_Heading(title: 'Login into \nyour account'),
                         SizedBox(height: 30),
 
                         TextFormField(
@@ -144,12 +145,24 @@ class Login extends StatelessWidget {
                                         if (userCredential
                                             .user!
                                             .emailVerified) {
-                                          if (userData[0]['isAdmin'] == true) {
+                                          String role =
+                                              userData[0]['role'] ??
+                                              'user'; // <-- get role
+
+                                          if (role == 'admin') {
                                             greenSnackBar(
                                               '✅ Success!',
                                               'Login Successful! Welcome to admin dashboard.',
                                             );
                                             Get.offAll(AdminHomeScreen());
+                                          } else if (role == 'designer') {
+                                            greenSnackBar(
+                                              '✅ Success!',
+                                              'Login Successful! Welcome to designer dashboard.',
+                                            );
+                                            Get.offAll(
+                                              DesignerHomeScreen(),
+                                            ); // replace with your designer dashboard
                                           } else {
                                             greenSnackBar(
                                               '✅ Success!',
@@ -172,6 +185,7 @@ class Login extends StatelessWidget {
                                     }
                                   },
                                 ),
+
                                 SizedBox(height: 30),
                                 Text(
                                   'or signin with',

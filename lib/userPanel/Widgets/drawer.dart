@@ -10,6 +10,7 @@ import 'package:laptop_harbor/Admin/admin_ratings.dart';
 import 'package:laptop_harbor/Admin/admin_users.dart';
 import 'package:laptop_harbor/controller/getUserData.dart';
 import 'package:laptop_harbor/userPanel/contact_feedback.dart';
+import 'package:laptop_harbor/userPanel/designer_porfolio.dart';
 import 'package:laptop_harbor/userPanel/login.dart';
 import 'package:laptop_harbor/userPanel/logout.dart';
 import 'package:laptop_harbor/userPanel/order_history.dart';
@@ -131,6 +132,11 @@ class DrawerWidget extends StatelessWidget {
                       leading: Icon(Icons.article_outlined),
                       title: Text('Terms & Conditions'),
                       onTap: () => Get.to(TermsAndConditions()),
+                    ),
+                     ListTile(
+                      leading: Icon(Icons.article_outlined),
+                      title: Text('Designer portfolio'),
+                    onTap: () => Get.to(Designers_Portfolio()),
                     ),
                   ],
                   Divider(),
