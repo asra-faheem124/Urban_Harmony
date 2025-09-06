@@ -9,8 +9,10 @@ import 'package:laptop_harbor/userPanel/Widgets/button.dart';
 import 'package:laptop_harbor/userPanel/constant.dart';
 
 class RateUsPage extends StatefulWidget {
-  final String productId;
-  RateUsPage({required this.productId});
+  final String id; // can be productId or designId
+  final bool isDesign; // ✅ new flag to know which collection
+
+  RateUsPage({required this.id, this.isDesign = false});
 
   @override
   State<RateUsPage> createState() => _RateUsPageState();
@@ -29,8 +31,13 @@ class _RateUsPageState extends State<RateUsPage> {
       String review = _reviewController.text.trim();
 
       try {
-        await FirebaseFirestore.instance.collection('ratings').add({
-          'productId': widget.productId,
+        // ✅ Choose correct collection
+        final collection =
+            widget.isDesign ? 'design_ratings' : 'ratings';
+
+        await FirebaseFirestore.instance.collection(collection).add({
+          if (widget.isDesign) 'designId': widget.id,
+          if (!widget.isDesign) 'productId': widget.id,
           'email': email,
           'review': review,
           'rating': _rating,
@@ -38,10 +45,8 @@ class _RateUsPageState extends State<RateUsPage> {
         });
 
         greenSnackBar('✅ Success!', 'Thanks for your feedback.');
-
         Get.offAll(() => BottomBar());
 
-        // Clear fields
         _reviewController.clear();
         setState(() {
           _rating = 0;
@@ -67,9 +72,7 @@ class _RateUsPageState extends State<RateUsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-      ),
+      appBar: AppBar(backgroundColor: Colors.white),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -77,27 +80,18 @@ class _RateUsPageState extends State<RateUsPage> {
           child: Column(
             children: [
               User_Heading(title: 'Rate Us'),
-              const Text(
-                "We'd love your feedback!",
-                style: TextStyle(fontSize: 24),
-              ),
+              const Text("We'd love your feedback!", style: TextStyle(fontSize: 24)),
               const SizedBox(height: 20),
 
               RatingBar.builder(
                 initialRating: 0,
                 minRating: 1,
                 allowHalfRating: true,
-                direction: Axis.horizontal,
                 itemCount: 5,
                 itemSize: 40,
-                itemPadding: const EdgeInsets.symmetric(horizontal: 4),
-                itemBuilder:
-                    (context, _) => const Icon(Icons.star, color: Colors.amber),
-                onRatingUpdate: (rating) {
-                  setState(() {
-                    _rating = rating;
-                  });
-                },
+                itemBuilder: (context, _) =>
+                    const Icon(Icons.star, color: Colors.amber),
+                onRatingUpdate: (rating) => setState(() => _rating = rating),
               ),
 
               const SizedBox(height: 20),
@@ -110,8 +104,8 @@ class _RateUsPageState extends State<RateUsPage> {
                   prefixIcon: Icon(Icons.email),
                   border: OutlineInputBorder(),
                 ),
-                validator:
-                    (value) => value!.isEmpty ? "Email is required" : null,
+                validator: (value) =>
+                    value!.isEmpty ? "Email is required" : null,
               ),
 
               const SizedBox(height: 20),
@@ -124,8 +118,8 @@ class _RateUsPageState extends State<RateUsPage> {
                   border: OutlineInputBorder(),
                 ),
                 maxLines: 4,
-                validator:
-                    (value) => value!.isEmpty ? "Please write a review" : null,
+                validator: (value) =>
+                    value!.isEmpty ? "Please write a review" : null,
               ),
 
               const SizedBox(height: 25),

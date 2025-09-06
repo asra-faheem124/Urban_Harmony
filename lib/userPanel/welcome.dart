@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/userPanel/BottomBar.dart';
 import 'package:laptop_harbor/userPanel/Widgets/button.dart';
-import 'package:lottie/lottie.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -15,58 +14,65 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.white, const Color.fromARGB(255, 136, 136, 136)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-        child: SingleChildScrollView(
-          child: Center(
-            child: SizedBox(
-                  height: MediaQuery.of(context).size.height,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Welcome to \n Laptop Harbour",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
+      backgroundColor: Colors.white, // clean white background
+      body: SafeArea(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // Logo
+                Image.asset(
+                  "assets/images/Logo1.png",
+                  height: 120,
+                ),
+                const SizedBox(height: 24),
+
+                // Title
+                const Text(
+                  "Welcome to\nUrban Harmony",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.black87,
                   ),
-                  const SizedBox(height: 20),
-                  Lottie.asset(
-                    'assets/videos/lottieAnimation.json',
-                    width: 200,
-                    height: 200,
-                    fit: BoxFit.fill,
+                ),
+                const SizedBox(height: 16),
+
+                // Tagline
+                const Text(
+                  "Designs that Define Your Lifestyle",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey,
                   ),
-                  const SizedBox(height: 20),
-                  Text(
-                    "Your Trusted Dock for the \n Perfect Laptop",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 10),
+
+                // Short description
+                const Text(
+                  "Discover interiors, elegant furniture,\n"
+                  "and modern designs tailored for you.",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.black54,
+                    height: 1.4,
                   ),
-                  const SizedBox(height: 10),
-                  SizedBox(
-                    width: 370,
-                    child: Text(
-                      "Find your ideal machine from top brands, compare features with ease, and shop smart—all in one seamless experience.",
-                      style: TextStyle(fontSize: 15),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  const SizedBox(height: 30),
-                  MyButton(
-                    title: 'Explore',
-                    height: 50.0,
-                    onPressed: () => Get.offAll(BottomBar()),
-                  ),
-                ],
-              ),
+                ),
+                const SizedBox(height: 40),
+
+                // Explore Button
+                MyButton(
+                  title: 'Explore',
+                  height: 50.0,
+                  onPressed: () => Get.offAll(const BottomBar()),
+                ),
+              ],
             ),
           ),
         ),

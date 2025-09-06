@@ -32,7 +32,7 @@ class _BottomBarState extends State<BottomBar> {
 
   final List<Widget> guestPages = [
     HomeScreen(),
-    ProductsScreen(),
+    Explore(),
     _notLoggedInWidget(),
     _notLoggedInWidget(),
     _notLoggedInWidget(),

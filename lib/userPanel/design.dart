@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:laptop_harbor/controller/design_category_controller.dart';
 import 'package:laptop_harbor/model/design_category_model.dart';
 import 'package:laptop_harbor/userPanel/constant.dart';
+import 'package:laptop_harbor/userPanel/design_detail.dart';
 
 class RoomsPage extends StatefulWidget {
   const RoomsPage({super.key});
@@ -183,52 +184,3 @@ class _RoomsPageState extends State<RoomsPage> {
   }
 }
 
-class DesignDetailPage extends StatelessWidget {
-  final Map<String, dynamic> designData;
-
-  const DesignDetailPage({super.key, required this.designData});
-
-  @override
-  Widget build(BuildContext context) {
-    final imageBytes = base64Decode(designData["designImage"]);
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(designData["designName"] ?? "Design Detail"),
-        backgroundColor: Colors.teal,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Image.memory(
-              imageBytes,
-              fit: BoxFit.cover,
-              width: double.infinity,
-              height: 250,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    designData["designName"] ?? "",
-                    style: const TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    designData["designDesc"] ?? "No description available",
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}

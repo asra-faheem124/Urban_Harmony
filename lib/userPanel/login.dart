@@ -29,17 +29,6 @@ class Login extends StatelessWidget {
           key: _formKey,
           child: Column(
             children: [
-              Container(
-                width: double.infinity,
-                height: 200,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/splash.jpg'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                child: Image.asset('assets/images/logo.png'),
-              ),
               Center(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),

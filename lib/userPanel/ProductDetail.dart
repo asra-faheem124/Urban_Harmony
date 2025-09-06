@@ -240,9 +240,8 @@ class _ProductDetailState extends State<ProductDetail> {
                           return;
                         }
 
-                        Get.to(
-                          () => RateUsPage(productId: product['productId']),
-                        );
+                       Get.to(() => RateUsPage(id: product['productId'], isDesign: false));
+
                       },
                       icon: const Icon(
                         Icons.rate_review,

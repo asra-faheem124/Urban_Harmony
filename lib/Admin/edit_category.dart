@@ -35,7 +35,6 @@ class _EditCategoryPageState extends State<EditCategoryPage> {
 
   @override
   Widget build(BuildContext context) {
-    Uint8List defaultImage = base64Decode(widget.categoryModel.categoryImage);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -77,52 +76,18 @@ class _EditCategoryPageState extends State<EditCategoryPage> {
                           },
                         ),
                         const SizedBox(height: 30),
-                        GestureDetector(
-                          onTap: () async {
-                            image = await imagePicker.pickImage(
-                              source: ImageSource.gallery,
-                            );
-                            setState(() {});
-                          },
-                          child: Container(
-                            height: 150,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey),
-                              image: image != null
-                                  ? DecorationImage(
-                                      image: FileImage(File(image!.path)),
-                                      fit: BoxFit.cover,
-                                    )
-                                  : DecorationImage(
-                                      image: MemoryImage(defaultImage),
-                                      fit: BoxFit.cover,
-                                    ),
-                            ),
-                            alignment: Alignment.center,
-                            child: image == null
-                                ? const Text(
-                                    'Tap to upload a new image',
-                                    style: TextStyle(color: Colors.grey),
-                                  )
-                                : Text(image!.name),
-                          ),
-                        ),
-                        const SizedBox(height: 30),
+                       
                         Center(
                           child: MyButton(
                             title: 'Update',
                             height: 50.0,
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                Uint8List updatedImage = image != null
-                                    ? await image!.readAsBytes()
-                                    : defaultImage;
+                                
 
                                 await categorycontroller.updateCategory(
                                   categoryId: widget.categoryModel.categoryId,
                                   categoryName: categoryName.text.trim(),
-                                  categoryImage: updatedImage,
                                 );
 
                                 greenSnackBar('Updated', 'Category updated successfully.');

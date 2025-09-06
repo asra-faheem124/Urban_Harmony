@@ -8,7 +8,8 @@ import 'package:laptop_harbor/userPanel/Profile.dart';
 import 'package:laptop_harbor/userPanel/Widgets/animated_text.dart';
 import 'package:laptop_harbor/userPanel/Widgets/drawer.dart';
 import 'package:laptop_harbor/userPanel/Widgets/products.dart';
-import 'package:laptop_harbor/userPanel/Widgets/top_rated_laptops.dart';
+import 'package:laptop_harbor/userPanel/Widgets/top_rated_designs.dart';
+import 'package:laptop_harbor/userPanel/Widgets/top_rated_interior.dart';
 import 'package:laptop_harbor/userPanel/notification.dart';
 import 'package:laptop_harbor/userPanel/product.dart';
 import 'package:laptop_harbor/userPanel/signup.dart';
@@ -49,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
   ),
   actions: [
     FutureBuilder<DocumentSnapshot>(
-      future: _getUserData(), // Your async function to get user data
+      future: _getUserData(), //async function to get user data
       builder: (context, snapshot) {
         final user = FirebaseAuth.instance.currentUser;
 
@@ -145,22 +146,23 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            AnimatedHeadline(),
+            SizedBox(height: 15,),
+            Text('THE INTERIORS YOU"VE BEEN\nWAITING FOR', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
             SizedBox(height: 10),
             CarouselSlider(
               options: CarouselOptions(
-                height: 200.0,
+                height: 300.0,
                 autoPlay: true,
                 enlargeCenterPage: true,
                 aspectRatio: 16 / 9,
                 autoPlayInterval: Duration(seconds: 3),
-                viewportFraction: 0.9,
+                viewportFraction: 0.7,
               ),
               items:
                   [
-                    'assets/images/slider1.jpg',
-                    'assets/images/slider2.jpg',
-                    'assets/images/slider3.jpg',
+                    'assets/images/banner1.jpg',
+                    'assets/images/banner2.jpg',
+                    'assets/images/banner3.jpg',
                   ].map((imagePath) {
                     return Builder(
                       builder: (BuildContext context) {
@@ -189,7 +191,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     // Title text with responsive font size
                     Flexible(
                       child: Text(
-                        "Featured Laptops",
+                        "Featured Interiors",
                         style: TextStyle(
                           fontSize:
                               screenWidth * 0.05, // around 24 on 400px screen
@@ -234,7 +236,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     // Title text with responsive font size
                     Flexible(
                       child: Text(
-                        "Top Rated Laptops",
+                        "Top Rated Interiors",
                         style: TextStyle(
                           fontSize:
                               screenWidth * 0.05, // around 24 on 400px screen
@@ -249,6 +251,34 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             SizedBox(height: 20),
             TopRatedLaptopsGrid(),
+            //interior
+             SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+              ), // less padding for small screens
+              child: Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Title text with responsive font size
+                    Flexible(
+                      child: Text(
+                        "Top Rated Designs",
+                        style: TextStyle(
+                          fontSize:
+                              screenWidth * 0.05, // around 24 on 400px screen
+                          fontWeight: FontWeight.bold,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+            TopRatedDesignsGrid(),
           ],
         ),
       ),

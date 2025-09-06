@@ -67,57 +67,16 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                           },
                         ),
                         const SizedBox(height: 30),
-                        GestureDetector(
-                          onTap: () async {
-                            image = await imagePicker.pickImage(
-                              source: ImageSource.gallery,
-                            );
-                            setState(() {});
-                          },
-                          child: Container(
-                            height: 150,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey),
-                              image:
-                                  image != null
-                                      ? DecorationImage(
-                                        image: FileImage(File(image!.path)),
-                                        fit: BoxFit.cover,
-                                      )
-                                      : null,
-                            ),
-                            alignment: Alignment.center,
-                            child:
-                                image == null
-                                    ? Text(
-                                      'Tap to upload an image',
-                                      style: TextStyle(color: Colors.grey),
-                                    )
-                                    : Text(image!.name),
-                          ),
-                        ),
-                        if (image == null)
-                          Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
-                            child: Text(
-                              'Image is required',
-                              style: TextStyle(color: Colors.red),
-                            ),
-                          ),
-                        SizedBox(height: 30),
+                    
                         // Submit button
                         Center(
                           child: MyButton(
                             title: 'Add',
                             height: 50.0,
                             onPressed: () async {
-                              if (_formKey.currentState!.validate() &&
-                                  image != null) {
-                                final imageFile = await image!.readAsBytes();
+                              if (_formKey.currentState!.validate()) {
                                 categorycontroller.AddCategory(
                                   categoryName: categoryName.text.trim(),
-                                  categoryImage: imageFile,
                                 );
                               greenSnackBar('Success!', 'Category Added Successfully.');
                                 Get.to(AdminCategoryPage());

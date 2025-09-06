@@ -13,15 +13,12 @@ class Categorycontroller extends GetxController {
   // Add Category
   Future<void> AddCategory({
     required String categoryName,
-    required Uint8List categoryImage,
   }) async {
     try {
-      final image = base64Encode(categoryImage);
       DocumentReference docRef = firestore.collection('category').doc();
       CategoryModel newCategory = CategoryModel(
         categoryId: docRef.id,
         categoryName: categoryName,
-        categoryImage: image,
       );
 
       await docRef.set(newCategory.toMap());
@@ -56,12 +53,9 @@ Future<void> deleteCategory(String categoryId) async {
 Future<void> updateCategory({
   required String categoryId,
   required String categoryName,
-  required Uint8List categoryImage,
 }) async {
-  final base64Image = base64Encode(categoryImage);
   await FirebaseFirestore.instance.collection('category').doc(categoryId).update({
     'categoryName': categoryName,
-    'categoryImage': base64Image,
   });
   FetchCategory(); 
 }

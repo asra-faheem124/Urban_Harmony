@@ -7,8 +7,8 @@ class HelpSupportPage extends StatelessWidget {
   void _launchEmail() async {
     final Uri emailLaunchUri = Uri(
       scheme: 'mailto',
-      path: 'support@laptopharbor.com',
-      query: Uri.encodeFull('subject=Support Request - LaptopHarbor'),
+      path: 'support@urbanharmony.com',
+      query: Uri.encodeFull('subject=Support Request - UrbanHarmony'),
     );
     if (await canLaunchUrl(emailLaunchUri)) {
       await launchUrl(emailLaunchUri);
@@ -50,7 +50,7 @@ class HelpSupportPage extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.email_outlined),
               title: const Text('Email Support'),
-              subtitle: const Text('support@laptopharbor.com'),
+              subtitle: const Text('support@urbanharmony.com'),
               onTap: _launchEmail,
             ),
             ListTile(

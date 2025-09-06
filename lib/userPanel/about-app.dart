@@ -18,12 +18,19 @@ class AboutAppPage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
+       
+        iconTheme: const IconThemeData(color: Colors.black),
+        elevation: 0,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
-           Image.asset('assets/images/logo2.png', height: 50,),
+            
+            Image.asset(
+              'assets/images/Logo1.png',
+              height: 100,
+            ),
             const SizedBox(height: 16),
             const Text(
               'Version 1.0.0',
@@ -32,29 +39,37 @@ class AboutAppPage extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             const Text(
-              'LaptopHarbor is your go-to app for browsing, comparing, and purchasing the latest laptops and accessories. We aim to simplify the laptop shopping experience through detailed product information, smart filters, real-time order tracking, and a smooth checkout process.',
+              'UrbanHarmony is your trusted app for discovering premium furniture, elegant room designs, and stylish accessories. '
+              'Our mission is to bring harmony to your living spaces by offering curated collections, detailed design inspirations, '
+              'easy browsing, and a smooth shopping experience.',
               style: TextStyle(fontSize: 16),
               textAlign: TextAlign.justify,
             ),
             const SizedBox(height: 20),
             const Divider(),
             const SizedBox(height: 10),
-            ListTile(
-              leading: const Icon(Icons.code),
-              title: const Text('Developed By'),
-              subtitle: const Text('LaptopHarbor Team'),
+            const ListTile(
+              leading: Icon(Icons.code),
+              title: Text('Developed By'),
+              subtitle: Text('UrbanHarmony Team'),
             ),
             ListTile(
               leading: const Icon(Icons.language),
               title: const Text('Website'),
-              subtitle: const Text('www.laptopharbor.com'),
-              onTap: () => _launchURL('https://www.laptopharbor.com'),
+              subtitle: const Text('www.urbanharmony.com'),
+              onTap: () => _launchURL('https://www.urbanharmony.com'),
             ),
             ListTile(
               leading: const Icon(Icons.email),
               title: const Text('Support Email'),
-              subtitle: const Text('support@laptopharbor.com'),
-              onTap: () => _launchURL('mailto:support@laptopharbor.com'),
+              subtitle: const Text('support@urbanharmony.com'),
+              onTap: () => _launchURL('mailto:support@urbanharmony.com'),
+            ),
+            ListTile(
+              leading: const Icon(Icons.phone),
+              title: const Text('Contact'),
+              subtitle: const Text('+92 300 1234567'),
+              onTap: () => _launchURL('tel:+923001234567'),
             ),
           ],
         ),

@@ -46,7 +46,6 @@ class AdminCategoryPage extends StatelessWidget {
                 itemCount: categorycontroller.CategoryList.length,
                 itemBuilder: (context, index) {
                   CategoryModel categoryModel = categorycontroller.CategoryList[index];
-                  Uint8List categoryImage = base64Decode(categoryModel.categoryImage);
 
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -55,15 +54,7 @@ class AdminCategoryPage extends StatelessWidget {
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       child: ListTile(
                         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        leading: ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: Image.memory(
-                            categoryImage,
-                            width: 50,
-                            height: 50,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
+                        
                         title: Text(
                           categoryModel.categoryName,
                           style: const TextStyle(

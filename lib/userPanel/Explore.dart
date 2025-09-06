@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/userPanel/Widgets/products.dart';
+import 'package:laptop_harbor/userPanel/constant.dart';
 import 'package:laptop_harbor/userPanel/product.dart';
-import 'package:laptop_harbor/userPanel/rooms.dart';
+import 'package:laptop_harbor/userPanel/design.dart';
 
 class Explore extends StatelessWidget {
   const Explore({super.key});
@@ -13,30 +14,33 @@ class Explore extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: const Text("Explore"),
-        centerTitle: true,
-        
         elevation: 0,
+        centerTitle: true,
+        title: User_Heading(title: 'Explore')
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Column(
           children: [
-            _buildSimpleCard(
+             // Card 1
+            _buildModernCard(
               context,
               title: "Complete Rooms",
+              subtitle: "Browse modern room inspirations",
               icon: Icons.meeting_room,
-              color: Colors.teal,
               onTap: () {
-              Get.to(RoomsPage());
+                Get.to(RoomsPage());
               },
             ),
+
             const SizedBox(height: 20),
-            _buildSimpleCard(
+
+            // 🔹 Card 2
+            _buildModernCard(
               context,
               title: "Accessories",
-              icon: Icons.chair,
-              color: Colors.orange,
+              subtitle: "Find chairs, tables & more",
+              icon: Icons.chair_alt,
               onTap: () {
                 Navigator.push(
                   context,
@@ -50,56 +54,76 @@ class Explore extends StatelessWidget {
     );
   }
 
-  /// 🔥 Clean card with icon & text
-  Widget _buildSimpleCard(
+  /// ✨ Modern black & white card
+  Widget _buildModernCard(
     BuildContext context, {
     required String title,
+    required String subtitle,
     required IconData icon,
-    required Color color,
     required VoidCallback onTap,
   }) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 120,
+        height: 140,
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: Colors.black.withOpacity(0.1), width: 1),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.08),
-              blurRadius: 8,
-              offset: const Offset(0, 4),
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 12,
+              offset: const Offset(0, 6),
             ),
           ],
         ),
         child: Row(
           children: [
+            // Icon section
             Container(
               height: double.infinity,
               width: 90,
               decoration: BoxDecoration(
-                color: color.withOpacity(0.1),
+                color: Colors.black.withOpacity(0.05),
                 borderRadius: const BorderRadius.horizontal(
-                  left: Radius.circular(16),
+                  left: Radius.circular(20),
                 ),
               ),
-              child: Icon(icon, color: color, size: 40),
+              child: Icon(icon, color: Colors.black87, size: 40),
             ),
             const SizedBox(width: 16),
+
+            // Text section
             Expanded(
-              child: Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 0.5,
-                ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    subtitle,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.black.withOpacity(0.6),
+                    ),
+                  ),
+                ],
               ),
             ),
+
             const Padding(
               padding: EdgeInsets.only(right: 16),
-              child: Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
+              child: Icon(Icons.arrow_forward_ios,
+                  size: 16, color: Colors.black54),
             ),
           ],
         ),
@@ -107,4 +131,3 @@ class Explore extends StatelessWidget {
     );
   }
 }
-

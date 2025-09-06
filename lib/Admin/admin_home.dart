@@ -44,7 +44,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
           await FirebaseFirestore.instance.collection('User').get();
       final catSnap =
           await FirebaseFirestore.instance.collection('category').get();
-          final deCatSnap =
+      final deCatSnap =
           await FirebaseFirestore.instance.collection('designCategories').get();
       final productSnap =
           await FirebaseFirestore.instance.collection('products').get();
@@ -190,7 +190,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
 
                      buildTile(
                       'Design Categories',
-                      totalCategories.toString(),
+                      totalDesignCategories.toString(),
                       Icons.category,
                       Colors.blue,
                       () => Navigator.push(
