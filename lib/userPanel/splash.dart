@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:laptop_harbor/Admin/admin_home.dart';
+import 'package:laptop_harbor/DesignerPanel/Designer_home.dart';
 import 'package:laptop_harbor/controller/getUserData.dart';
 import 'package:laptop_harbor/userPanel/BottomBar.dart';
 import 'package:laptop_harbor/userPanel/welcome.dart';
@@ -57,7 +58,8 @@ class _SplashScreenState extends State<SplashScreen>
       var userData = await getuserdatacontroller.getuserdata(user!.uid);
       if (userData.isNotEmpty && userData[0]['isAdmin'] == true) {
         Get.offAll(const AdminHomeScreen());
-      } else {
+      } 
+      else {
         Get.offAll(const BottomBar());
       }
     } else {

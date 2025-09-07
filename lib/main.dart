@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       theme: ThemeData(fontFamily: 'ProductSans'),
       debugShowCheckedModeBanner: false,
-      home: Login(),
+      home: BottomBar(),
       builder: EasyLoading.init(),
     );
   }

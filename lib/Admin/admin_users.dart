@@ -60,6 +60,7 @@ class AdminUsersPage extends StatelessWidget {
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text(data['role'].toString().toUpperCase() ?? 'No Role', style: TextStyle(fontWeight: FontWeight.bold,),),
               Text(data['email'] ?? 'No Email'),
               Text(data['phoneNumber'] ?? 'No Phone'),
               Text(
